@@ -1,0 +1,6 @@
+{
+  "status": "STOPPED_REQUIRES_DIAGNOSIS",
+  "error_type": "FileNotFoundError",
+  "error": "[Errno 2] No such file or directory: '/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-06-seed42/followup/result.json'",
+  "no_automatic_retry": true
+}

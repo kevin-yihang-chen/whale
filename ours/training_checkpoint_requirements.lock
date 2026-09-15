@@ -1,0 +1,2 @@
+# Additive dependency for the original WHALE NCCL engine; install after training_resolved.lock.
+cupy-cuda13x @ https://files.pythonhosted.org/packages/7e/bf/c4c25e97552320451afdcd459d4b6e0b715459594e998b23051c06db64c3/cupy_cuda13x-14.2.0-cp312-cp312-manylinux2014_x86_64.whl --hash=sha256:9aafadbe29db3d4285026044aafeb28f2a3de4bd0df70718ec6892b7d27a4ded

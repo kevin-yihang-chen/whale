@@ -1,0 +1,2 @@
+- name: visual_training_agent
+  _target_: ours.visual_training_identity.IdentifiedVisualHarnessAgentLoop

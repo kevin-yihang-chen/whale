@@ -1,0 +1,134 @@
+{
+  "status": "BUDGET_OR_STORAGE_REVISION_REQUIRED",
+  "created_utc": "2026-09-15T13:28:32.712818+00:00",
+  "evidence_sha256": {
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/h0-calibration-v2/result.json": "cbd01531fb9bcc1a8f339a3a40dc39b841f3d27010e6014eecde0813b1dd3c43",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-07-seed42/followup/development/result.json": "400557beff5649dd310c6c3c3a07141c73035db9725f236b933432e3784726ab",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-07-seed42/followup/transition.json": "606ca9934e165a41e4320ad2849ef1d360106ee590cb6b7b07176d86a54cb3ba",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-06-seed42/followup/development/result.json": "1972b46bf4d358e34f784d28d9031bd6c22e7747092b84bd7217c32f7b6407f9",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-06-seed42/followup/transition.json": "caa44e22d8e7765b9e728b38bb0d703b88482d26912b1c1e7c199c984d33a9d2",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-05-seed42/followup/development/result.json": "28a34b64e35b20aa5d74bfd6435a9edeeb8c3608b66754a3b2550bcc4de7adec",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-05-seed42/followup/transition.json": "47300fdb3a8930a7c8dea9ffbb60c5de4928f40dd8973307e5d35a1a1973cd4d"
+  },
+  "gpu_budget": {
+    "charged_gpu_hours": {
+      "setup": "11.80000000000000000000000000",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "1.27"
+    },
+    "reserved_gpu_hours": {
+      "setup": "1",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "0"
+    },
+    "total_cap": 100,
+    "remaining_unreserved": "85.93000000000000000000000000"
+  },
+  "storage": {
+    "new_root_allocated_gib": 90.83609676361084,
+    "requested_gib": 0,
+    "filesystem_free_gib": 570.54296875,
+    "cap_gib": 400,
+    "minimum_free_margin_gib": 40,
+    "hardlinks_counted_once_within_new_root": true,
+    "deletion_authorized": false
+  },
+  "evaluation_projection": {
+    "loading_seconds": 280.65757016884163,
+    "seconds_per_image": 1.8899321598337337,
+    "overhead_seconds": 22.272394952674706,
+    "input_preparation_seconds_for_512": 0,
+    "one_V512_gpu_hours": 0.3529375641545522,
+    "one_H128_C128_gpu_hours": 0.2185423883441534,
+    "one_T2048_gpu_hours": 1.1593086190169453,
+    "one_ChartQA512_proxy_gpu_hours": 0.3529375641545522,
+    "final_T_18_conditions_plus_6_common_h0_gpu_hours": 27.823406856406685,
+    "external_18_conditions_gpu_hours": 6.3528761547819395,
+    "independent_R_six_1024_pair_passes_gpu_hours": 6.955851714101671,
+    "final_evaluation_phase_proxy_gpu_hours": 34.17628301118862,
+    "assumptions": [
+      "Standalone loading per endpoint; no unmeasured batching speedup credited.",
+      "Measured V input preparation scales linearly above512 images; smaller passes retain full V loading.",
+      "ChartQA and future harness token lengths are unknown; chart V throughput is only a proxy.",
+      "R provision covers WHALE/VETO across3 seeds; an optional larger scope needs a new forecast."
+    ]
+  },
+  "endpoint_evaluation_projection": {
+    "loading_seconds": 280.65757016884163,
+    "seconds_per_image": 1.8899321598337337,
+    "overhead_seconds": 22.272394952674706,
+    "input_preparation_seconds_for_512": 0,
+    "one_V512_gpu_hours": 0.3529375641545522,
+    "one_H128_C128_gpu_hours": 0.2185423883441534,
+    "one_T2048_gpu_hours": 1.1593086190169453,
+    "one_ChartQA512_proxy_gpu_hours": 0.3529375641545522,
+    "final_T_18_conditions_plus_6_common_h0_gpu_hours": 27.823406856406685,
+    "external_18_conditions_gpu_hours": 6.3528761547819395,
+    "independent_R_six_1024_pair_passes_gpu_hours": 6.955851714101671,
+    "final_evaluation_phase_proxy_gpu_hours": 34.17628301118862,
+    "assumptions": [
+      "Standalone loading per endpoint; no unmeasured batching speedup credited.",
+      "Measured V input preparation scales linearly above512 images; smaller passes retain full V loading.",
+      "ChartQA and future harness token lengths are unknown; chart V throughput is only a proxy.",
+      "R provision covers WHALE/VETO across3 seeds; an optional larger scope needs a new forecast."
+    ]
+  },
+  "formal_expansion_admitted": false,
+  "deletion_authorized": false,
+  "scientific_method_verified": false,
+  "configuration_sha256": "bead65d8adf718a63e912b9afab452b9dac55d45e6315a68b9bda0dec65e691d",
+  "measured_lr_trials": [
+    {
+      "training_gpu_hours": 1.27,
+      "followup_gpu_hours": 0.41805555555555557,
+      "native_gib": 18.144901752471924,
+      "export_gib": 9.650614738464355,
+      "development_loading_seconds": 280.65757016884163,
+      "evidence_gib": 1.1042914390563965,
+      "V_evaluation_gib": 0.6374602317810059
+    },
+    {
+      "training_gpu_hours": 1.2577777777777779,
+      "followup_gpu_hours": 0.33194444444444443,
+      "native_gib": 18.654537677764893,
+      "export_gib": 9.650614738464355,
+      "development_loading_seconds": 263.83481751102954,
+      "evidence_gib": 1.1051154136657715,
+      "V_evaluation_gib": 0.6371245384216309
+    },
+    {
+      "training_gpu_hours": 1.02,
+      "followup_gpu_hours": 0.28805555555555556,
+      "native_gib": 19.295063495635986,
+      "export_gib": 9.650614738464355,
+      "development_loading_seconds": 246.96430284297094,
+      "evidence_gib": 1.056180477142334,
+      "V_evaluation_gib": 0.6369643211364746
+    }
+  ],
+  "remaining_phase_proxy_gpu_hours": {
+    "core": 31.828292837936118,
+    "ablation": 10.128333333333334,
+    "evaluation": 34.17628301118862
+  },
+  "phase_gap_gpu_hours": {
+    "core": 0,
+    "ablation": 0,
+    "evaluation": 14.176283011188623
+  },
+  "total_proxy_with_5h_retry_reserve": 92.93290918245809,
+  "remaining_retry_allowance_gpu_hours": 3.73,
+  "projected_gib_keep_all_native_and_exports": 699.2310042381287,
+  "projected_additional_evidence_gib": 116.31837749481201,
+  "alternative_rolling_peak_gib_requires_separate_cleanup_authorization": 429.10011529922485,
+  "limitations": [
+    "Training uses the largest observed LR allocation; future candidate trajectories may take longer.",
+    "API requests remain under the separate global45CNY journal; this forecast does not spend or reserve API funds.",
+    "Evidence uses the largest measured stage and per-image V footprint; future candidate traces and shared caches may grow differently.",
+    "No phase is silently reallocated, seed removed, checkpoint deleted, or unknown result imputed."
+  ]
+}

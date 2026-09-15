@@ -1,0 +1,9 @@
+{
+  "pid": 1927335,
+  "h0_plan": "/userhome/cs3/yihangc/Documents/whale-delta/results/fast-chart-h0-calibration-plan-20260915-v2.json",
+  "h0_plan_sha256": "4755182d24ce99e13ce10bb2aed7f2d0ce95fad33a97cd5a57e20d8637cf2f5b",
+  "source_sha256": "30dac5cb2ce5bff6931be23ab7eda78544c8b6597b8f95a2b4979e4bc53d5957",
+  "recovery": "/userhome/cs3/yihangc/Documents/whale-delta/results/fast-chart-native-transport-recovery-20260915-v2.json",
+  "recovery_sha256": "c6d1e50fd075c675b891ebe1c2e53fccf18d54135f5887917c2b7cfd67062ea6",
+  "scope": "Three common4-batch LR calibrations and V followups; no proposer, test, cleanup or formal expansion."
+}

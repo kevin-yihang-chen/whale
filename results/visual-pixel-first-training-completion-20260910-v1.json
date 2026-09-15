@@ -1,0 +1,18 @@
+{
+  "status": "CORRECTED_VISUAL_RSFT_COMPLETED_PENDING_PARAMETER_AND_DEVELOPMENT_FOLLOWUP",
+  "job_id": "224347",
+  "training_plan": "results/visual-pixel-rsft-plan-20260910-v3.json",
+  "batch_audit": "data/visual-pixel-rsft-20260910-v3/batch-audit.json",
+  "visual_backbone_audit": "data/visual-pixel-rsft-20260910-v3/visual-backbone-audit.json",
+  "actual_image_forwards": 46,
+  "nonzero_visual_gradient_events": 46,
+  "native_optimizer_updates": 6,
+  "assistant_loss_tokens": 92,
+  "gpu_hours": "0.3105555555555555555555555556",
+  "api_calls": 0,
+  "parameter_change_verified": false,
+  "independent_performance": false,
+  "old_text_loss_lineage_excluded": true,
+  "resume_guard_cpu_tests": "results/visual-training-resume-tests-20260910-v2.log",
+  "formal_matrix_started": false
+}

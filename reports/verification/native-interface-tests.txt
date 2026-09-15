@@ -1,0 +1,254 @@
+test_native_three_candidate_resume_and_distinct_gates (ours.tests.test_fast_chart_search.CompactSearchTests.test_native_three_candidate_resume_and_distinct_gates) ... [23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=3 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpialwppvm/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpialwppvm/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpialwppvm/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1', 'h2', 'h3']
+{"status": "WAITING_NETWORKED_PROPOSER", "root": "/tmp/tmpialwppvm"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=3 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpialwppvm/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpialwppvm/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpialwppvm/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1', 'h2', 'h3']
+{"status": "WAITING_EVALUATION_h1", "root": "/tmp/tmpialwppvm"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=3 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpialwppvm/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpialwppvm/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpialwppvm/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1', 'h2', 'h3']
+{"status": "WAITING_EVALUATION_h2", "root": "/tmp/tmpialwppvm"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=3 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpialwppvm/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpialwppvm/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpialwppvm/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1', 'h2', 'h3']
+{"status": "WAITING_EVALUATION_h3", "root": "/tmp/tmpialwppvm"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=3 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpialwppvm/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpialwppvm/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpialwppvm/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1', 'h2', 'h3']
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h1 *                           90.0%       2.0
+  h2 *                           70.0%       2.0
+  h3 *                           60.0%       2.0
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpialwppvm/search/logs/frontier_val.json
+[23:29:09] accepted=h1
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=3 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpyx_hdykj/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpyx_hdykj/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpyx_hdykj/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1', 'h2', 'h3']
+{"status": "WAITING_NETWORKED_PROPOSER", "root": "/tmp/tmpyx_hdykj"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=3 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpyx_hdykj/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpyx_hdykj/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpyx_hdykj/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1', 'h2', 'h3']
+{"status": "WAITING_EVALUATION_h1", "root": "/tmp/tmpyx_hdykj"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=3 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpyx_hdykj/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpyx_hdykj/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpyx_hdykj/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1', 'h2', 'h3']
+{"status": "WAITING_EVALUATION_h2", "root": "/tmp/tmpyx_hdykj"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=3 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpyx_hdykj/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpyx_hdykj/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpyx_hdykj/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1', 'h2', 'h3']
+{"status": "WAITING_EVALUATION_h3", "root": "/tmp/tmpyx_hdykj"}
+ok
+test_all_acceptance_paths_and_resume_tamper (ours.tests.test_visual_search_bridge.VisualSearchBridgeTest.test_all_acceptance_paths_and_resume_tamper) ... ok
+test_native_loop_ordinary_and_early_stop_both_gate_before_handoff (ours.tests.test_visual_search_bridge.VisualSearchBridgeTest.test_native_loop_ordinary_and_early_stop_both_gate_before_handoff) ... [23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=3 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpyx_hdykj/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpyx_hdykj/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpyx_hdykj/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1', 'h2', 'h3']
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h1 *                          100.0%       2.0
+  h2 *                           70.0%       2.0
+  h3 *                           60.0%       2.0
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpyx_hdykj/search/logs/frontier_val.json
+[23:29:09] accepted=h1
+[23:29:09] early_stop: proposed harness h1 reached 100.0% success
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=1 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpepem8u_a/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpepem8u_a/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpepem8u_a/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1']
+{"status": "WAITING_NETWORKED_PROPOSER", "root": "/tmp/tmpepem8u_a"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=1 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpepem8u_a/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpepem8u_a/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpepem8u_a/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1']
+{"status": "WAITING_CANDIDATE_GPU_EVALUATION", "root": "/tmp/tmpepem8u_a"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=1 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpepem8u_a/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpepem8u_a/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpepem8u_a/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1']
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h1 *                           75.0%       2.0
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpepem8u_a/search/logs/frontier_val.json
+[23:29:09] accepted=h1
+{"status": "COMPLETE_SEARCH_AND_TRAINING_ACCEPTANCE", "accepted_harness": "h0", "upstream_harness": "h1"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=1 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpi_6hp8a3/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpi_6hp8a3/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpi_6hp8a3/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1']
+{"status": "WAITING_NETWORKED_PROPOSER", "root": "/tmp/tmpi_6hp8a3"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=1 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpi_6hp8a3/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpi_6hp8a3/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpi_6hp8a3/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1']
+{"status": "WAITING_CANDIDATE_GPU_EVALUATION", "root": "/tmp/tmpi_6hp8a3"}
+[23:29:09] Meta-Harness (chess-puzzle-v0) run=search iters=1 proposals/iter=1 early_stop_success_rate=1
+[23:29:09] baseline_harness=/tmp/tmpi_6hp8a3/search/harnesses/h0/harness.py
+[23:29:09] skill_dir=/tmp/tmpi_6hp8a3/contract.md
+
+[23:29:09] Phase 0: baseline h0 sweep
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpi_6hp8a3/search/logs/frontier_val.json
+
+[23:29:09] Iteration 1: accepted=h0, slots=['h1']
+
+PARETO FRONTIER (solved rate up, policy calls down)
+  harness                        score     calls
+  h1 *                          100.0%       2.0
+  h0 *                           50.0%       2.0
+Wrote /tmp/tmpi_6hp8a3/search/logs/frontier_val.json
+[23:29:09] accepted=h1
+[23:29:09] early_stop: proposed harness h1 reached 100.0% success
+{"status": "COMPLETE_SEARCH_AND_TRAINING_ACCEPTANCE", "accepted_harness": "h0", "upstream_harness": "h1"}
+ok
+test_off_keeps_native_early_stop_and_never_reads_c (ours.tests.test_visual_search_bridge.VisualSearchBridgeTest.test_off_keeps_native_early_stop_and_never_reads_c) ... ok
+test_public_feedback_excludes_private_fields (ours.tests.test_visual_search_bridge.VisualSearchBridgeTest.test_public_feedback_excludes_private_fields) ... ok
+test_lr_choice_uses_all_points_accuracy_then_smaller_rate (ours.tests.test_fast_chart_training.CompactTrainingTests.test_lr_choice_uses_all_points_accuracy_then_smaller_rate) ... ok
+test_native_checkpoint_rejects_missing_state_and_adam_mismatch (ours.tests.test_fast_chart_training.CompactTrainingTests.test_native_checkpoint_rejects_missing_state_and_adam_mismatch) ... ok
+test_transport_handles_four_steps_and_requires_initial_loader (ours.tests.test_fast_chart_training.CompactTrainingTests.test_transport_handles_four_steps_and_requires_initial_loader) ... ok
+test_worker_installation_preserves_native_pixel_and_rsft_hooks (ours.tests.test_fast_chart_training.CompactTrainingTests.test_worker_installation_preserves_native_pixel_and_rsft_hooks) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 21.865s
+
+OK

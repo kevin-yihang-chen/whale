@@ -1,0 +1,59 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\IfFileExists{cvpr.sty}{\usepackage[review]{cvpr}}{\usepackage[margin=0.8in]{geometry}}
+\usepackage{amsmath,booktabs,graphicx}
+\usepackage[pagebackref,breaklinks,hidelinks]{hyperref}
+\def\paperID{DRAFT-S}
+\def\confName{CVPR}
+\def\confYear{2027}
+\title{VETO: Supplementary Protocol and Evidence Index}
+\author{Anonymous authors}
+\begin{document}\maketitle
+\section{Status}
+This is an executable-study scaffold, not a completed experimental supplement.
+Source code, data identities, raw answers, candidate failures, native training
+receipts and GPU/API costs must be linked before a result is populated.
+\section{Shared Scoring}
+Answer extraction is host-owned. Invalid ground truth is a data error; an
+incorrect or malformed model answer is an unsuccessful trajectory. Pair scores
+require complete identity-matched predictions on both sides. No invalid or
+missing sample is silently replaced with a zero or removed from the denominator.
+\section{Reproducibility}
+All seeds and condition names are preregistered. The same source family cannot
+cross data roles. Every real run retains its configuration, source snapshot,
+model and processor identities, decoder settings, raw responses, and terminal
+Slurm allocation record. Shared-prefix computations are identified explicitly.
+The Adam-reset restoration caveat is shared by every trained branch.
+The public source model is Qwen3.5-4B revision
+\href{https://huggingface.co/Qwen/Qwen3.5-4B/tree/851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a}{851bf6e}.
+All conditions start from the same audited BF16 initialization. Native RSFT
+stores trainable parameters in FP32 and exports BF16 serving weights. Source,
+derived initialization, native checkpoint and serving identities are recorded
+separately, with the serving export checked against the native BF16 cast.
+\section{Meaning of the Paired Criterion}
+The fractions $q_0,q_1,q_2$ of pairs with zero, one and two correct answers
+satisfy $M_C=q_1/2+q_2$ and $P_C=q_2$, giving $P_C=2M_C-1+q_0$.
+For an analytical example, an incoming correctness pattern
+$\{(1,1),(0,0)\}$ and a candidate pattern $\{(1,0),(0,1)\}$ both have
+$M_C=1/2$, but paired correctness falls from $1/2$ to zero. The zero-tolerance
+marginal gate permits this candidate, whereas the paired gate rejects it.
+These are constructed correctness patterns, not experimental model scores.
+The example establishes a possible distinction only. Actual selection differences,
+subsequent training outcomes and comparisons to augmentation remain empirical
+requirements; a nonzero both-incorrect fraction is insufficient evidence.
+\section{Configuration Calibration}
+\IfFileExists{calibration.tex}{\input{calibration.tex}}{Complete calibration results are pending.}
+\IfFileExists{learning-rate-calibration.tex}{\input{learning-rate-calibration.tex}}{Complete three-rate calibration results are pending; no partial winner is selected.}
+\section{Optimization Archive}
+\IfFileExists{candidate-selection.tex}{\input{candidate-selection.tex}}{The complete candidate archive and final selection comparison are pending. Partial candidate results do not determine the final comparison.}
+\section{Illustrative Failure and Interpretation}
+\IfFileExists{illustrative-case.tex}{\input{illustrative-case.tex}}{A source-grounded illustrative case is pending; no synthetic trajectory is substituted.}
+\section{Required Evidence}
+\begin{itemize}
+\item Main results:18 logical conditions or explicit incomplete/failed records.
+\item Paired gate versus same-data marginal gate and augmentation.
+\item External fixed-subset results, including adverse outcomes.
+\item Source-cluster paired intervals and per-seed raw scores.
+\item Stage traces, source-grounded success/failure cases and cost curves.
+\end{itemize}
+\end{document}

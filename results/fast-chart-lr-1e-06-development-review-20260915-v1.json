@@ -1,0 +1,70 @@
+{
+  "status": "COMPLETE_SECOND_LR_DEVELOPMENT_REVIEW",
+  "created_utc": "2026-09-15T12:22:48.429228+00:00",
+  "learning_rate_selected": false,
+  "seed": 42,
+  "rate": 1e-06,
+  "scores": [
+    {
+      "stage": "common_initial",
+      "images_correct": 452,
+      "pairs_correct": 214,
+      "images": 512,
+      "pairs": 256,
+      "generated_tokens": 91302
+    },
+    {
+      "stage": "after_lr_1e-6_four_batches",
+      "images_correct": 448,
+      "pairs_correct": 207,
+      "images": 512,
+      "pairs": 256,
+      "generated_tokens": 78882
+    }
+  ],
+  "changes": {
+    "pairs_improved": 13,
+    "pairs_worsened": 20,
+    "paired_change_pp": -2.734375,
+    "ordinary_change_pp": -0.78125
+  },
+  "scope": "Shared configuration calibration only, not a VETO effect or a causal mechanism test. All three registered learning rates must finish before selection.",
+  "scientific_method_verified": false,
+  "evidence_sha256": {
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/dataset/V/manifest.json": "85fbbe1f3c7dc376052f8bede43adcc57e2b58039c11bd04f1687e2bae7e8b66",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/h0-calibration-v2/structured/evaluation/result.json": "4cd764d08114ff17a7d0486be0e3661564d548ae3afe1f1372ba2f4dba354b87",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-06-seed42/followup/development/evaluation/result.json": "e0b2971fc21f76c532c2842441bfc96c8923c6ad2900f1345e0ecc15aae2d673",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-06-seed42/followup/result.json": "57ee4a94de5bd044b65600fbbafa5d16a21f6f28f2159b83831b2c9e00992ee8",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-06-seed42/followup/evaluation-plan.json": "f0a272f924fa8e0e6f5c31f4202e85804d8b7b2a955f70255dc9f8bbbc342dc5",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-06-seed42/followup/development/result.json": "1972b46bf4d358e34f784d28d9031bd6c22e7747092b84bd7217c32f7b6407f9",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-06-seed42/followup/transition.json": "caa44e22d8e7765b9e728b38bb0d703b88482d26912b1c1e7c199c984d33a9d2",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/lr-calibration-v3-lr-1e-06-seed42-followup-plan/allocation-result.json": "e96629e52b78043d213c8ae58e93ca27bca6937af84c916b8f27c0327137290f"
+  },
+  "budget": {
+    "charged_gpu_hours": {
+      "setup": "10.49194444444444444444444444",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "1.27"
+    },
+    "reserved_gpu_hours": {
+      "setup": "0",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "0"
+    },
+    "total_cap": 100,
+    "remaining_unreserved": "88.23805555555555555555555556"
+  },
+  "storage": {
+    "new_root_allocated_gib": 60.80781698226929,
+    "requested_gib": 0,
+    "filesystem_free_gib": 600.59765625,
+    "cap_gib": 400,
+    "minimum_free_margin_gib": 40,
+    "hardlinks_counted_once_within_new_root": true,
+    "deletion_authorized": false
+  }
+}

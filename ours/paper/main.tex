@@ -1,0 +1,186 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\IfFileExists{cvpr.sty}{\usepackage[review]{cvpr}}{\usepackage[margin=0.8in]{geometry}}
+\usepackage{amsmath,amssymb,booktabs,graphicx}
+\usepackage[pagebackref,breaklinks,hidelinks]{hyperref}
+\def\paperID{DRAFT}
+\def\confName{CVPR}
+\def\confYear{2027}
+\title{VETO: Evidence-Constrained Harness Selection for Reliable Chart Reasoning}
+\author{Anonymous authors}
+\newcommand{\pending}{\textit{Pending experiment}}
+\begin{document}
+\maketitle
+\begin{abstract}
+Optimizing an executable harness for current task accuracy does not explicitly
+test whether it responds correctly when answer-relevant visual evidence changes.
+We study paired visual evidence as a selection criterion before a subsequent
+weight update. VETO retains the incoming harness and selects among candidates
+whose empirical paired correctness does not decrease. The weight update reuses
+WHALE's native rejection-sampling fine-tuning. Our prospective study uses a
+shared scoring protocol, matched candidate archives and independently seeded
+training branches. \textbf{Study status: experiments are incomplete; this draft
+does not claim a measured improvement.}
+\end{abstract}
+
+\section{Introduction}
+Chart reasoning requires answers to follow the information in the presented
+chart. Counterfactual chart evaluation already exposes failures hidden by
+single-chart scores~\cite{chartographer}. Harness optimization and non-regression
+acceptance also have established precedents~\cite{whale,autodesign}. We examine
+the narrower question of whether paired evidence is useful for choosing the
+harness that supplies subsequent successful training trajectories.
+
+Our intended contribution is an experimentally supported selection mechanism,
+not the invention of harness--weight alternation or counterfactual evaluation.
+We use one complete training--search--training cycle and compare the paired gate
+against a same-data single-image accuracy gate and counterfactual augmentation.
+No long-horizon causal propagation or population reliability guarantee is assumed.
+
+\section{Method}
+\begin{figure*}[t]
+\centering
+\IfFileExists{method.pdf}{\includegraphics[width=.94\textwidth]{method.pdf}}{\fbox{Method figure pending build}}
+\caption{Paired evidence constrains the harness selected for the next native RSFT stage.
+The shared scorer, candidate search and weight optimizer are common infrastructure.}
+\label{fig:method}
+\end{figure*}
+Let $\theta$ denote fixed model weights, $h_{\mathrm{in}}$ the phase incoming
+harness, and $C=\{(x_i,x'_i,q_i,y_i,y'_i)\}$ valid answer-changing image pairs.
+With correctness indicators $c_i$ and $c'_i$, define
+\begin{equation}
+ P_C(\theta,h)=|C|^{-1}\sum_i c_i c'_i. \label{eq:paired}
+\end{equation}
+The eligible candidate set is
+\begin{equation}
+ \mathcal H_{\mathrm{ok}}=\{h:P_C(\theta,h)\geq P_C(\theta,h_{\mathrm{in}})-\epsilon\}
+ \cup\{h_{\mathrm{in}}\}. \label{eq:gate}
+\end{equation}
+We fix $\epsilon=0$ and select lexicographically:
+\begin{equation}
+ h_{\mathrm{next}}=\arg\max_{h\in\mathcal H_{\mathrm{ok}}}
+       (A_H(\theta,h),-\mathrm{turns}_H(\theta,h)). \label{eq:select}
+\end{equation}
+Exact ties retain the original archive order. A subsequent native RSFT stage
+uses successful trajectories under $h_{\mathrm{next}}$; its objective and success
+filter are unchanged. These empirical constraints do not guarantee independent
+test accuracy or non-regression after training.
+
+The answer parser and verifier are shared across all conditions and cannot be
+changed by candidates. Candidate code runs with file and network confinement.
+Current weights, incoming harness, audit sample identities and decoding settings
+are fixed within a selection phase.
+
+To separate the gate from an ordinary accuracy check, let $M_C$ be single-image
+accuracy on the same paired data and $q_0$ the fraction of pairs with both
+answers incorrect. Expanding $(1-c_i)(1-c'_i)$ gives the exact identity
+\[
+ P_C=2M_C-1+q_0,\qquad \Delta P_C=2\Delta M_C+\Delta q_0.
+\]
+Thus equal single-image accuracy need not imply equal paired correctness.
+If $q_0$ is constant across the fixed-weight candidate archive, the two
+zero-tolerance gates are equivalent on that archive. Conversely, variation
+in $q_0$ alone does not establish a different selected harness or a downstream
+benefit. At fixed $M_C$, larger $P_C$ also entails more both-incorrect pairs;
+the joint endpoint must therefore be interpreted alongside ordinary accuracy,
+rather than as a guarantee that every type of error decreases.
+Joint correctness does not identify why an answer fails. Perception, arithmetic,
+instruction following and answer formatting can all affect this endpoint;
+paired failures alone do not establish visual non-use or a latent mechanism.
+
+\section{Experimental Protocol}
+We use the public post-trained Qwen3.5-4B checkpoint~\cite{qwen35} and
+seeds42,43,44. Each weight stage has four batches, eight
+questions per batch and eight trajectories per question. Each search attempts
+at most three candidates. Identical first stages and candidate measurements
+are shared within a seed; subsequent branches are evaluated as dependent,
+matched comparisons rather than independent first-stage trials.
+
+PlotQA-EvidencePairs is a separately named dataset derived from PlotQA source
+tables~\cite{plotqa}, with comparison, value-reading and difference questions.
+All variants of a source table remain
+in the same partition: W2048, H128, C64 pairs, V256 pairs, T1024 pairs, and an
+independent recheck pool. C is optimization data. Numeric answers use a declared
+tolerance; answer-changing intervals must not overlap. The external ChartQA~\cite{chartqa}
+evaluation uses a preregistered subset of256 human and256 augmented questions;
+it is not the full official benchmark score.
+
+The common initial prompt and learning rate are selected using ordinary
+development accuracy only. The final checkpoint is determined by the frozen
+budget. Test data are excluded from all model and harness selection.
+
+\section{Results}
+\begin{table}[t]\centering\small
+\begin{tabular}{lcc}\toprule
+Condition & Single image & Both images\\\midrule
+Weight only & --- & ---\\
+Harness only & --- & ---\\
+WHALE, one cycle & --- & ---\\
+VETO, one cycle & --- & ---\\\bottomrule
+\end{tabular}
+\caption{Template only. No formal condition has a completed scientific result.
+Final tables will include all seeds, mean, sample standard deviation and
+source-cluster confidence intervals.}\label{tab:main}
+\end{table}
+
+The same-data marginal gate and counterfactual augmentation are mandatory
+controls. If gates select the same harness, that observation provides no
+evidence for a distinct benefit of VETO. We check the error decomposition on
+the actual fixed-weight C archives; calibration measurements at different
+weights cannot establish that the acceptance rules choose different harnesses.
+
+\begin{table}[t]\centering\small
+\begin{tabular}{lcc}\toprule
+Selection / control & Paired score & Difference\\\midrule
+Ordinary accuracy & --- & ---\\
+Same-C marginal gate & --- & ---\\
+VETO paired gate & --- & ---\\
+50\% paired augmentation & --- & ---\\\bottomrule
+\end{tabular}
+\caption{Mandatory controls, pending real continuation experiments. Equal decisions
+will be identified explicitly.}\label{tab:ablation}
+\end{table}
+
+\begin{table}[t]\centering\small
+\begin{tabular}{lccc}\toprule
+Condition & Human & Augmented & Cost\\\midrule
+WHALE & --- & --- & ---\\
+VETO & --- & --- & ---\\
+Controls & --- & --- & ---\\\bottomrule
+\end{tabular}
+\caption{ChartQA fixed subset and total GPU/API costs. No external model score
+is available in this scaffold.}\label{tab:external}
+\end{table}
+
+Stage trajectories and performance--cost plots will be generated from complete
+branch records. Empty plots or simulated improvements are not experimental evidence.
+
+\section{Limitations and Decision Criteria}
+The study is limited to one model size, one domain and one complete alternation.
+Source-derived renderings do not establish general visual-agent reliability.
+The native checkpoint protocol omits Adam moments; all branches use the same
+restoration behavior. We report full allocation costs including failed runs,
+loading, candidate evaluation and audit overhead.
+
+The prospective candidate criterion requires at least one percentage point
+mean paired improvement, nonnegative differences across all three seeds,
+positive differences in at least two seeds, ordinary accuracy loss no greater
+than one point, and a positive lower bound of the paired source-cluster95\%
+interval. Independent value beyond a marginal gate must also be demonstrated.
+Unsupported outcomes will be reported as inconclusive rather than hidden.
+
+\begin{thebibliography}{9}
+\bibitem{whale} Haechan Kim et al. WHALE: A Simple Recipe for Joint Harness-Weight Optimization. arXiv:2609.00196,2026.
+
+\bibitem{autodesign} Yaxin Luo et al. AutoDesign: Meta-Harness Optimization for Long-Horizon Agentic Design. arXiv:2608.13560,2026.
+
+\bibitem{chartographer} Yifan Jiang et al. Chartographer: Counterfactual Chart Generation for Evaluating Vision-Language Models. arXiv:2605.27311,2026.
+
+\bibitem{chartqa} Ahmed Masry et al. ChartQA: A Benchmark for Question Answering about Charts with Visual and Logical Reasoning. Findings of ACL,2022.
+
+\bibitem{plotqa} Nitesh Methani, Pritha Ganguly, Mitesh M. Khapra, and Pratyush Kumar. PlotQA: Reasoning over Scientific Plots. WACV,2020.
+
+\bibitem{qwen35} Qwen Team. Qwen3.5: Towards Native Multimodal Agents.2026. \href{https://qwen.ai/blog?id=qwen3.5}{qwen.ai/blog?id=qwen3.5}.
+
+\end{thebibliography}
+\end{document}

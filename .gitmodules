@@ -1,0 +1,3 @@
+[submodule "upstream/WHALE"]
+	path = upstream/WHALE
+	url = https://github.com/krafton-ai/WHALE.git

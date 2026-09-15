@@ -1,0 +1,273 @@
+{
+  "schedule": {
+    "kind": "compact_veto_research_matrix",
+    "protocol": "/userhome/cs3/yihangc/Documents/whale-delta/ours/fast_chart_protocol_20260915.md",
+    "protocol_sha256": "3d3e451f53529516bb26b763ed0bf37732298310535c168e9bbef196fca85d4e",
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "runs": [
+      {
+        "run_id": "charts-4b-weight_only-seed42",
+        "seed": 42,
+        "condition": "weight_only",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed42",
+        "search_id": null,
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-harness_only-seed42",
+        "seed": 42,
+        "condition": "harness_only",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": null,
+        "search_id": "theta0-search-seed42",
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-whale-seed42",
+        "seed": 42,
+        "condition": "whale",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed42",
+        "search_id": "theta1-search-seed42",
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-veto-seed42",
+        "seed": 42,
+        "condition": "veto",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed42",
+        "search_id": "theta1-search-seed42",
+        "acceptance_mode": "paired",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-marginal_gate-seed42",
+        "seed": 42,
+        "condition": "marginal_gate",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed42",
+        "search_id": "theta1-search-seed42",
+        "acceptance_mode": "marginal_gate",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-counterfactual_augmentation-seed42",
+        "seed": 42,
+        "condition": "counterfactual_augmentation",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed42",
+        "search_id": "theta1-search-seed42",
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-weight_only-seed43",
+        "seed": 43,
+        "condition": "weight_only",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed43",
+        "search_id": null,
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-harness_only-seed43",
+        "seed": 43,
+        "condition": "harness_only",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": null,
+        "search_id": "theta0-search-seed43",
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-whale-seed43",
+        "seed": 43,
+        "condition": "whale",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed43",
+        "search_id": "theta1-search-seed43",
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-veto-seed43",
+        "seed": 43,
+        "condition": "veto",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed43",
+        "search_id": "theta1-search-seed43",
+        "acceptance_mode": "paired",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-marginal_gate-seed43",
+        "seed": 43,
+        "condition": "marginal_gate",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed43",
+        "search_id": "theta1-search-seed43",
+        "acceptance_mode": "marginal_gate",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-counterfactual_augmentation-seed43",
+        "seed": 43,
+        "condition": "counterfactual_augmentation",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed43",
+        "search_id": "theta1-search-seed43",
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-weight_only-seed44",
+        "seed": 44,
+        "condition": "weight_only",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed44",
+        "search_id": null,
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-harness_only-seed44",
+        "seed": 44,
+        "condition": "harness_only",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": null,
+        "search_id": "theta0-search-seed44",
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-whale-seed44",
+        "seed": 44,
+        "condition": "whale",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed44",
+        "search_id": "theta1-search-seed44",
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-veto-seed44",
+        "seed": 44,
+        "condition": "veto",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed44",
+        "search_id": "theta1-search-seed44",
+        "acceptance_mode": "paired",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-marginal_gate-seed44",
+        "seed": 44,
+        "condition": "marginal_gate",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed44",
+        "search_id": "theta1-search-seed44",
+        "acceptance_mode": "marginal_gate",
+        "result_path": null,
+        "failure_path": null
+      },
+      {
+        "run_id": "charts-4b-counterfactual_augmentation-seed44",
+        "seed": 44,
+        "condition": "counterfactual_augmentation",
+        "status": "PLANNED_NOT_EXECUTED",
+        "first_stage_id": "common-theta1-seed44",
+        "search_id": "theta1-search-seed44",
+        "acceptance_mode": "off",
+        "result_path": null,
+        "failure_path": null
+      }
+    ],
+    "logical_conditions": 18,
+    "common_first_stages": 3,
+    "trained_second_stages": 15,
+    "native_batches_per_stage": 4,
+    "tasks_per_batch": 8,
+    "trajectories_per_task": 8,
+    "candidate_attempts_per_search": 3,
+    "search_rounds": 1,
+    "gpu_cap_hours": 100,
+    "includes_existing_pilot_costs": true,
+    "phase_caps": {
+      "setup": "20",
+      "core": "40",
+      "ablation": "15",
+      "evaluation": "20",
+      "retry": "5"
+    },
+    "storage_cap_gib": 400,
+    "api_global_cap_cny": 45,
+    "paused": [
+      "51-condition-matrix",
+      "chess",
+      "clevr",
+      "2b"
+    ],
+    "launch_gates": [
+      "shared_scoring",
+      "corrected_visual_lineage",
+      "frozen_h0_lr",
+      "measured_throughput",
+      "storage_capacity"
+    ],
+    "scientific_status": "UNVALIDATED",
+    "goal_complete": false
+  },
+  "budget": {
+    "charged_gpu_hours": {
+      "setup": "6.898055555555555555555555557",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "0"
+    },
+    "reserved_gpu_hours": {
+      "setup": "0",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "0"
+    },
+    "total_cap": 100,
+    "remaining_unreserved": "93.10194444444444444444444444"
+  },
+  "storage": {
+    "new_root_allocated_gib": 0.0,
+    "requested_gib": 0,
+    "filesystem_free_gib": 661.330078125,
+    "cap_gib": 400,
+    "minimum_free_margin_gib": 40,
+    "hardlinks_counted_once_within_new_root": true,
+    "deletion_authorized": false
+  }
+}

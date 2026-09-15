@@ -1,0 +1,310 @@
+{
+  "scientific_status": "UNVALIDATED",
+  "formal_conditions": [
+    {
+      "run_id": "charts-4b-weight_only-seed42",
+      "seed": 42,
+      "condition": "weight_only",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed42",
+      "search_id": null,
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-harness_only-seed42",
+      "seed": 42,
+      "condition": "harness_only",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": null,
+      "search_id": "theta0-search-seed42",
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-whale-seed42",
+      "seed": 42,
+      "condition": "whale",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed42",
+      "search_id": "theta1-search-seed42",
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-veto-seed42",
+      "seed": 42,
+      "condition": "veto",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed42",
+      "search_id": "theta1-search-seed42",
+      "acceptance_mode": "paired",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-marginal_gate-seed42",
+      "seed": 42,
+      "condition": "marginal_gate",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed42",
+      "search_id": "theta1-search-seed42",
+      "acceptance_mode": "marginal_gate",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-counterfactual_augmentation-seed42",
+      "seed": 42,
+      "condition": "counterfactual_augmentation",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed42",
+      "search_id": "theta1-search-seed42",
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-weight_only-seed43",
+      "seed": 43,
+      "condition": "weight_only",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed43",
+      "search_id": null,
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-harness_only-seed43",
+      "seed": 43,
+      "condition": "harness_only",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": null,
+      "search_id": "theta0-search-seed43",
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-whale-seed43",
+      "seed": 43,
+      "condition": "whale",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed43",
+      "search_id": "theta1-search-seed43",
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-veto-seed43",
+      "seed": 43,
+      "condition": "veto",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed43",
+      "search_id": "theta1-search-seed43",
+      "acceptance_mode": "paired",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-marginal_gate-seed43",
+      "seed": 43,
+      "condition": "marginal_gate",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed43",
+      "search_id": "theta1-search-seed43",
+      "acceptance_mode": "marginal_gate",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-counterfactual_augmentation-seed43",
+      "seed": 43,
+      "condition": "counterfactual_augmentation",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed43",
+      "search_id": "theta1-search-seed43",
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-weight_only-seed44",
+      "seed": 44,
+      "condition": "weight_only",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed44",
+      "search_id": null,
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-harness_only-seed44",
+      "seed": 44,
+      "condition": "harness_only",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": null,
+      "search_id": "theta0-search-seed44",
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-whale-seed44",
+      "seed": 44,
+      "condition": "whale",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed44",
+      "search_id": "theta1-search-seed44",
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-veto-seed44",
+      "seed": 44,
+      "condition": "veto",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed44",
+      "search_id": "theta1-search-seed44",
+      "acceptance_mode": "paired",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-marginal_gate-seed44",
+      "seed": 44,
+      "condition": "marginal_gate",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed44",
+      "search_id": "theta1-search-seed44",
+      "acceptance_mode": "marginal_gate",
+      "result_path": null,
+      "failure_path": null
+    },
+    {
+      "run_id": "charts-4b-counterfactual_augmentation-seed44",
+      "seed": 44,
+      "condition": "counterfactual_augmentation",
+      "status": "PLANNED_NOT_EXECUTED",
+      "first_stage_id": "common-theta1-seed44",
+      "search_id": "theta1-search-seed44",
+      "acceptance_mode": "off",
+      "result_path": null,
+      "failure_path": null
+    }
+  ],
+  "protocol": "/userhome/cs3/yihangc/Documents/whale-delta/ours/fast_chart_protocol_20260915.md",
+  "budget": {
+    "charged_gpu_hours": {
+      "setup": "12.99611111111111111111111111",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "1.27"
+    },
+    "reserved_gpu_hours": {
+      "setup": "0",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "0"
+    },
+    "total_cap": 100,
+    "remaining_unreserved": "85.73388888888888888888888889"
+  },
+  "calibration_results": {
+    "direct": {
+      "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/h0-calibration-v2/direct/result.json",
+      "sha256": "4e489057d6b26ae676dca5fcc06d0ced016469dff940113490c22b1d37bf3aa2",
+      "marginal_accuracy": 0.833984375,
+      "paired_accuracy": 0.7890625,
+      "claim": "Development configuration calibration only; no VETO effect."
+    },
+    "structured": {
+      "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/h0-calibration-v2/structured/result.json",
+      "sha256": "84cebb4e1221444a0c29c74e87c615ff9c7d2a592f8a846149026cb6816a47aa",
+      "marginal_accuracy": 0.8828125,
+      "paired_accuracy": 0.8359375,
+      "claim": "Development configuration calibration only; no VETO effect."
+    },
+    "brief_reasoning": {
+      "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/h0-calibration-v2/brief_reasoning/result.json",
+      "sha256": "38dba4b2a9a6b6a6c77faf375b3e4def933f0cfb27cd874309cb0d8624415e0b",
+      "marginal_accuracy": 0.86328125,
+      "paired_accuracy": 0.8125,
+      "claim": "Development configuration calibration only; no VETO effect."
+    }
+  },
+  "test_results": [],
+  "source_sha256": {
+    "main.tex": "c87a73d947e27f89917b531252df7e30c75be19319e0abd654e263330661dba4",
+    "supplement.tex": "2374f5fca1599e914bd62520cc20e91fd665b177315f5a0cf1ab1cd07f300916"
+  },
+  "shared_h0_calibration": {
+    "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/h0-calibration-v2/result.json",
+    "sha256": "cbd01531fb9bcc1a8f339a3a40dc39b841f3d27010e6014eecde0813b1dd3c43",
+    "selected": "structured"
+  },
+  "shared_learning_rate_calibration": {
+    "configuration": "data/fast-chart-20260915-v1/lr-calibration-v3/result.json",
+    "configuration_sha256": "bead65d8adf718a63e912b9afab452b9dac55d45e6315a68b9bda0dec65e691d",
+    "selected": 1e-06,
+    "trials": {
+      "1e-07": {
+        "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-07-seed42/followup/result.json",
+        "sha256": "641cfa580be5991b98291064cc09e041380f16cc29a441930e455d7be34ab73b",
+        "training_plan": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-calibration-v3-lr-1e-07-seed42-training-plan.json",
+        "training_plan_sha256": "b4bcf9666a64ea5b26a61fc16368425b81bd586286cc1b778c21409cf00ef0a7",
+        "followup_plan_sha256": "1ccee506a71f804c40058620185d6eb516db5b21a08027f7b2449b1f70afffe5",
+        "transition_sha256": "606ca9934e165a41e4320ad2849ef1d360106ee590cb6b7b07176d86a54cb3ba",
+        "marginal_accuracy": 0.865234375,
+        "paired_accuracy": 0.828125
+      },
+      "1e-06": {
+        "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-06-seed42/followup/result.json",
+        "sha256": "57ee4a94de5bd044b65600fbbafa5d16a21f6f28f2159b83831b2c9e00992ee8",
+        "training_plan": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-calibration-v3-lr-1e-06-seed42-training-plan.json",
+        "training_plan_sha256": "e1694a8afd411a7b5a1399c172578da44fff0213b8015fab3963a1dff9d1385f",
+        "followup_plan_sha256": "47805a8e72db4fae23fbe3d062c52ec26487a7a011a87681bce47521590ec063",
+        "transition_sha256": "caa44e22d8e7765b9e728b38bb0d703b88482d26912b1c1e7c199c984d33a9d2",
+        "marginal_accuracy": 0.875,
+        "paired_accuracy": 0.80859375
+      },
+      "1e-05": {
+        "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-05-seed42/followup/result.json",
+        "sha256": "3a097123dcb63cfa557cc472b966ddae7ab1cbbf4f537fdab5b34c58beb556ed",
+        "training_plan": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-calibration-v3-lr-1e-05-seed42-training-plan.json",
+        "training_plan_sha256": "c2c6d53ad2d887e88bc3c4797222877f3865f6b5c7de4aefea22d78fe44f9b55",
+        "followup_plan_sha256": "b2f26995560822ab403bc4e50927de6ec5492c238d0a5586b357a07fe44ecd74",
+        "transition_sha256": "47300fdb3a8930a7c8dea9ffbb60c5de4928f40dd8973307e5d35a1a1973cd4d",
+        "marginal_accuracy": 0.546875,
+        "paired_accuracy": 0.34765625
+      }
+    },
+    "claim": "Common training configuration; no VETO effect."
+  },
+  "candidate_selection": {
+    "report": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/first-search-report-v1/result.json",
+    "report_sha256": "bc2466da7dca1f2b081326fa72287123ab5646841890feaef671123f9ea488a6",
+    "manifest_sha256": "b37f71c0eb323bc07184d1850739639ca5c85f2cc17032244803cc5932d61dac",
+    "table_sha256": "b712b0c7afbfd4fbf1cc5998410a3d1fc1b873c67563d961fcedc5da16a73bfd",
+    "equivalent_decisions": true,
+    "claim": "Optimization-set selection audit only; no independent method benefit."
+  },
+  "illustrative_case": {
+    "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/illustrative-case-v1/case.json",
+    "sha256": "84fea7a303cea1542e4dc50efa2b82b692dce7a0a73abee28b5fa1195d75416b",
+    "images": {
+      "case-0.png": "72be4d6fb604db30599907286dee1654662da508d0fd27549815fb2f08869119",
+      "case-1.png": "1dc9fc6bfd5135b0d97f0fe9969c577b612f0a28648b5d7db1e80f9c4eca9326"
+    },
+    "claim": "Post-hoc reasoning-failure illustration, not causal visual non-use or a VETO benefit."
+  }
+}

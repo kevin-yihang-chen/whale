@@ -1,0 +1,40 @@
+{
+  "status": "PASS_FIRST_POST_SFT_NATIVE_TRANSFER",
+  "created_utc": "2026-09-15T10:22:06.990099+00:00",
+  "job_id": "232741",
+  "accepted_trajectories": 56,
+  "optimizer_updates": 7.0,
+  "assistant_loss_tokens": 7370.0,
+  "memory_event": {
+    "event": "COMPACT_IDLE_MEMORY_RELEASE_BEFORE_NATIVE_PREPARE",
+    "plan_sha256": "b4bcf9666a64ea5b26a61fc16368425b81bd586286cc1b778c21409cf00ef0a7",
+    "pid": 495025,
+    "job_id": "232741",
+    "bucket_bytes": 3221225472,
+    "before": {
+      "torch_live_bytes": 54540412928,
+      "torch_reserved_bytes": 80861986816,
+      "cupy_live_bytes": 0,
+      "cupy_reserved_bytes": 0,
+      "device_free_bytes": 2196832256
+    },
+    "after": {
+      "torch_live_bytes": 54540412928,
+      "torch_reserved_bytes": 54668558336,
+      "cupy_live_bytes": 0,
+      "cupy_reserved_bytes": 0,
+      "device_free_bytes": 28390260736
+    },
+    "released_reserved_bytes": 26193428480
+  },
+  "released_idle_gib": 24.39453125,
+  "evidence_sha256": {
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-07-seed42/training/checkpoints/audit/update-step1.json": "6d9a0f0a3e37f708e332ffd5cf170c89f09d485ac39de5a8516aa48589e75e18",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-07-seed42/training/state/transport-step1.json": "2b795b63cd9df2df1a709319d950e6f087443acc1dde4d6a628b70bf317f4df9",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-07-seed42/training/checkpoints/audit/accepted-step1.json": "02591a64399b881ea6ef9a59b4189b1f8827072dd2638cffa1990d428cb87d9d"
+  },
+  "remaining": "Complete four batches and native checkpoint; verify full parameters/export and V before search.",
+  "method_mapping": "E4 native training/transport execution; no new VETO contribution.",
+  "scientific_method_verified": false,
+  "full_training_stage_complete": false
+}

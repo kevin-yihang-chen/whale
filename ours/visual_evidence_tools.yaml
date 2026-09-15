@@ -1,0 +1,24 @@
+# Shared domain tool, outside VETO E1--E3. Schema follows the pinned upstream
+# ImageZoomInTool contract. Coordinates refer to the initial model-visible image.
+tools:
+  - class_name: ours.visual_evidence_tool_loop.VisualEvidenceZoomTool
+    config:
+      type: native
+    tool_schema:
+      type: function
+      function:
+        name: image_zoom_in_tool
+        description: Crop the initial visible image at pixel coordinates [x1, y1, x2, y2].
+        parameters:
+          type: object
+          properties:
+            bbox_2d:
+              type: array
+              items:
+                type: number
+              minItems: 4
+              maxItems: 4
+            label:
+              type: string
+              description: Optional descriptive label for the region.
+          required: [bbox_2d]

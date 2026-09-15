@@ -1,0 +1,37 @@
+{
+  "verified_at": "2026-09-15T15:30:21.436285+00:00",
+  "portable_core": {
+    "passed": 77,
+    "exit_code": 0,
+    "files": [
+      "test_acceptance.py",
+      "test_chart_answer_protocol.py",
+      "test_plotqa_evidence_pairs.py",
+      "test_fast_chart_protocol.py",
+      "test_fast_chart_search_report.py",
+      "test_fast_chart_first_cycle_controller.py",
+      "test_fast_chart_statistics.py",
+      "test_fast_chart_augmentation.py",
+      "test_fast_chart_costs.py",
+      "test_fast_chart_admission.py",
+      "test_proposer_profiles.py"
+    ]
+  },
+  "configured_native_interface": {
+    "passed": 9,
+    "exit_code": 0,
+    "modules": [
+      "ours.tests.test_fast_chart_search",
+      "ours.tests.test_visual_search_bridge",
+      "ours.tests.test_fast_chart_training"
+    ],
+    "requires": "Existing local training environment, visual runtime overlay, ours/compat and pinned upstream Chess PYTHONPATH; CPU only."
+  },
+  "initial_incomplete_environment_attempts": {
+    "full_suite": "Seven collection errors due to absent training dependencies / native import path. No full-suite pass claimed.",
+    "targeted_system_python": "Missing chess then two training tests failed with missing ray/torch. The same native tests passed in the configured runtime.",
+    "native_without_compat": "Missing autoharness_textarena; resolved by documented ours/compat import path."
+  },
+  "scientific_results": false,
+  "fixture_note": "Test logs contain constructed candidate scores; they are not model experiment results. No GPUs or paid API were used for publication verification."
+}

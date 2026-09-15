@@ -1,0 +1,39 @@
+{
+  "status": "REVIEWED_COMPILED_DRAFT_PAGES",
+  "created_utc": "2026-09-15T15:15:13.244234+00:00",
+  "build_result": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/paper-build-v15/build-result.json",
+  "build_result_sha256": "43584929d7081713092cfdb9714ae0ca3820273c0db067cf9962734afb52ef4b",
+  "pdf_sha256": {
+    "main.pdf": "b8661abf37c664cd864440d0f66af3828dafad764d6cb1214c5e9844b4109ff4",
+    "supplement.pdf": "d70f946d33f64e279653ff52f472926e44c79a1f125f560a4146ab895c979479"
+  },
+  "rendered_pages": {
+    "render-review/main-1.png": "3a4f189545ac396e4015913a4af7aa606fa962424b4830c39b67d8f76738f799",
+    "render-review/main-2.png": "a429cc58aa32667f71995cc06ce08e8f6e4117f22e6cfc8a8089ebd9f60e8360",
+    "render-review/main-3.png": "1a561796c88b64863aea1c7da165b9823d6155d61a6a22fcf53cc00d06846fc0",
+    "render-review/supplement-1.png": "b60eb2930b3594764b89f4fa6fbb23d0a251bbdd2acc94faa4078088d85843ba",
+    "render-review/supplement-2.png": "7a5dfc0967694a86fbcb4476524261e3ce1502a11c7edc7825a8387e7fedb638",
+    "render-review/supplement-3.png": "84e013887b1900a8b5bf423c1adf9955c0bc2abdab67cad6ca932858a1694ebe"
+  },
+  "renderer": {
+    "package": "pypdfium2",
+    "version": "5.13.0",
+    "pdfium": "153.0.7999.0",
+    "runtime": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/paper-render-runtime-v1"
+  },
+  "review": {
+    "all_six_pages_inspected": true,
+    "main_method_figure_visible": true,
+    "candidate_counts_and_equal_decisions_visible": true,
+    "both_original_pixel_case_images_visible": true,
+    "case_answer_table_and_interpretation_visible": true,
+    "unmeasured_primary_tables_remain_placeholders": true,
+    "no_body_overlap_observed": true,
+    "camera_ready": false,
+    "remaining_layout_issues": [
+      "Case figure floats onto a separate page with substantial whitespace; final layout needs revision if the scientific gate supports a candidate paper.",
+      "Shared official TeX kit emits a lineno encoding warning; no replacement glyph was observed in the manuscript body."
+    ]
+  },
+  "scientific_method_verified": false
+}

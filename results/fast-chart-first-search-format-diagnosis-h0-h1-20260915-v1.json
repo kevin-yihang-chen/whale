@@ -1,0 +1,125 @@
+{
+  "status": "COMPLETE_EXPLORATORY_FORMAT_DIAGNOSIS_H0_H1",
+  "created_utc": "2026-09-15T14:55:17.133449+00:00",
+  "metrics": {
+    "H": {
+      "h0": {
+        "totals": {
+          "correct": 107,
+          "parseable_wrong": 17,
+          "unparseable": 4
+        },
+        "by_task_family": {
+          "read_value": {
+            "correct": 34,
+            "unparseable": 4,
+            "parseable_wrong": 5
+          },
+          "difference": {
+            "correct": 30,
+            "parseable_wrong": 12
+          },
+          "comparison": {
+            "correct": 43
+          }
+        }
+      },
+      "h1": {
+        "totals": {
+          "correct": 111,
+          "parseable_wrong": 13,
+          "unparseable": 4
+        },
+        "by_task_family": {
+          "read_value": {
+            "correct": 33,
+            "unparseable": 4,
+            "parseable_wrong": 6
+          },
+          "difference": {
+            "correct": 35,
+            "parseable_wrong": 7
+          },
+          "comparison": {
+            "correct": 43
+          }
+        }
+      }
+    },
+    "C": {
+      "h0": {
+        "totals": {
+          "correct": 110,
+          "parseable_wrong": 14,
+          "unparseable": 4
+        },
+        "by_task_family": {
+          "comparison": {
+            "correct": 43,
+            "parseable_wrong": 1
+          },
+          "difference": {
+            "correct": 30,
+            "parseable_wrong": 10,
+            "unparseable": 2
+          },
+          "read_value": {
+            "correct": 37,
+            "unparseable": 2,
+            "parseable_wrong": 3
+          }
+        }
+      },
+      "h1": {
+        "totals": {
+          "correct": 115,
+          "parseable_wrong": 12,
+          "unparseable": 1
+        },
+        "by_task_family": {
+          "comparison": {
+            "correct": 43,
+            "parseable_wrong": 1
+          },
+          "difference": {
+            "correct": 34,
+            "parseable_wrong": 8
+          },
+          "read_value": {
+            "correct": 38,
+            "parseable_wrong": 3,
+            "unparseable": 1
+          }
+        }
+      }
+    }
+  },
+  "changes": {
+    "H": {
+      "parseable_wrong -> correct": 5,
+      "correct -> unparseable": 1,
+      "unparseable -> parseable_wrong": 1,
+      "parseable_wrong -> unparseable": 1,
+      "unparseable -> correct": 1,
+      "correct -> parseable_wrong": 1
+    },
+    "C": {
+      "parseable_wrong -> correct": 6,
+      "correct -> parseable_wrong": 3,
+      "unparseable -> correct": 2,
+      "unparseable -> parseable_wrong": 1
+    }
+  },
+  "evidence_sha256": {
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/dataset/H/manifest.json": "1c5063034018bce56109e0ffcaeb3d734cdb03c19f9d4d9c3bfbc6e6d04ef919",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h0/H/result.json": "af18951386e79741a8ffada5912359ba15b633d377beaf1bc4c0aaa81ab2688d",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h1/H/result.json": "5784a49d832a6f831e0185188f511d82f9d68ee5117bd8cbe39faae7fb3515d7",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/dataset/C/manifest.json": "2a6942db98acfb648ff8ca63187b65e8f313f700711fc48b0c6e37fb5f07cfdb",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h0/C/result.json": "e212303caedcfb09a5e27ed900186072d527759f45e3195f8d685c728e7bb41b",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h1/C/result.json": "8f3f4c89bbf1db33cb8c22f1646a0d1b8e5767be7cc8cdfe8d3da5e416ccda41"
+  },
+  "protocol_changed": false,
+  "independent_test_used": false,
+  "scientific_method_verified": false,
+  "interpretation": "Descriptive answer-type parseability, not semantic vision correctness or a causal attribution. Uses complete H/C records for h0/h1 only; no candidate replacement or selection change."
+}

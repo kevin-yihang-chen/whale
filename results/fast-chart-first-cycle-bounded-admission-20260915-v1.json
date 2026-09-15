@@ -1,0 +1,65 @@
+{
+  "status": "BOUNDED_FIRST_CYCLE_FITS_EXISTING_SETUP_CAP",
+  "created_utc": "2026-09-15T14:11:23.018973+00:00",
+  "basis": "User-approved days1-3 corrected-chain closure within20GPUh setup.",
+  "seed": 42,
+  "continuation_rule_chosen_before_candidate_results": "VETO paired acceptance, epsilon0, fixed incoming h0; four native continuation batches and full followup.",
+  "maximum_remaining_allocations": [
+    {
+      "purpose": "three allocated candidate H/C evaluations",
+      "count": 3,
+      "gpus": 1,
+      "maximum_hours_each": 1
+    },
+    {
+      "purpose": "one VETO native second stage",
+      "count": 1,
+      "gpus": 2,
+      "maximum_hours_each": 1
+    },
+    {
+      "purpose": "full parameter/export/V followup",
+      "count": 1,
+      "gpus": 1,
+      "maximum_hours_each": 1
+    }
+  ],
+  "worst_case_additional_gpu_hours": 6,
+  "setup_remaining_gpu_hours": "7.49250000000000000000000000",
+  "budget": {
+    "charged_gpu_hours": {
+      "setup": "12.50750000000000000000000000",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "1.27"
+    },
+    "reserved_gpu_hours": {
+      "setup": "0",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "0"
+    },
+    "total_cap": 100,
+    "remaining_unreserved": "86.22250000000000000000000000"
+  },
+  "storage": {
+    "new_root_allocated_gib": 92.42388820648193,
+    "requested_gib": 96,
+    "filesystem_free_gib": 568.9453125,
+    "cap_gib": 400,
+    "minimum_free_margin_gib": 40,
+    "hardlinks_counted_once_within_new_root": true,
+    "deletion_authorized": false
+  },
+  "api_guard": "Existing45CNY global journal; one3-slot proposal, at most12requests, no automatic paid retry.",
+  "scope": "Completes the first real visual cycle only; formal18-condition expansion and cleanup retain separate gates. The result can be reused only with identical preregistered configuration and disclosed shared costs.",
+  "formal_expansion_admitted": false,
+  "scientific_method_verified": false,
+  "evidence_sha256": {
+    "results/fast-chart-seed42-first-search-h0-plan-20260915-v1.json": "fa9af7671b0570722f1861cbe0424c3a7cc2ba1f88a37b792e532321fd645535",
+    "data/fast-chart-20260915-v1/setup-hc-controller-v1/result.json": "813473c1922817d87fd9230d57c79e7d7edd14a6f4feea86108f1ff6c5b49c6b",
+    "results/fast-chart-first-proposal-cost-bound-20260915-v1.json": "d8b60db2cdbfb41c2cdaed8ad6136fc9349b53b45cc192f5d93def65369e5a5a"
+  }
+}

@@ -1,0 +1,37 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\IfFileExists{cvpr.sty}{\usepackage[review]{cvpr}}{\usepackage[margin=0.8in]{geometry}}
+\usepackage{amsmath,booktabs}
+\usepackage[pagebackref,breaklinks,hidelinks]{hyperref}
+\def\paperID{DRAFT-S}
+\def\confName{CVPR}
+\def\confYear{2027}
+\title{VETO: Supplementary Protocol and Evidence Index}
+\author{Anonymous authors}
+\begin{document}\maketitle
+\section{Status}
+This is an executable-study scaffold, not a completed experimental supplement.
+Source code, data identities, raw answers, candidate failures, native training
+receipts and GPU/API costs must be linked before a result is populated.
+\section{Shared Scoring}
+Answer extraction is host-owned. Invalid ground truth is a data error; an
+incorrect or malformed model answer is an unsuccessful trajectory. Pair scores
+require complete identity-matched predictions on both sides. No invalid or
+missing sample is silently replaced with a zero or removed from the denominator.
+\section{Reproducibility}
+All seeds and condition names are preregistered. The same source family cannot
+cross data roles. Every real run retains its configuration, source snapshot,
+model and processor identities, decoder settings, raw responses, and terminal
+Slurm allocation record. Shared-prefix computations are identified explicitly.
+The Adam-reset restoration caveat is shared by every trained branch.
+\section{Configuration Calibration}
+\IfFileExists{calibration.tex}{\input{calibration.tex}}{Complete calibration results are pending.}
+\section{Required Evidence}
+\begin{itemize}
+\item Main results:18 logical conditions or explicit incomplete/failed records.
+\item Paired gate versus same-data marginal gate and augmentation.
+\item External fixed-subset results, including adverse outcomes.
+\item Source-cluster paired intervals and per-seed raw scores.
+\item Stage traces, source-grounded success/failure cases and cost curves.
+\end{itemize}
+\end{document}

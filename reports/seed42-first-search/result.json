@@ -1,0 +1,254 @@
+{
+  "status": "COMPLETE_RECONSTRUCTED_SEARCH_REPORT",
+  "search": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search",
+  "seed": 42,
+  "rows": [
+    {
+      "candidate": "h0",
+      "H_correct": 107,
+      "H_total": 128,
+      "mean_turns": 2.0,
+      "C_single_correct": 110,
+      "C_images": 128,
+      "C_both_correct": 49,
+      "C_pairs": 64,
+      "C_zero_one_two_correct": [
+        3,
+        12,
+        49
+      ],
+      "answer_categories": {
+        "H": {
+          "correct": 107,
+          "parseable_wrong": 17,
+          "unparseable": 4
+        },
+        "C": {
+          "correct": 110,
+          "parseable_wrong": 14,
+          "unparseable": 4
+        }
+      }
+    },
+    {
+      "candidate": "h1",
+      "H_correct": 111,
+      "H_total": 128,
+      "mean_turns": 2.0,
+      "C_single_correct": 115,
+      "C_images": 128,
+      "C_both_correct": 54,
+      "C_pairs": 64,
+      "C_zero_one_two_correct": [
+        3,
+        7,
+        54
+      ],
+      "answer_categories": {
+        "H": {
+          "correct": 111,
+          "parseable_wrong": 13,
+          "unparseable": 4
+        },
+        "C": {
+          "correct": 115,
+          "parseable_wrong": 12,
+          "unparseable": 1
+        }
+      }
+    },
+    {
+      "candidate": "h2",
+      "H_correct": 111,
+      "H_total": 128,
+      "mean_turns": 2.0,
+      "C_single_correct": 107,
+      "C_images": 128,
+      "C_both_correct": 48,
+      "C_pairs": 64,
+      "C_zero_one_two_correct": [
+        5,
+        11,
+        48
+      ],
+      "answer_categories": {
+        "H": {
+          "correct": 111,
+          "parseable_wrong": 16,
+          "unparseable": 1
+        },
+        "C": {
+          "correct": 107,
+          "parseable_wrong": 19,
+          "unparseable": 2
+        }
+      }
+    },
+    {
+      "candidate": "h3",
+      "H_correct": 112,
+      "H_total": 128,
+      "mean_turns": 2.0,
+      "C_single_correct": 115,
+      "C_images": 128,
+      "C_both_correct": 53,
+      "C_pairs": 64,
+      "C_zero_one_two_correct": [
+        2,
+        9,
+        53
+      ],
+      "answer_categories": {
+        "H": {
+          "correct": 112,
+          "parseable_wrong": 16,
+          "unparseable": 0
+        },
+        "C": {
+          "correct": 115,
+          "parseable_wrong": 13,
+          "unparseable": 0
+        }
+      }
+    }
+  ],
+  "failed_slots": {},
+  "decisions": {
+    "whale": {
+      "accepted_harness": "h3",
+      "upstream_harness": "h3",
+      "receipt": {
+        "mode": "off",
+        "stage": "ordinary",
+        "audit_calls": 0
+      },
+      "stop": {
+        "search_finished": true,
+        "upstream_perfect_candidate": null,
+        "training_harness": "h3",
+        "stage": "ordinary"
+      }
+    },
+    "veto": {
+      "accepted_harness": "h3",
+      "upstream_harness": "h3",
+      "receipt": {
+        "schema": 1,
+        "binding": "ae05635fca493357ae5292f15cd9eb8f4e3d2b94e13e68c521b96a371b1d4fc7",
+        "stage": "ordinary",
+        "identity": {
+          "weights_sha256": "983d78cfda5540cb71be14506d4b47c58760b806236b244366e8b94152695318",
+          "search_data_sha256": "1c5063034018bce56109e0ffcaeb3d734cdb03c19f9d4d9c3bfbc6e6d04ef919",
+          "audit_data_sha256": "9b9e54cb3712a5dedac13d9651675a74344654c63e7a5c3a84b1c0889a071db4",
+          "decode_sha256": "d08f0eba035e2ce5fa9c2de91fd27c55a0bf86cdf459329e103624597ff08ea4",
+          "verifier_sha256": "17d0114a76fda3ee5586ac0b7506ad918312a0c5f6b643cef2a817e72e90c3ba",
+          "phase": "compact-seed42-first-search"
+        },
+        "decision": {
+          "selected": "h3",
+          "eligible": [
+            "h0",
+            "h1",
+            "h3"
+          ],
+          "rejected": [
+            "h2"
+          ],
+          "mode": "paired"
+        },
+        "audit_sha256": {
+          "h0": "24350a80e37d169d16c6cff474b84493493c585ef8533dad610dc9068d0eddbd",
+          "h1": "826bb7bdf5c8e9239012d39834bbe05bd3eedc0e2a494887e0311020a72193a4",
+          "h2": "5c23134617d7cc78bd0afc7058393b3453c9a838308fb10b40eccd056562ff24",
+          "h3": "02d29a7dc920b10b89213fd4e9e00336647483e061c325ddd9bdb6ce5ec81494"
+        }
+      },
+      "stop": {
+        "search_finished": true,
+        "upstream_perfect_candidate": null,
+        "training_harness": "h3",
+        "stage": "ordinary"
+      }
+    },
+    "marginal_gate": {
+      "accepted_harness": "h3",
+      "upstream_harness": "h3",
+      "receipt": {
+        "schema": 1,
+        "binding": "6de47d95358d86f7c953b8cead09d92c4f71eda2612fae911f6a6c7b30410318",
+        "stage": "ordinary",
+        "identity": {
+          "weights_sha256": "983d78cfda5540cb71be14506d4b47c58760b806236b244366e8b94152695318",
+          "search_data_sha256": "1c5063034018bce56109e0ffcaeb3d734cdb03c19f9d4d9c3bfbc6e6d04ef919",
+          "audit_data_sha256": "9b9e54cb3712a5dedac13d9651675a74344654c63e7a5c3a84b1c0889a071db4",
+          "decode_sha256": "d08f0eba035e2ce5fa9c2de91fd27c55a0bf86cdf459329e103624597ff08ea4",
+          "verifier_sha256": "17d0114a76fda3ee5586ac0b7506ad918312a0c5f6b643cef2a817e72e90c3ba",
+          "phase": "compact-seed42-first-search"
+        },
+        "decision": {
+          "selected": "h3",
+          "eligible": [
+            "h0",
+            "h1",
+            "h3"
+          ],
+          "rejected": [
+            "h2"
+          ],
+          "mode": "marginal_gate"
+        },
+        "audit_sha256": {
+          "h0": "24350a80e37d169d16c6cff474b84493493c585ef8533dad610dc9068d0eddbd",
+          "h1": "826bb7bdf5c8e9239012d39834bbe05bd3eedc0e2a494887e0311020a72193a4",
+          "h2": "5c23134617d7cc78bd0afc7058393b3453c9a838308fb10b40eccd056562ff24",
+          "h3": "02d29a7dc920b10b89213fd4e9e00336647483e061c325ddd9bdb6ce5ec81494"
+        }
+      },
+      "stop": {
+        "search_finished": true,
+        "upstream_perfect_candidate": null,
+        "training_harness": "h3",
+        "stage": "ordinary"
+      }
+    }
+  },
+  "equivalent_decisions": true,
+  "evidence_sha256": {
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/fast-chart-seed42-first-search-h0-plan-20260915-v1.json": "fa9af7671b0570722f1861cbe0424c3a7cc2ba1f88a37b792e532321fd645535",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-first-search-h0-plan-20260915-v1/allocation-result.json": "a18284337abafb98cf7f5d54269f300fede6db9d25fa386f446691ef8755be6d",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h0/result.json": "41545d3ee123c3c5452564214e53a30060fc12ffea4a34e6e03547dbe61c8764",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h0/H/result.json": "af18951386e79741a8ffada5912359ba15b633d377beaf1bc4c0aaa81ab2688d",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h0/C/result.json": "e212303caedcfb09a5e27ed900186072d527759f45e3195f8d685c728e7bb41b",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/evaluation-h1.json": "c678dc24590e22c584bfae7a2a2dd184b5b2b18740bc019ffc88c29f145c32ea",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/fast-chart-seed42-first-search-h1-plan-20260915-v1.json": "ebbdcd2232e722aadccf03c37885755ae08ae6f059eb53de41ac524be2037c36",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-first-search-h1-plan-20260915-v1/allocation-result.json": "6e4833b55fe4f9e3137dff79551465c4d554906c114d5183e15b462836e0a6ad",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h1/result.json": "25c35563dfc543f63e57b14f347d6e20312592a4a2d12fadf698329bdf931883",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h1/H/result.json": "5784a49d832a6f831e0185188f511d82f9d68ee5117bd8cbe39faae7fb3515d7",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h1/C/result.json": "8f3f4c89bbf1db33cb8c22f1646a0d1b8e5767be7cc8cdfe8d3da5e416ccda41",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/evaluation-h2.json": "b807dce16d3d92b53a25ee501b1681cbcf63fcc5682592876eb2306badc757b7",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/fast-chart-seed42-first-search-h2-plan-20260915-v1.json": "57b433fee180d316f6b9c771167a0bca8f6fd11c64f11e69f4f426c6a16ad00c",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-first-search-h2-plan-20260915-v1/allocation-result.json": "0e1060cc5598dfd96695d39e43ddf1cc2a2c393624bb79c4d93c103723f695a4",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h2/result.json": "a274da3d19b29f858856655eb50de37a24f8aeadc2750ec8670eb60f56f7ee44",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h2/H/result.json": "7b386c533ee45a141046cd8a7f66658120ac93dbcb74af2fb26a18c1752022fb",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h2/C/result.json": "138867800598f057d15c66dd763c31ecebf4f95f73cd3392660c2348aefdec05",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/evaluation-h3.json": "bc2fbdcac2dc142d65e806f04e48dbab2c131fc2b958e44cd5f8ce59f77715ec",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/fast-chart-seed42-first-search-h3-plan-20260915-v1.json": "f0875b5788e15195b3f67a51492f7ca7700aeef1a2ff5c14498f2915412ff9e5",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-first-search-h3-plan-20260915-v1/allocation-result.json": "1da07117d90d2bba31f96b36c653fa39dea3ef9fc737da46105376417414c76a",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h3/result.json": "360523251a726364d50e68bf9d17959f10df2231901a6b046e0615fa8fafb25b",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h3/H/result.json": "37acd03711ebfb56f5db2877755cc117d0ad036e99c0b47d02a3cb392af51a1e",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h3/C/result.json": "a1b119d7f4766e2cddaeaf9105af12ea90dcca7a754d7f22c1241a8665265c98",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/selection-whale.json": "9b9ed0e0c9552814018da182e9d5f4db538cc1fc53bf3b9dedb6426c845e6bf5",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/restored-selection-whale.json": "dd96544516ed71763e9198fbff86a856f42df5646cb862e1725f289d3a0b63ff",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/selection-veto.json": "fe458b782928fc6d1e19ddd0fec9795de64dde8ac3cd1f576be629ba86dd47b8",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/restored-selection-veto.json": "0a7f9c9967e915c9c0b9fb2d770a4f677bb78fa2e8e0fb395ca58b6efd1a4cdb",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/selection-marginal_gate.json": "d9f5012ccf03f24e5222657559cb4b86eb15795ba90d584f8f02ecdbd362ea2f",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/restored-selection-marginal_gate.json": "6737f0d3863c0d8acf1c7de4400394ca03f84e136521b2a13ee351d83e271cb4",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/plan.json": "fc689d4b47f587765ca6f4e1ec5d1bf4fdf878c0790095d4838424df87eb9aa1",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/result.json": "78bbfcf29ca99af4ea7a372283b555c8d8694df0ea445b34bf3230adbd97a62b",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/search/logs/iteration_001/comparison.json": "72955adb9a19412753336e4f22187f5868447945a5a1204393f7f81f1205b408"
+  },
+  "candidate_evaluation_gpu_hours": "0.6880555555555555555555555555",
+  "cost_scope": "Incoming and candidate H/C GPU allocations only, including allocated failures; excludes prefix training, API generation and continuation.",
+  "scientific_method_verified": false,
+  "interpretation": "H/C are optimization data. Selection differences or score gains here are not independent post-training benefits."
+}

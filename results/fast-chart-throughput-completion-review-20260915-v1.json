@@ -1,0 +1,54 @@
+{
+  "status": "COMPLETE_SHARED_THROUGHPUT_RAW_REVIEW",
+  "created_utc": "2026-09-15T13:59:52.793145+00:00",
+  "selected_batch_size": 32,
+  "selection": "Lowest complete V inference seconds per image; accuracy does not select concurrency.",
+  "measurements": {
+    "8": {
+      "images_correct": 452,
+      "pairs_correct": 214,
+      "images": 512,
+      "pairs": 256,
+      "inference_seconds": 939.7808414581232,
+      "seconds_per_image": 1.8355094559728968,
+      "generated_tokens": 91302,
+      "answers_changed_vs_batch8": 0,
+      "correctness_changed_vs_batch8": 0,
+      "input_preparation_seconds_for_512": null
+    },
+    "16": {
+      "images_correct": 448,
+      "pairs_correct": 213,
+      "images": 512,
+      "pairs": 256,
+      "inference_seconds": 729.2203087359667,
+      "seconds_per_image": 1.424258415499935,
+      "generated_tokens": 92840,
+      "answers_changed_vs_batch8": 32,
+      "correctness_changed_vs_batch8": 12,
+      "input_preparation_seconds_for_512": 152.45503802970052
+    },
+    "32": {
+      "images_correct": 447,
+      "pairs_correct": 210,
+      "images": 512,
+      "pairs": 256,
+      "inference_seconds": 528.1484445570968,
+      "seconds_per_image": 1.0315399307755797,
+      "generated_tokens": 92184,
+      "answers_changed_vs_batch8": 31,
+      "correctness_changed_vs_batch8": 11,
+      "input_preparation_seconds_for_512": 159.69486328493804
+    }
+  },
+  "scope": "One shared T/R/ChartQA scheduling policy; W/H/C/V calibration retain existing settings. No VETO efficacy result.",
+  "scientific_method_verified": false,
+  "evidence_sha256": {
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/throughput-v2/result.json": "e6f7eb9dbfc22194a4b115c68fb7cb4895b42c14fea596d843992dd432c31641",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/dataset/V/manifest.json": "85fbbe1f3c7dc376052f8bede43adcc57e2b58039c11bd04f1687e2bae7e8b66",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/shared-inference-policy-v1.json": "1e2d112f80865996b3e99d2cf39ff5d3c29e4ddb2102d929611085b4e196b89d",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/h0-calibration-v2/structured/evaluation/result.json": "4cd764d08114ff17a7d0486be0e3661564d548ae3afe1f1372ba2f4dba354b87",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/throughput-v2/batch16/evaluation/result.json": "9d667b5fb1b29d08f4d7d62035df89e17715c060541e8c9dbc68b5814139b61d",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/throughput-v2/batch32/evaluation/result.json": "bad751c4ff17f8bcbb14af4119a400c3e02be2e26567f7e5b7d0fc6412243418"
+  }
+}

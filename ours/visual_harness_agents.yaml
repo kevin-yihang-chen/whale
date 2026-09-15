@@ -1,0 +1,2 @@
+- name: visual_harness_agent
+  _target_: ours.visual_harness_loop.VisualHarnessAgentLoop

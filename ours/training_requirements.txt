@@ -1,0 +1,28 @@
+# Isolated candidate runtime for the pinned Chess disaggregated RSFT source.
+# Compatibility candidate, not a reproduced/validated training environment.
+# WHALE's numpy<2 conflicts with OpenCV>=4.13 required by Qwen3.5-capable vLLM.
+# This declared variant uses NumPy 2; all experimental conditions must share it.
+# Transformers 5.5.2 is allowed by vLLM 0.20.0 and includes Qwen3.5 support.
+vllm==0.20.0
+torch==2.11.0
+transformers==5.5.2
+numpy==2.2.6
+opencv-python-headless==4.13.0.92
+ray[default]==2.58.0
+tensordict==0.10.0
+peft==0.20.0
+torchdata==0.11.0
+hydra-core==1.3.6
+omegaconf==2.3.1
+codetiming==1.4.0
+wandb==0.29.0
+tensorboard==2.21.0
+datasets==5.0.1
+pandas==2.3.3
+pyarrow==25.0.1
+accelerate==1.13.0
+textarena==0.6.9
+python-chess==1.999
+chess==1.11.2
+packaging>=20.0
+dill

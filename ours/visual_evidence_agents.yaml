@@ -1,0 +1,2 @@
+- name: visual_evidence_tool_agent
+  _target_: ours.visual_evidence_tool_loop.VisualEvidenceToolAgentLoop

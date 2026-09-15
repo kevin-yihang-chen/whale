@@ -1,0 +1,41 @@
+{
+  "status": "FIRST_PROPOSAL_BOUND_WITHIN_EXISTING_GLOBAL_CAP_NO_CALL_MADE",
+  "created_utc": "2026-09-15T14:05:08.815612+00:00",
+  "allocated_candidates": [
+    "h1",
+    "h2",
+    "h3"
+  ],
+  "search_rounds": 1,
+  "max_api_requests": 12,
+  "max_cli_turns": 12,
+  "timeout_seconds": 300,
+  "gateway_max_output_tokens": 131072,
+  "cli_requested_output_tokens": 4096,
+  "conservative_full_context_per_request": 1048576,
+  "all12_requests_at_gateway_maximum_cny": "18.874368",
+  "budget_before": {
+    "budget_cny": "45",
+    "conservative_usage_cny": "1.000592",
+    "held_cny": "6.38976",
+    "available_for_reservation_cny": "37.609648",
+    "unresolved_calls": 6,
+    "settled_relay_calls": 118,
+    "rates_cny_per_million": {
+      "input_including_cache": "1",
+      "output": "4"
+    },
+    "actual_provider_bill_cny": null,
+    "scope": "This project's requests only; conservative accounting, not account balance or invoice"
+  },
+  "available_after_worst_case_cny": "18.735280",
+  "scope": "One paid proposal after complete certified incoming H/C measurement; no replacement candidates or automatic paid retry.",
+  "approval_basis": "Existing user authorization for GLM under the cumulative45CNY project cap.",
+  "runtime_and_gateway_sources": {
+    "ours/scoped_proposer.py": "be93ea248302c73544d7b67dd2990c980559b53da19a72f91c40ed5d446517bd",
+    "ours/glm_gateway.py": "549122452bd5b065b4960df130e1d0311833c30034897ebf0faf9e35a40dbd6c",
+    "ours/fast_chart_search.py": "318b331eecf8181a0af00009395c887f2f86306cf38248ef4d3076576fec63a7"
+  },
+  "reservation_created_by_this_check": false,
+  "provider_bill_claimed": false
+}

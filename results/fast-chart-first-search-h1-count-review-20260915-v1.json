@@ -1,0 +1,50 @@
+{
+  "status": "PARTIAL_FIRST_ARCHIVE_COUNTS_REVIEW",
+  "created_utc": "2026-09-15T14:42:31.669710+00:00",
+  "rows": {
+    "h0": {
+      "H_correct": 107,
+      "H_total": 128,
+      "C_both_correct": 49,
+      "C_pairs": 64,
+      "C_single_correct": 110,
+      "C_images": 128,
+      "C_correctness_counts_zero_one_two": [
+        3,
+        12,
+        49
+      ]
+    },
+    "h1": {
+      "H_correct": 111,
+      "H_total": 128,
+      "C_both_correct": 54,
+      "C_pairs": 64,
+      "C_single_correct": 115,
+      "C_images": 128,
+      "C_correctness_counts_zero_one_two": [
+        3,
+        7,
+        54
+      ]
+    }
+  },
+  "identity": {
+    "weights_sha256": "983d78cfda5540cb71be14506d4b47c58760b806236b244366e8b94152695318",
+    "search_data_sha256": "1c5063034018bce56109e0ffcaeb3d734cdb03c19f9d4d9c3bfbc6e6d04ef919",
+    "audit_data_sha256": "9b9e54cb3712a5dedac13d9651675a74344654c63e7a5c3a84b1c0889a071db4",
+    "decode_sha256": "d08f0eba035e2ce5fa9c2de91fd27c55a0bf86cdf459329e103624597ff08ea4",
+    "verifier_sha256": "17d0114a76fda3ee5586ac0b7506ad918312a0c5f6b643cef2a817e72e90c3ba",
+    "phase": "compact-seed42-first-search"
+  },
+  "evidence_sha256": {
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h0/result.json": "41545d3ee123c3c5452564214e53a30060fc12ffea4a34e6e03547dbe61c8764",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h1/result.json": "25c35563dfc543f63e57b14f347d6e20312592a4a2d12fadf698329bdf931883",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-first-search-h1-plan-20260915-v1/allocation-result.json": "6e4833b55fe4f9e3137dff79551465c4d554906c114d5183e15b462836e0a6ad"
+  },
+  "h1_passes_paired_gate": true,
+  "h1_passes_marginal_gate": true,
+  "all_candidate_slots_complete": false,
+  "scientific_method_verified": false,
+  "limitation": "H/C are optimization data; both gates admit h1. This is not an independent VETO gain. Final selection awaits h2/h3."
+}

@@ -1,0 +1,68 @@
+{
+  "status": "COMPLETE_FIRST_LR_DEVELOPMENT_REVIEW",
+  "learning_rate_selected": false,
+  "seed": 42,
+  "rate": 1e-07,
+  "scores": [
+    {
+      "stage": "common_initial",
+      "images_correct": 452,
+      "pairs_correct": 214,
+      "images": 512,
+      "pairs": 256,
+      "generated_tokens": 91302
+    },
+    {
+      "stage": "after_lr_1e-7_four_batches",
+      "images_correct": 443,
+      "pairs_correct": 212,
+      "images": 512,
+      "pairs": 256,
+      "generated_tokens": 96256
+    }
+  ],
+  "changes": {
+    "pairs_improved": 6,
+    "pairs_worsened": 8,
+    "paired_change_pp": -0.78125,
+    "ordinary_change_pp": -1.7578125
+  },
+  "scope": "Shared configuration calibration only. These greedy batched measurements are not a causal mechanism test or a VETO effect. Do not choose a partial LR winner.",
+  "scientific_method_verified": false,
+  "evidence_sha256": {
+    "data/fast-chart-20260915-v1/h0-calibration-v2/structured-plan.json": "28d33b2d7d434cd02d1cf9d90cfe7c1319ddac060858c2f6307bb213025f22cc",
+    "data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-07-seed42/followup/evaluation-plan.json": "65e0c8162d067cd0b14aa781bc2c271c87128cd440e9664639c724d43f7f6bb2",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/dataset/V/manifest.json": "85fbbe1f3c7dc376052f8bede43adcc57e2b58039c11bd04f1687e2bae7e8b66",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/h0-calibration-v2/structured/evaluation/result.json": "4cd764d08114ff17a7d0486be0e3661564d548ae3afe1f1372ba2f4dba354b87",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-07-seed42/followup/development/evaluation/result.json": "27e95b4b45529c8d433fc2c5f51ab4b841754e3908bdbf9b49b3e1510ed21655",
+    "results/fast-chart-real-processor-contract-20260915-v1.json": "4a42e417d9cca3764de3c76b01e300c290f0fed3fa6dade42f4f27a3864773bd",
+    "data/fast-chart-20260915-v1/allocations/lr-calibration-v3-lr-1e-07-seed42-followup-plan/allocation-result.json": "517f9cbc146232caa08b2dac3c802e73d642d781169940414e3a3aeed081ad2b"
+  },
+  "budget": {
+    "charged_gpu_hours": {
+      "setup": "8.902222222222222222222222224",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "1.27"
+    },
+    "reserved_gpu_hours": {
+      "setup": "0",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "0"
+    },
+    "total_cap": 100,
+    "remaining_unreserved": "89.82777777777777777777777778"
+  },
+  "storage": {
+    "new_root_allocated_gib": 31.383883953094482,
+    "requested_gib": 0,
+    "filesystem_free_gib": 630.0830078125,
+    "cap_gib": 400,
+    "minimum_free_margin_gib": 40,
+    "hardlinks_counted_once_within_new_root": true,
+    "deletion_authorized": false
+  }
+}
