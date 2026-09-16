@@ -10,9 +10,11 @@ from contextlib import ExitStack
 from dataclasses import asdict
 import json
 from pathlib import Path
+
 import shutil
 from unittest.mock import patch
 
+from .audit_native_training_batch import require
 from .acceptance import CandidateMetrics, EvidenceConstrainedAcceptance
 from .adapter import WHALEAcceptanceAdapter
 from .evidence import EvaluationIdentity, PairPrediction, VisualPairEvaluator, fingerprint
@@ -27,6 +29,7 @@ from .visual_task import binary_answer_verifier, file_sha256 as path_sha256
 
 CONTRACT = ROOT / 'ours/visual_search_contract.md'
 SOURCES = ('ours/visual_search_bridge.py', 'ours/visual_search_contract.md', 'ours/adapter.py',
+    'ours/audit_native_training_batch.py', 'ours/research_budget.py',
     'ours/acceptance.py', 'ours/evidence.py', 'ours/scoped_proposer.py', 'ours/glm_gateway.py',
     'ours/confined_exec.py', 'upstream/WHALE/domains/chess_puzzles/meta_harness/meta_harness_chess_puzzle.py',
     'upstream/WHALE/domains/chess_puzzles/meta_harness/chess_puzzle_benchmark.py',
@@ -43,7 +46,7 @@ def file_sha256(path):
 
 def once(path, value):
     if path.exists():
-        assert fingerprint(read(path)) == fingerprint(value), f'Changed boundary: {path}'
+        require(fingerprint(read(path)) == fingerprint(value), f'Changed boundary: {path}')
     else:
         write_new(path, value)
 
@@ -53,54 +56,54 @@ def certify(plan_path, allocation_path, *, with_audit=True):
     plan, allocation = read(plan_path), read(allocation_path)
     from .research_budget import terminal_allocation
     terminal = Path(allocation_path).parent / 'slurm-terminal.txt'
-    assert file_sha256(terminal) == allocation['terminal_sha256']
+    require(file_sha256(terminal) == allocation['terminal_sha256'], "Validation failed: file_sha256(terminal) == allocation['terminal_sha256']")
     observed_allocation = terminal_allocation(terminal.read_text(), allocation['job_id'])
-    assert observed_allocation['state'] == allocation['state'] and observed_allocation['seconds'] == allocation['seconds']
+    require(observed_allocation is not None, 'Search allocation has not reached a terminal state')
+    require(observed_allocation['state'] == allocation['state'] and observed_allocation['seconds'] == allocation['seconds'], "Validation failed: observed_allocation['state'] == allocation['state'] and observed_allocation['seconds'] == allocation['seconds']")
     root = Path(plan['output'])
     result, h = read(root / 'result.json'), read(root / 'H/result.json')
-    assert allocation['state'] == 'COMPLETED' and allocation['job_id'] == result['job_id']
-    assert result['status'] == 'COMPLETE_VISUAL_SEARCH_CANDIDATE'
-    assert result['plan_sha256'] == file_sha256(plan_path) and result['identity'] == plan['identity']
+    require(allocation['state'] == 'COMPLETED' and allocation['job_id'] == result['job_id'], "Validation failed: allocation['state'] == 'COMPLETED' and allocation['job_id'] == result['job_id']")
+    require(result['status'] == 'COMPLETE_VISUAL_SEARCH_CANDIDATE', "Validation failed: result['status'] == 'COMPLETE_VISUAL_SEARCH_CANDIDATE'")
+    require(result['plan_sha256'] == file_sha256(plan_path) and result['identity'] == plan['identity'], "Validation failed: result['plan_sha256'] == file_sha256(plan_path) and result['identity'] == plan['identity']")
     identity = EvaluationIdentity(**result['identity'])
     for path, digest in plan['source_sha256'].items():
-        assert file_sha256(ROOT / path) == digest, path
+        require(file_sha256(ROOT / path) == digest, path)
     harness_path = Path(plan['config']['data']['visual_harness_path'])
-    assert file_sha256(harness_path) == result['harness_sha256'] == plan['harness_sha256']
+    require(file_sha256(harness_path) == result['harness_sha256'] == plan['harness_sha256'], "Validation failed: file_sha256(harness_path) == result['harness_sha256'] == plan['harness_sha256']")
     for item in plan['partitions'].values():
         for key in ('manifest', 'parquet'):
-            assert file_sha256(item[key]) == item[key + '_sha256']
+            require(file_sha256(item[key]) == item[key + '_sha256'], "Validation failed: file_sha256(item[key]) == item[key + '_sha256']")
     _, h_rows = single_rows(plan['partitions']['H']['manifest'])
     expected = {r['visual_sample_id']: r for r in h_rows}
     actual = {r['sample_id']: r for r in h['records']}
-    assert len(h['records']) == len(actual) == len(expected) == 128 and set(actual) == set(expected)
+    require(len(h['records']) == len(actual) == len(expected) == 128 and set(actual) == set(expected), "Validation failed: len(h['records']) == len(actual) == len(expected) == 128 and set(actual) == set(expected)")
     for key, row in actual.items():
-        assert row['correct'] == int(binary_answer_verifier(row['committed_answer'], expected[key]['reward_model']['ground_truth']))
+        require(row['correct'] == int(binary_answer_verifier(row['committed_answer'], expected[key]['reward_model']['ground_truth'])), "Validation failed: row['correct'] == int(binary_answer_verifier(row['committed_answer'], expected[key]['reward_model']['ground_truth']))")
     candidate = CandidateMetrics(plan['candidate'], plan['harness_sha256'],
         sum(r['correct'] for r in actual.values()) / 128, sum(r['native_turns'] for r in actual.values()) / 128)
-    assert asdict(candidate) == result['candidate'] and candidate.accuracy == h['accuracy']
+    require(asdict(candidate) == result['candidate'] and candidate.accuracy == h['accuracy'], "Validation failed: asdict(candidate) == result['candidate'] and candidate.accuracy == h['accuracy']")
     for name, digest in h['batch_artifact_sha256'].items():
-        assert file_sha256(root / 'H' / name) == digest
+        require(file_sha256(root / 'H' / name) == digest, "Validation failed: file_sha256(root / 'H' / name) == digest")
     receipt = None
     if with_audit:
         c = read(root / 'C/result.json')
         manifest, pairs, c_rows = pair_inputs(plan['partitions']['C']['manifest'])
-        assert manifest['role'] == 'C'
+        require(manifest['role'] == 'C', "Validation failed: manifest['role'] == 'C'")
         c_actual = {r['sample_id']: r for r in c['records']}
-        assert len(c['records']) == len(c_actual) == len(c_rows) == 128
-        assert set(c_actual) == {r['visual_sample_id'] for r in c_rows}
+        require(len(c['records']) == len(c_actual) == len(c_rows) == 128, "Validation failed: len(c['records']) == len(c_actual) == len(c_rows) == 128")
+        require(set(c_actual) == {r['visual_sample_id'] for r in c_rows}, "Validation failed: set(c_actual) == {r['visual_sample_id'] for r in c_rows}")
         predictions = [PairPrediction(p.pair_id, tuple(c_actual[fingerprint({'pair_id': p.pair_id, 'side': side})]['committed_answer']
             for side in (0, 1))) for p in pairs]
         receipt = VisualPairEvaluator(binary_answer_verifier).evaluate(pairs, predictions,
             identity=identity, harness_sha256=candidate.harness_sha256, role='C')
-        assert fingerprint(asdict(receipt)) == fingerprint(result['audit']) == fingerprint(c['audit'])
+        require(fingerprint(asdict(receipt)) == fingerprint(result['audit']) == fingerprint(c['audit']), "Validation failed: fingerprint(asdict(receipt)) == fingerprint(result['audit']) == fingerprint(c['audit'])")
         for row in c_rows:
-            assert c_actual[row['visual_sample_id']]['correct'] == int(binary_answer_verifier(
-                c_actual[row['visual_sample_id']]['committed_answer'], row['reward_model']['ground_truth']))
+            require(c_actual[row['visual_sample_id']]['correct'] == int(binary_answer_verifier(c_actual[row['visual_sample_id']]['committed_answer'], row['reward_model']['ground_truth'])), "Validation failed: c_actual[row['visual_sample_id']]['correct'] == int(binary_answer_verifier(c_actual[row['visual_sample_id']]['committed_answer'], row['reward_model']['ground_truth']))")
         for name, digest in c['batch_artifact_sha256'].items():
-            assert file_sha256(root / 'C' / name) == digest
+            require(file_sha256(root / 'C' / name) == digest, "Validation failed: file_sha256(root / 'C' / name) == digest")
     observed = result['observed']
-    assert tree_hashes(root / 'requests') == observed['request_artifact_sha256']
-    assert audit_requests(plan, root, observed) == observed
+    require(tree_hashes(root / 'requests') == observed['request_artifact_sha256'], "Validation failed: tree_hashes(root / 'requests') == observed['request_artifact_sha256']")
+    require(audit_requests(plan, root, observed) == observed, 'Validation failed: audit_requests(plan, root, observed) == observed')
     return {'plan': plan, 'result': result, 'candidate': candidate, 'audit': receipt, 'h': h, 'h_rows': h_rows}
 
 
@@ -120,9 +123,9 @@ def boundary(adapter, native, run_dir, archive, identity, *, stage, frontier, ro
 
 
 def init(root, baseline_plan, allocation):
-    assert not root.exists()
+    require(not root.exists(), 'Validation failed: not root.exists()')
     base = certify(baseline_plan, allocation)
-    assert base['candidate'].name == 'h0' and base['plan']['repeatability_check']
+    require(base['candidate'].name == 'h0' and base['plan']['repeatability_check'], "Validation failed: base['candidate'].name == 'h0' and base['plan']['repeatability_check']")
     root.mkdir()
     plan = {'kind': 'native_visual_one_iteration_search', 'incoming': 'h0', 'identity': base['result']['identity'],
         'iterations': 1, 'proposals_per_iter': 1, 'slots': ['h1'], 'max_api_requests': 12, 'max_cli_turns': 12,
@@ -149,13 +152,13 @@ def init(root, baseline_plan, allocation):
 
 def load(root):
     plan = read(root / 'plan.json')
-    assert plan['kind'] == 'native_visual_one_iteration_search'
+    require(plan['kind'] == 'native_visual_one_iteration_search', "Validation failed: plan['kind'] == 'native_visual_one_iteration_search'")
     for name, digest in plan['source_sha256'].items():
-        assert file_sha256(ROOT / name) == digest, name
-    assert file_sha256(root / 'contract.md') == plan['source_sha256']['ours/visual_search_contract.md']
+        require(file_sha256(ROOT / name) == digest, name)
+    require(file_sha256(root / 'contract.md') == plan['source_sha256']['ours/visual_search_contract.md'], "Validation failed: file_sha256(root / 'contract.md') == plan['source_sha256']['ours/visual_search_contract.md']")
     base = plan['baseline']
-    assert file_sha256(base['plan']) == base['plan_sha256'] and file_sha256(base['allocation']) == base['allocation_sha256']
-    assert file_sha256(Path(read(base['plan'])['output']) / 'result.json') == base['result_sha256']
+    require(file_sha256(base['plan']) == base['plan_sha256'] and file_sha256(base['allocation']) == base['allocation_sha256'], "Validation failed: file_sha256(base['plan']) == base['plan_sha256'] and file_sha256(base['allocation']) == base['allocation_sha256']")
+    require(file_sha256(Path(read(base['plan'])['output']) / 'result.json') == base['result_sha256'], "Validation failed: file_sha256(Path(read(base['plan'])['output']) / 'result.json') == base['result_sha256']")
     return plan
 
 
@@ -190,8 +193,8 @@ def advance(root, candidate_plan=None, candidate_allocation=None):
     archive = [base]
     if candidate_plan:
         candidate = certify(candidate_plan, candidate_allocation)
-        assert candidate['result']['identity'] == plan['identity'] and candidate['candidate'].name == 'h1'
-        assert candidate['candidate'].harness_sha256 == file_sha256(root / 'search/harnesses/h1/harness.py')
+        require(candidate['result']['identity'] == plan['identity'] and candidate['candidate'].name == 'h1', "Validation failed: candidate['result']['identity'] == plan['identity'] and candidate['candidate'].name == 'h1'")
+        require(candidate['candidate'].harness_sha256 == file_sha256(root / 'search/harnesses/h1/harness.py'), "Validation failed: candidate['candidate'].harness_sha256 == file_sha256(root / 'search/harnesses/h1/harness.py')")
         archive.append(candidate)
         once(root / 'candidate-evaluation.json', {'plan': str(candidate_plan), 'allocation': str(candidate_allocation),
             'result_sha256': file_sha256(Path(candidate['plan']['output']) / 'result.json')})
@@ -219,7 +222,7 @@ def advance(root, candidate_plan=None, candidate_allocation=None):
                     'reference_evaluation_plan': plan['baseline']['plan'], 'with_audit': True,
                     'repeatability_check': True})
                 raise PhaseBoundary('WAITING_CANDIDATE_GPU_EVALUATION')
-            assert file_sha256(path) == item['candidate'].harness_sha256
+            require(file_sha256(path) == item['candidate'].harness_sha256, "Validation failed: file_sha256(path) == item['candidate'].harness_sha256")
             public_h_feedback(run, item)
         return [(name, True) for name, _ in harnesses]
     def propose(**kwargs):
@@ -229,11 +232,11 @@ def advance(root, candidate_plan=None, candidate_allocation=None):
         if not ready.exists():
             raise PhaseBoundary('WAITING_NETWORKED_PROPOSER')
         receipt = read(ready)
-        assert receipt['request_sha256'] == file_sha256(root / 'proposal-request.json')
+        require(receipt['request_sha256'] == file_sha256(root / 'proposal-request.json'), "Validation failed: receipt['request_sha256'] == file_sha256(root / 'proposal-request.json')")
         for name, digest in receipt['imported_sha256'].items():
-            assert file_sha256(run / name) == digest
+            require(file_sha256(run / name) == digest, 'Validation failed: file_sha256(run / name) == digest')
         session = Path(receipt['session'])
-        assert tree_hashes(session) == receipt['session_sha256']
+        require(tree_hashes(session) == receipt['session_sha256'], "Validation failed: tree_hashes(session) == receipt['session_sha256']")
         metadata = read(session / 'meta.json')
         return native.claude_wrapper.parse_stream_events((session / 'events.jsonl').read_text(),
             kwargs['task_prompt'], MODEL, metadata['duration_seconds'], metadata['exit_code'], cwd=metadata['cwd'])
@@ -263,7 +266,7 @@ def advance(root, candidate_plan=None, candidate_allocation=None):
     stage = 'early_stop' if comparison['early_stop'] else 'ordinary'
     value = boundary(adapter, native, run, archive, identity, stage=stage, frontier=comparison['frontier'],
         rows=comparison['summary'], valid_names=['h1'])
-    assert value['upstream_harness'] == native.get_accepted_harness(run)
+    require(value['upstream_harness'] == native.get_accepted_harness(run), "Validation failed: value['upstream_harness'] == native.get_accepted_harness(run)")
     value.update(status='COMPLETE_SEARCH_AND_TRAINING_ACCEPTANCE', plan_sha256=file_sha256(root / 'plan.json'),
         evaluations={x['candidate'].name: {'candidate': asdict(x['candidate']), 'audit': asdict(x['audit']),
             'repeatability_passed': x['result']['repeatability_passed']} for x in archive},
@@ -280,11 +283,11 @@ def advance(root, candidate_plan=None, candidate_allocation=None):
 def propose(root):
     from meta_harness import meta_harness_chess_puzzle as native
     plan = load(root)
-    assert not (root / 'paid-proposal').exists() and not (root / 'proposal-ready.json').exists()
+    require(not (root / 'paid-proposal').exists() and (not (root / 'proposal-ready.json').exists()), "Validation failed: not (root / 'paid-proposal').exists() and (not (root / 'proposal-ready.json').exists())")
     request_path = root / 'proposal-request.json'
     request = read(request_path)
-    assert request['next_names'] == ['h1'] and request['iteration'] == 1
-    assert request['run_dir'] == str(root / 'search')
+    require(request['next_names'] == ['h1'] and request['iteration'] == 1, "Validation failed: request['next_names'] == ['h1'] and request['iteration'] == 1")
+    require(request['run_dir'] == str(root / 'search'), "Validation failed: request['run_dir'] == str(root / 'search')")
     request['run_dir'] = Path(request['run_dir'])
     # Revalidate actual evidence before crossing the paid, networked boundary.
     certify(plan['baseline']['plan'], plan['baseline']['allocation'])
@@ -297,11 +300,11 @@ def propose(root):
          patch.object(native, 'PROPOSER_SYSTEM_PROMPT', system):
         result = isolated_native_proposal(native, {**plan, 'data_role': 'mh_val'}, root / 'paid-proposal', journal, **request)
     # mh_val is the reused transport's legacy role name; only visual H was copied.
-    assert result.exit_code == 0, 'Preserve failed proposal artifacts and fees; no automatic paid retry'
+    require(result.exit_code == 0, 'Preserve failed proposal artifacts and fees; no automatic paid retry')
     harness = load_isolated_visual_harness(root / 'search/harnesses/h1/harness.py')
-    assert isinstance(harness.invoke('format_observation', question='Which bar is higher? A: left; B: right.'), str)
+    require(isinstance(harness.invoke('format_observation', question='Which bar is higher? A: left; B: right.'), str), "Validation failed: isinstance(harness.invoke('format_observation', question='Which bar is higher? A: left; B: right.'), str)")
     sessions = list((root / 'search/logs/claude_sessions').iterdir())
-    assert len(sessions) == 1
+    require(len(sessions) == 1, 'Validation failed: len(sessions) == 1')
     integrity = read(root / 'paid-proposal/proposal-integrity.json')
     write_new(root / 'proposal-ready.json', {'status': 'VALIDATED_REAL_GLM_VISUAL_CANDIDATE',
         'request_sha256': file_sha256(request_path), 'session': str(sessions[0]),

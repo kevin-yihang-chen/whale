@@ -15,7 +15,7 @@ from pathlib import Path
 
 from .audit_native_training_batch import require
 from .evidence import EvaluationIdentity, fingerprint
-from .local_completion import checkpoint_manifest
+from .local_completion import checkpoint_manifest, checkpoint_tensor
 from .native_search import tree_hashes
 from .visual_harness import BASE, load_visual_harness
 from .visual_native_evaluation import pair_inputs, write_pair_parquet, evaluate_pairs, verifier_identity
@@ -23,6 +23,7 @@ from .visual_task import file_sha256
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCES = ('ours/native_visual_service.py', 'ours/native_visual_model_worker.py',
+    'ours/local_completion.py', 'ours/audit_native_training_batch.py',
     'ours/native_visual_agent_observation.py', 'ours/run_native_visual_service.sh',
     'ours/visual_native_evaluation.py', 'ours/visual_harness.py', 'ours/visual_harness_dataset.py',
     'ours/visual_harness_loop.py', 'ours/visual_evidence_dataset.py', 'ours/visual_evidence_tool_loop.py',
@@ -90,12 +91,10 @@ def configuration(model, manifest, output):
 
 
 def embedding_coordinates(model):
-    from safetensors import safe_open
-    with safe_open(str(model/'model.safetensors'), framework='pt', device='cpu') as reader:
-        tensor = reader.get_tensor('model.language_model.embed_tokens.weight')
-        return [{'token_id': row, 'column': 137 * i % tensor.shape[1],
-            'expected': float(tensor[row, 137 * i % tensor.shape[1]])}
-            for i, row in enumerate((0, 7, 42, 123, 502, 1024, 4096, 8192))]
+    tensor = checkpoint_tensor(model, 'model.language_model.embed_tokens.weight')
+    return [{'token_id': row, 'column': 137 * i % tensor.shape[1],
+        'expected': float(tensor[row, 137 * i % tensor.shape[1]])}
+        for i, row in enumerate((0, 7, 42, 123, 502, 1024, 4096, 8192))]
 
 
 def prepare(path, manifest_path, output):

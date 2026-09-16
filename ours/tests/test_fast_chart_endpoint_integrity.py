@@ -49,6 +49,18 @@ class EndpointIntegrityTests(unittest.TestCase):
                     CompactChartModelWorker.record_compact_weights(worker,4)
                 worker.model_runner.get_model=lambda:fresh
                 self.assertEqual(CompactChartModelWorker.record_compact_weights(worker,4),'PASS_COMPACT_RECEIVER')
+                # The same real receiver check must work with an indexed base.
+                (base/'model.safetensors').rename(base/'model-00001-of-00002.safetensors')
+                save_file({'unrelated':torch.zeros(1)},str(base/'model-00002-of-00002.safetensors'))
+                (base/'model.safetensors.index.json').write_text(json.dumps({'weight_map':{
+                    'model.language_model.embed_tokens.weight':'model-00001-of-00002.safetensors',
+                    'unrelated':'model-00002-of-00002.safetensors'}}))
+                worker.model_runner.get_model=lambda:stale
+                with self.assertRaisesRegex(ValueError,'receiver differs'):
+                    CompactChartModelWorker.record_compact_weights(worker,4)
+                worker.model_runner.get_model=lambda:fresh
+                with patch('ours.fast_chart_training_worker.os.getpid',return_value=os.getpid()+1):
+                    self.assertEqual(CompactChartModelWorker.record_compact_weights(worker,4),'PASS_COMPACT_RECEIVER')
             record=json.loads(next((root/'state').glob('receiver-*.json')).read_text())
             self.assertTrue(record['coordinates_distinguish_initial_model'])
             self.assertEqual(record['actual']['values'],[1.])

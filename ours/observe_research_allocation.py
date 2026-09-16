@@ -7,18 +7,20 @@ from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
+
 import subprocess
 import sys
 import time
 
 from .research_budget import ExecutionBudget, terminal_allocation
+from .audit_native_training_batch import require
 from .visual_task import file_sha256
 
 
 def observe(receipt_path):
     receipt = json.loads(receipt_path.read_text())
     root, job = receipt_path.parent, receipt['job_id']
-    assert isinstance(job, str) and job.isdigit()
+    require(isinstance(job, str) and job.isdigit(), 'Validation failed: isinstance(job, str) and job.isdigit()')
     with (root / 'observer-start.json').open('x') as stream:
         json.dump({'pid': os.getpid(), 'job_id': job, 'receipt_sha256': file_sha256(receipt_path),
                    'source_sha256': file_sha256(Path(__file__))}, stream, indent=2)

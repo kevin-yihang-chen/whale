@@ -1,0 +1,67 @@
+{
+  "status": "COMPLETE_STOP_GATE_FAILED",
+  "job_id": "234367",
+  "scope": "Exploratory seed42 selection diagnostic on fixed theta1 weights and independent R512 sources",
+  "results": {
+    "h1": {
+      "selector": "evidence_v2 archive replay",
+      "paired_correct": 405,
+      "pairs": 512,
+      "paired_accuracy": 0.791015625,
+      "single_correct": 881,
+      "single_images": 1024,
+      "marginal_accuracy": 0.8603515625
+    },
+    "h3": {
+      "selector": "WHALE and matched marginal archive replay",
+      "paired_correct": 416,
+      "pairs": 512,
+      "paired_accuracy": 0.8125,
+      "single_correct": 900,
+      "single_images": 1024,
+      "marginal_accuracy": 0.87890625
+    }
+  },
+  "h1_minus_h3": {
+    "paired_difference": -0.021484375,
+    "ordinary_difference": -0.0185546875,
+    "source_cluster_95_percentile_interval": [
+      -0.05078125,
+      0.0078125
+    ],
+    "bootstrap_seed": 20260916,
+    "bootstrap_replicates": 20000
+  },
+  "continuation_gate": {
+    "positive_paired_point_difference": false,
+    "paired_interval_lower_bound_above_zero": false,
+    "ordinary_loss_at_most_0.01": false,
+    "passed": false,
+    "decision": "Stop expanding evidence_v2 under the preregistered diagnostic protocol"
+  },
+  "execution": {
+    "state": "COMPLETED",
+    "runtime_seconds": 2191,
+    "gpu_hours": 0.6086111111111111,
+    "new_training_performed": false,
+    "api_calls": 0,
+    "new_model_checkpoints": 0
+  },
+  "limitations": [
+    "One seed",
+    "Previously observed candidate archive",
+    "Fixed pre-second-stage weights",
+    "No post-selection training comparison"
+  ],
+  "source_artifacts": {
+    "plan": "results/chart-selection-v2-R512-seed42-plan-20260916-v1.json",
+    "plan_sha256": "d422af1764558269ea7160c4e3ef569809bab3bc08d922bd5e31eeaf0718d40d",
+    "full_result": "data/fast-chart-20260915-v1/selection-v2-R512-seed42-v1/result.json",
+    "full_result_sha256": "dd55e3b2e9cb0231d6fa93582ad89c37015a8a6d60b36822886e96059466f727",
+    "allocation_result": "data/fast-chart-20260915-v1/allocations/chart-selection-v2-R512-seed42-plan-20260916-v1/allocation-result.json",
+    "allocation_result_sha256": "e655e62306411a9c7247edf40b8a2a46ccf6c36849eafbb69abc434aad19b337",
+    "job_log": "results/chart-selection-diagnostic-234367.log",
+    "job_log_sha256": "de2f11dc85252b002ccdcb9bbe79241a0746c1703ef9f8b4952a6ef7ea51ee6e"
+  },
+  "method_claim_verified": false
+}

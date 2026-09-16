@@ -2,6 +2,7 @@
 import argparse
 import asyncio
 from copy import deepcopy
+from dataclasses import asdict
 import json
 import os
 from pathlib import Path
@@ -17,13 +18,43 @@ from .visual_task import file_sha256,SYSTEM_PROMPT
 from .visual_native_evaluation import pair_inputs,verifier_identity,write_pair_parquet,evaluate_pairs
 from .evidence import EvaluationIdentity,fingerprint
 from .chart_answer_protocol import PROTOCOL
+from .chart_selection_protocol import selection_modes
 from .fast_chart_admission import verified_calibration
+
+REGISTERED_CONDITIONS = (*CONDITIONS, 'marginal_rank_floor')
+
+
+def endpoint_identity(plan, *, bind=False):
+    """Build or validate the same dataset/scorer identity in every endpoint path."""
+    partition=plan['partition'];phase='registered-endpoint-'+partition
+    if partition in ('T','R'):
+        if plan['role']!=('V' if partition=='R' else 'T'):
+            raise ValueError('Endpoint partition and paired data role disagree')
+        verifier=verifier_identity(PROTOCOL)
+        identity=asdict(EvaluationIdentity(plan['model']['weights_sha256'],plan['manifest_sha256'],
+            plan['audit_data_sha256'],plan['decode_sha256'],verifier,phase))
+    elif partition=='chartqa':
+        from .chartqa_open_answer import PROTOCOL as external_protocol
+        if plan['role']!='external':raise ValueError('ChartQA requires the external data role')
+        verifier=fingerprint({'protocol':external_protocol,'sources':{name:file_sha256(ROOT/'ours'/name)
+            for name in ('chartqa_open_answer.py','chart_answer_protocol.py','fast_chart_external_hook.py')}})
+        identity={'weights_sha256':plan['model']['weights_sha256'],'manifest_sha256':plan['manifest_sha256'],
+            'decode_sha256':plan['decode_sha256'],'verifier_sha256':verifier,'phase':phase,
+            'protocol':external_protocol}
+        if bind:plan.pop('audit_data_sha256',None)
+        elif 'audit_data_sha256' in plan:raise ValueError('External endpoint retains an inapplicable paired audit identity')
+    else:raise ValueError('Unknown endpoint partition')
+    fields={'identity':identity,'phase':phase,'verifier_sha256':verifier}
+    if bind:plan.update(fields)
+    elif any(plan.get(key)!=value for key,value in fields.items()):
+        raise ValueError('Endpoint identity differs from its weights, data, decoding or scorer')
+    return identity
 
 
 def register(path,reference,configuration,*,condition,seed,selection=None):
     path,reference,configuration=map(lambda p:Path(p).resolve(),(path,reference,configuration))
     ref=read(reference);cfg=verified_calibration(configuration)
-    if condition not in CONDITIONS or seed not in (42,43,44) or cfg['status']!='COMPLETE_SHARED_CHART_CONFIGURATION':
+    if condition not in REGISTERED_CONDITIONS or seed not in (42,43,44) or cfg['status']!='COMPLETE_SHARED_CHART_CONFIGURATION':
         raise ValueError('Require registered condition/seed and frozen shared h0/LR')
     if ref['seed']!=seed:
         raise ValueError('Endpoint reference belongs to another seed')
@@ -51,9 +82,11 @@ def register(path,reference,configuration,*,condition,seed,selection=None):
     if condition!='weight_only':
         if selection is None:raise ValueError('Optimized conditions require their complete selection receipt')
         selection=Path(selection).resolve();choice=read(selection)
-        expected={'veto':'veto','marginal_gate':'marginal_gate'}.get(condition,'whale')
+        expected={'veto':'veto','marginal_gate':'marginal_gate','marginal_rank_floor':'marginal_rank_floor'}.get(condition,'whale')
         if choice['status']!='COMPLETE_COMPACT_SELECTION' or choice['condition']!=expected:
             raise ValueError('Wrong endpoint selection rule')
+        if expected not in dict(selection_modes(choice)):
+            raise ValueError('Endpoint condition is absent from its selection protocol')
         if choice['harness_sha256']!=ref['harness_sha256']:
             raise ValueError('Endpoint harness differs from its selection receipt')
         if condition!='harness_only' and Path(training['selection']).resolve()!=selection:
@@ -71,6 +104,7 @@ def register(path,reference,configuration,*,condition,seed,selection=None):
     elif file_sha256(Path(cfg['harness']))!=ref['harness_sha256']:
         raise ValueError('Weight-only endpoint changed the common h0')
     record={'kind':'compact_endpoint_registration','condition':condition,'seed':seed,'reference':str(reference),
+        'selection_protocol':choice.get('selection_protocol','gate_v1') if condition!='weight_only' else None,
         'configuration':str(configuration),'evidence_sha256':evidence,'model':ref['model'],
         'harness':ref['config']['data']['visual_harness_path'],'harness_sha256':ref['harness_sha256'],
         'checkpoint_selection':'Frozen native budget, never test performance','test_accessed':False}
@@ -95,6 +129,7 @@ def prepare(path,output,registration,*,partition,common_h0=False):
     cfg['data']['cache_dir']=str(output/'dataset-cache');cfg['trainer']['experiment_name']=output.name
     cfg['actor_rollout_ref']['rollout']['trace']['experiment_name']=output.name
     plan.update(kind='compact_registered_endpoint_evaluation',registration=str(registration),registration_sha256=file_sha256(registration),
+        selection_protocol=endpoint.get('selection_protocol','gate_v1'),
         output=str(output),partition=partition,condition=endpoint['condition'],seed=endpoint['seed'],common_h0=common_h0,
         harness_sha256=file_sha256(Path(cfg['data']['visual_harness_path'])))
     bind(plan,policy)
@@ -111,10 +146,13 @@ def prepare(path,output,registration,*,partition,common_h0=False):
         cfg['reward']['custom_reward_function']={'path':'pkg://ours.fast_chart_external_hook','name':'compute_score'}
         images=512
     plan['decode_sha256']=decode_identity(cfg,plan['model']['assets'])
-    for name in ('ours/fast_chart_endpoint_evaluation.py','ours/fast_chart_external_hook.py','ours/chartqa_open_answer.py',
+    endpoint_identity(plan,bind=True)
+    sources=set(plan['source_sha256']) | set(native.SOURCES)
+    sources.update(('ours/fast_chart_endpoint_evaluation.py','ours/chart_selection_protocol.py','ours/fast_chart_external_hook.py','ours/chartqa_open_answer.py',
                  'ours/fast_chart_admission.py','ours/run_fast_chart_endpoint_evaluation.sh',
                  'ours/fast_chart_inference_policy.py','ours/fast_chart_throughput.py',
-                 'ours/probe_updated_vllm.py','ours/audit_native_training_batch.py'):
+                 'ours/probe_updated_vllm.py','ours/audit_native_training_batch.py'))
+    for name in sorted(sources):
         plan['source_sha256'][name]=file_sha256(ROOT/name)
     plan['bounds']={'gpus':1,'cpus':12,'time_limit_seconds':7200 if images==2048 else 3600,'images':images,
         'maximum_generation_calls':images*3,'maximum_generated_assistant_tokens':images*1024,'api_calls':0}
@@ -136,6 +174,9 @@ def check(path):
     if file_sha256(Path(plan['manifest']))!=plan['manifest_sha256'] or checkpoint_manifest(Path(plan['model']['path']))!=plan['model']:
         raise ValueError('Endpoint data or weights changed')
     if decode_identity(plan['config'],plan['model']['assets'])!=plan['decode_sha256']:raise ValueError('Endpoint decoding changed')
+    if file_sha256(Path(plan['config']['data']['visual_harness_path']))!=plan['harness_sha256']:
+        raise ValueError('Endpoint harness changed')
+    endpoint_identity(plan)
     storage_check(12);return plan
 
 
@@ -195,6 +236,7 @@ async def external(manager,dataset,plan,output,expected):
 
 
 async def run(plan,path):
+    identity=endpoint_identity(plan)
     from .training_bootstrap import prepare_worker
     prepare_worker()
     import ray,torch
@@ -231,11 +273,11 @@ async def run(plan,path):
         manager=await ObservedVisualAgentManager.create(OmegaConf.create(plan['config']))
         if expected is not None:result=await external(manager,dataset,plan,out/'evaluation',expected)
         else:
-            identity=EvaluationIdentity(plan['model']['weights_sha256'],plan['manifest_sha256'],plan['audit_data_sha256'],
-                plan['decode_sha256'],verifier_identity(PROTOCOL),'registered-endpoint-'+plan['partition'])
-            _,result=await evaluate_pairs(manager,dataset,manifest_path=plan['manifest'],identity=identity,output=out/'evaluation',batch_size=plan['batch_size'])
+            _,result=await evaluate_pairs(manager,dataset,manifest_path=plan['manifest'],identity=EvaluationIdentity(**identity),
+                output=out/'evaluation',batch_size=plan['batch_size'])
         observed=native.audit_requests(plan,out,result)
         write_new(out/'result.json',{'status':'COMPLETE_REGISTERED_ENDPOINT_EVALUATION','plan_sha256':file_sha256(path),
+            'identity':identity,
             'job_id':os.environ['SLURM_JOB_ID'],'partition':plan['partition'],'condition':plan['condition'],'seed':plan['seed'],
             'observed':observed,'evaluation_result_sha256':file_sha256(out/'evaluation/result.json'),'scientific_method_verified':False})
     except BaseException as exc:
@@ -246,7 +288,7 @@ async def run(plan,path):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=('register','prepare','check','run'))
     for key in ('plan','reference','configuration','selection','output','registration'):p.add_argument('--'+key,type=Path,required=key=='plan')
-    p.add_argument('--condition',choices=CONDITIONS);p.add_argument('--seed',type=int,choices=(42,43,44))
+    p.add_argument('--condition',choices=REGISTERED_CONDITIONS);p.add_argument('--seed',type=int,choices=(42,43,44))
     p.add_argument('--partition',choices=('T','R','chartqa'));p.add_argument('--common-h0',action='store_true');a=p.parse_args()
     if a.action=='register':register(a.plan,a.reference,a.configuration,condition=a.condition,seed=a.seed,selection=a.selection)
     elif a.action=='prepare':prepare(a.plan,a.output,a.registration,partition=a.partition,common_h0=a.common_h0)

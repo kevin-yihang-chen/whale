@@ -39,6 +39,44 @@ def terminal_allocation(raw, job_id):
         'gpu_hours': Decimal(gpus * seconds) / 3600}
 
 
+def failed_allocation_evidence(plan_path, allocation_path):
+    """Bind a failed execution to its submitted plan and actual Slurm terminal.
+
+    A failure.json alone is not evidence that a job ended, nor that an
+    allocation evaluated this plan. Registration and reconstruction share this
+    verifier so resumed searches cannot admit weaker evidence.
+    """
+    from .visual_task import file_sha256
+    plan_path, allocation_path = Path(plan_path).resolve(), Path(allocation_path).resolve()
+    submission_path = allocation_path.parent / 'submission.json'
+    terminal_path = allocation_path.parent / 'slurm-terminal.txt'
+    plan, allocation, submission = [json.loads(p.read_text()) for p in
+        (plan_path, allocation_path, submission_path)]
+    job = allocation['job_id']
+    if (not isinstance(job, str) or not job.isdigit() or submission['job_id'] != job or
+            Path(submission['plan']).resolve() != plan_path or
+            submission['plan_sha256'] != file_sha256(plan_path)):
+        raise ValueError('Failed allocation is not bound to this submitted plan and job')
+    if file_sha256(terminal_path) != allocation['terminal_sha256']:
+        raise ValueError('Failed allocation terminal evidence changed')
+    terminal = terminal_allocation(terminal_path.read_text(), job)
+    if terminal is None or terminal['state'] == 'COMPLETED':
+        raise ValueError('Require an actual failed terminal allocation')
+    cost = Decimal(str(allocation['gpu_hours']))
+    if (terminal['state'] != allocation['state'] or terminal['seconds'] != allocation['seconds'] or
+            not cost.is_finite() or cost < 0 or abs(cost - terminal['gpu_hours']) > Decimal('0.00000001')):
+        raise ValueError('Failed allocation state, runtime or cost differs from Slurm evidence')
+    gpus = submission['gpus']
+    if (type(gpus) is not int or not 1 <= gpus <= 4 or gpus != plan['bounds']['gpus'] or
+            submission['time_limit_seconds'] != plan['bounds']['time_limit_seconds'] or
+            terminal['gpus'] not in (0, gpus) or
+            ('gpus' in allocation and allocation['gpus'] != terminal['gpus'])):
+        raise ValueError('Failed allocation resources differ from the submitted plan')
+    return {'job_id': job, 'submission_sha256': file_sha256(submission_path),
+        'terminal_sha256': file_sha256(terminal_path), 'state': terminal['state'],
+        'seconds': terminal['seconds'], 'gpus': terminal['gpus'], 'gpu_hours': str(terminal['gpu_hours'])}
+
+
 class ExecutionBudget:
     def __init__(self, path):
         self.path = Path(path)

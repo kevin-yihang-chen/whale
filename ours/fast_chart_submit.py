@@ -24,6 +24,13 @@ def submit(path, phase, kind='evaluation'):
         wrapper = ROOT / 'ours/run_fast_chart_evaluation.sh'
         expected, extra, working = (1,12,5400), [], 12
         purpose = 'Shared chart h0 calibration,3x512 V images'
+    elif kind == 'selection-probe' and plan['kind'] == 'compact_selection_probe_suite':
+        from .chart_selection_diagnostic import check
+        check(path)
+        if phase != 'core': raise ValueError('Selection diagnostic uses the existing core allocation')
+        wrapper = ROOT / 'ours/run_chart_selection_diagnostic.sh'
+        expected, extra, working = (1,12,7200), [], 12
+        purpose = 'Exploratory theta1 h1/h3 R512 selection diagnostic; no new weights or API'
     elif kind == 'throughput' and plan['kind'] == 'compact_chart_throughput_calibration':
         from .fast_chart_throughput import check
         check(path)
@@ -104,6 +111,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--plan', type=Path, required=True)
     parser.add_argument('--phase', choices=('setup','core','ablation','evaluation','retry'), required=True)
-    parser.add_argument('--kind', choices=('evaluation','training','followup','search','endpoint','throughput'), default='evaluation')
+    parser.add_argument('--kind', choices=('evaluation','training','followup','search','endpoint','throughput','selection-probe'), default='evaluation')
     args = parser.parse_args()
     submit(args.plan, args.phase, args.kind)

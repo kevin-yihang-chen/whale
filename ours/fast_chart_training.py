@@ -15,7 +15,7 @@ from .visual_task import file_sha256
 DATA = OUTPUT / 'native-data/result.json'
 MODEL = ROOT / 'data/models/qwen3.5-4b-common-bf16-v1'
 RATES = (1e-7, 1e-6, 1e-5)
-SOURCES = ('ours/fast_chart_training.py', 'ours/fast_chart_training_bootstrap.py',
+SOURCES = ('ours/fast_chart_training.py', 'ours/fast_chart_training_bootstrap.py', 'ours/local_completion.py',
     'ours/fast_chart_transport.py',
     'ours/fast_chart_training_worker.py', 'ours/run_fast_chart_training.sh',
     'ours/visual_pixel_bootstrap.py', 'ours/qwen35_visual_fused.py',
@@ -212,6 +212,7 @@ def prepare(path, output, *, calibration, seed, rate, parent_plan=None, selectio
         'harness': str(harness), 'harness_sha256': file_sha256(harness),
         'h0_calibration': str(calibration), 'parent_plan': str(parent_plan) if parent else None,
         'selection': str(selection) if parent else None, 'resume_checkpoint': parent,
+        'selection_protocol':choice.get('selection_protocol','gate_v1') if parent else None,
         'training_data': training_data, 'cpu_preflight': preflight,'augmentation':str(augmentation) if augmentation else None,
         'config': OmegaConf.to_container(cfg, resolve=True), 'model': model,
         'worker_coordinates': base.native.embedding_coordinates(MODEL),

@@ -12,8 +12,10 @@ from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
+
 import shutil
 
+from .audit_native_training_batch import require
 from . import native_visual_service as native
 from .acceptance import CandidateMetrics
 from .evidence import EvaluationIdentity, fingerprint
@@ -42,19 +44,19 @@ def decode_identity(config, model_assets):
 
 
 def prepare(path, output, reference_path, harness_path, phase, name, with_audit, repeatability_check=False):
-    assert not path.exists() and not output.exists()
-    assert name and phase and harness_path.is_file()
+    require(not path.exists() and (not output.exists()), 'Validation failed: not path.exists() and (not output.exists())')
+    require(name and phase and harness_path.is_file(), 'Validation failed: name and phase and harness_path.is_file()')
     reference = read(reference_path)
-    assert reference['mode'] == 'direct' and reference['role'] == 'V'
-    assert reference['model'] == checkpoint_manifest(Path(reference['model']['path']))
+    require(reference['mode'] == 'direct' and reference['role'] == 'V', "Validation failed: reference['mode'] == 'direct' and reference['role'] == 'V'")
+    require(reference['model'] == checkpoint_manifest(Path(reference['model']['path'])), "Validation failed: reference['model'] == checkpoint_manifest(Path(reference['model']['path']))")
     load_visual_harness(harness_path)
     materialization_path = ROOT / 'data/plotqa-evidence-native-20260910-v1/result.json'
     materialization = read(materialization_path)
     partitions = {r: materialization['partitions'][r] for r in ('H', 'C')}
     h_manifest, h_rows = single_rows(partitions['H']['manifest'])
     c_manifest, pairs, _ = pair_inputs(partitions['C']['manifest'])
-    assert len(h_rows) == 128 and len(pairs) == 64
-    assert not set(h_manifest['source_tables']) & set(c_manifest['source_tables'])
+    require(len(h_rows) == 128 and len(pairs) == 64, 'Validation failed: len(h_rows) == 128 and len(pairs) == 64')
+    require(not set(h_manifest['source_tables']) & set(c_manifest['source_tables']), "Validation failed: not set(h_manifest['source_tables']) & set(c_manifest['source_tables'])")
     plan = deepcopy(reference)
     plan.update(kind='visual_search_candidate_evaluation', created_at_utc=datetime.now(timezone.utc).isoformat(),
         role='H+C' if with_audit else 'H', output=str(output), candidate=name, phase=phase,
@@ -72,8 +74,8 @@ def prepare(path, output, reference_path, harness_path, phase, name, with_audit,
     cfg['actor_rollout_ref']['rollout'].update(max_num_seqs=1, enable_prefix_caching=False,
         enable_chunked_prefill=False)
     cfg['actor_rollout_ref']['rollout']['agent']['num_workers'] = 1
-    assert cfg['data']['visual_harness_execution'] == 'isolated'
-    assert cfg['data']['tool_config_path'] is None  # Current engineering condition, not a formal h0.
+    require(cfg['data']['visual_harness_execution'] == 'isolated', "Validation failed: cfg['data']['visual_harness_execution'] == 'isolated'")
+    require(cfg['data']['tool_config_path'] is None, "Validation failed: cfg['data']['tool_config_path'] is None")  # Current engineering condition, not a formal h0.
     plan['harness_sha256'] = file_sha256(harness_path)
     plan['decode_sha256'] = decode_identity(cfg, plan['model']['assets'])
     plan['identity'] = asdict(EvaluationIdentity(plan['model']['weights_sha256'], partitions['H']['manifest_sha256'],
@@ -81,7 +83,7 @@ def prepare(path, output, reference_path, harness_path, phase, name, with_audit,
     plan['source_sha256'].update({p: file_sha256(ROOT / p) for p in EXTRA})
     plan['source_sha256'][str(harness_path)] = plan['harness_sha256']
     for p, digest in plan['source_sha256'].items():
-        assert file_sha256(ROOT / p) == digest, p
+        require(file_sha256(ROOT / p) == digest, p)
     plan['batch_size'] = 1
     plan['repeatability_check'] = repeatability_check
     images = (256 if with_audit else 128) * (2 if repeatability_check else 1)
@@ -103,22 +105,22 @@ def prepare(path, output, reference_path, harness_path, phase, name, with_audit,
 
 def check(path):
     plan = read(path)
-    assert plan['kind'] == 'visual_search_candidate_evaluation'
-    assert file_sha256(Path(plan['reference_plan'])) == plan['reference_plan_sha256']
+    require(plan['kind'] == 'visual_search_candidate_evaluation', "Validation failed: plan['kind'] == 'visual_search_candidate_evaluation'")
+    require(file_sha256(Path(plan['reference_plan'])) == plan['reference_plan_sha256'], "Validation failed: file_sha256(Path(plan['reference_plan'])) == plan['reference_plan_sha256']")
     for name, digest in plan['source_sha256'].items():
-        assert file_sha256(ROOT / name) == digest, name
-    assert checkpoint_manifest(Path(plan['model']['path'])) == plan['model']
-    assert file_sha256(Path(plan['materialization'])) == plan['materialization_sha256']
+        require(file_sha256(ROOT / name) == digest, name)
+    require(checkpoint_manifest(Path(plan['model']['path'])) == plan['model'], "Validation failed: checkpoint_manifest(Path(plan['model']['path'])) == plan['model']")
+    require(file_sha256(Path(plan['materialization'])) == plan['materialization_sha256'], "Validation failed: file_sha256(Path(plan['materialization'])) == plan['materialization_sha256']")
     for item in plan['partitions'].values():
         for key in ('manifest', 'parquet'):
-            assert file_sha256(Path(item[key])) == item[key + '_sha256']
-    assert plan['decode_sha256'] == decode_identity(plan['config'], plan['model']['assets'])
+            require(file_sha256(Path(item[key])) == item[key + '_sha256'], "Validation failed: file_sha256(Path(item[key])) == item[key + '_sha256']")
+    require(plan['decode_sha256'] == decode_identity(plan['config'], plan['model']['assets']), "Validation failed: plan['decode_sha256'] == decode_identity(plan['config'], plan['model']['assets'])")
     rollout = plan['config']['actor_rollout_ref']['rollout']
-    assert plan['batch_size'] == rollout['max_num_seqs'] == rollout['agent']['num_workers'] == 1
-    assert not rollout['enable_prefix_caching'] and not rollout['enable_chunked_prefill']
-    assert EvaluationIdentity(**plan['identity']).verifier_sha256 == verifier_identity()
-    assert not Path(plan['output']).exists()
-    assert shutil.disk_usage(ROOT).free >= sum(plan['storage'].values()) * 1024**3
+    require(plan['batch_size'] == rollout['max_num_seqs'] == rollout['agent']['num_workers'] == 1, "Validation failed: plan['batch_size'] == rollout['max_num_seqs'] == rollout['agent']['num_workers'] == 1")
+    require(not rollout['enable_prefix_caching'] and (not rollout['enable_chunked_prefill']), "Validation failed: not rollout['enable_prefix_caching'] and (not rollout['enable_chunked_prefill'])")
+    require(EvaluationIdentity(**plan['identity']).verifier_sha256 == verifier_identity(), "Validation failed: EvaluationIdentity(**plan['identity']).verifier_sha256 == verifier_identity()")
+    require(not Path(plan['output']).exists(), "Validation failed: not Path(plan['output']).exists()")
+    require(shutil.disk_usage(ROOT).free >= sum(plan['storage'].values()) * 1024 ** 3, "Validation failed: shutil.disk_usage(ROOT).free >= sum(plan['storage'].values()) * 1024 ** 3")
     return plan
 
 
@@ -126,14 +128,14 @@ async def evaluate_h(manager, dataset, manifest_path, output, batch_size=1):
     from verl import DataProto
     from verl.utils.dataset.rl_dataset import collate_fn
     manifest, expected_rows = single_rows(manifest_path)
-    assert manifest['role'] == 'H'
+    require(manifest['role'] == 'H', "Validation failed: manifest['role'] == 'H'")
     expected = {r['visual_sample_id']: r for r in expected_rows}
-    assert len(dataset) == len(expected) == 128
+    require(len(dataset) == len(expected) == 128, 'Validation failed: len(dataset) == len(expected) == 128')
     incoming = list(dataset.dataframe)
-    assert len({r['visual_sample_id'] for r in incoming}) == 128
+    require(len({r['visual_sample_id'] for r in incoming}) == 128, "Validation failed: len({r['visual_sample_id'] for r in incoming}) == 128")
     for row in incoming:
         target = expected[row['visual_sample_id']]
-        assert all(row[k] == target[k] for k in ('prompt', 'images', 'reward_model', 'data_source'))
+        require(all((row[k] == target[k] for k in ('prompt', 'images', 'reward_model', 'data_source'))), "Validation failed: all((row[k] == target[k] for k in ('prompt', 'images', 'reward_model', 'data_source')))")
     output.mkdir()
     records, artifacts = {}, {}
     try:
@@ -147,26 +149,26 @@ async def evaluate_h(manager, dataset, manifest_path, output, batch_size=1):
             artifacts[archive.name] = file_sha256(archive)
             meta = result.non_tensor_batch
             actual_ids = meta['visual_sample_id'].tolist()
-            assert len(result) == len(set(actual_ids)) == len(items)
-            assert set(actual_ids) == {r['visual_sample_id'] for r in items}
+            require(len(result) == len(set(actual_ids)) == len(items), 'Validation failed: len(result) == len(set(actual_ids)) == len(items)')
+            require(set(actual_ids) == {r['visual_sample_id'] for r in items}, "Validation failed: set(actual_ids) == {r['visual_sample_id'] for r in items}")
             for i, sample in enumerate(actual_ids):
-                assert sample not in records and meta['visual_harness_sha256'][i] == dataset.visual_harness.sha256
+                require(sample not in records and meta['visual_harness_sha256'][i] == dataset.visual_harness.sha256, "Validation failed: sample not in records and meta['visual_harness_sha256'][i] == dataset.visual_harness.sha256")
                 raw, committed = meta['visual_final_answer'][i], meta['visual_committed_answer'][i]
-                assert dataset.visual_harness.invoke('parse_answer', text=raw) == committed
+                require(dataset.visual_harness.invoke('parse_answer', text=raw) == committed, "Validation failed: dataset.visual_harness.invoke('parse_answer', text=raw) == committed")
                 correct = int(binary_answer_verifier(committed, expected[sample]['reward_model']['ground_truth']))
                 mask = result.batch['response_mask'][i]
                 attention = result.batch['attention_mask'][i, -len(mask):]
                 scores = result.batch['rm_scores'][i]
-                assert bool(((mask == 0) | (mask == 1)).all()) and not bool((mask > attention).any())
-                assert scores.sum().item() == correct
-                assert scores.nonzero().flatten().tolist() == ([int(attention.sum()) - 1] if correct else [])
+                require(bool(((mask == 0) | (mask == 1)).all()) and (not bool((mask > attention).any())), 'Validation failed: bool(((mask == 0) | (mask == 1)).all()) and (not bool((mask > attention).any()))')
+                require(scores.sum().item() == correct, 'Validation failed: scores.sum().item() == correct')
+                require(scores.nonzero().flatten().tolist() == ([int(attention.sum()) - 1] if correct else []), 'Validation failed: scores.nonzero().flatten().tolist() == ([int(attention.sum()) - 1] if correct else [])')
                 calls, tokens = meta['visual_policy_calls'][i], meta['visual_generated_tokens'][i]
-                assert type(calls) is int and calls > 0 and type(tokens) is int and tokens >= int(mask.sum())
+                require(type(calls) is int and calls > 0 and (type(tokens) is int) and (tokens >= int(mask.sum())), 'Validation failed: type(calls) is int and calls > 0 and (type(tokens) is int) and (tokens >= int(mask.sum()))')
                 records[sample] = {'sample_id': sample, 'raw_answer': raw, 'committed_answer': committed,
                     'correct': correct, 'native_turns': int(meta['__num_turns__'][i]), 'policy_calls': calls,
                     'generated_tokens': tokens, 'tool_trace': meta['visual_harness_tool_trace'][i]}
             native.write_new(output / f'batch-{offset // batch_size:04d}.json', [records[k] for k in actual_ids])
-        assert set(records) == set(expected)
+        require(set(records) == set(expected), 'Validation failed: set(records) == set(expected)')
         dataset.visual_harness.unchanged()
         ordered = [records[r['visual_sample_id']] for r in expected_rows]
         result = {'status': 'COMPLETE_NATIVE_H_EVALUATION', 'role': 'H', 'examples': len(ordered),
@@ -191,8 +193,8 @@ async def run(plan, path):
     import torch
     from omegaconf import OmegaConf
     from .native_visual_agent_observation import ObservedVisualAgentManager
-    assert torch.cuda.device_count() == 1 and 'H800' in torch.cuda.get_device_name(0)
-    assert int(os.environ['SLURM_CPUS_PER_TASK']) == 12
+    require(torch.cuda.device_count() == 1 and 'H800' in torch.cuda.get_device_name(0), "Validation failed: torch.cuda.device_count() == 1 and 'H800' in torch.cuda.get_device_name(0)")
+    require(int(os.environ['SLURM_CPUS_PER_TASK']) == 12, "Validation failed: int(os.environ['SLURM_CPUS_PER_TASK']) == 12")
     output = Path(plan['output'])
     output.mkdir()
     for name in ('requests', 'workers'):
@@ -230,7 +232,7 @@ async def run(plan, path):
             def differences(a, b):
                 left = {r['sample_id']: r for r in a['records']}
                 right = {r['sample_id']: r for r in b['records']}
-                assert set(left) == set(right) and len(left) == 128
+                require(set(left) == set(right) and len(left) == 128, 'Validation failed: set(left) == set(right) and len(left) == 128')
                 return {field: sum(left[k][field] != right[k][field] for k in left)
                         for field in ('committed_answer', 'raw_answer', 'native_turns')}
             repeated = {'H': differences(h, again_h)}

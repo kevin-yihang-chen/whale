@@ -11,9 +11,10 @@ from pathlib import Path
 from .acceptance import EvidenceConstrainedAcceptance
 from .adapter import WHALEAcceptanceAdapter
 from .chart_answer_protocol import decode_truth, number, parse_answer, verify
+from .chart_selection_protocol import selection_modes
 from .evidence import EvaluationIdentity, fingerprint
 from .fast_chart_protocol import OUTPUT
-from .fast_chart_search import load, read, SLOTS
+from .fast_chart_search import load, read, SLOTS, verified_failure, candidate_slots
 from .fast_chart_search_evaluation import certify
 from .native_visual_service import write_new
 from .visual_search_bridge import boundary
@@ -55,6 +56,8 @@ def reconstruct(root):
     result = read(root/'result.json')
     if result['status'] != 'COMPLETE_COMPACT_SEARCH_AND_SELECTION':
         raise ValueError('A partial search cannot enter the completed comparison table')
+    if result.get('schema_version') != 2:
+        raise ValueError('Legacy searches must be reconstructed with their preserved verifier source')
     from meta_harness import meta_harness_chess_puzzle as native
     plan = load(root)
     evidence, archive, failed, allocations = {}, [], {}, {}
@@ -83,29 +86,34 @@ def reconstruct(root):
         if good.exists():
             keep(good)
             measurement(read(good))
+            if archive[-1]['candidate'].name != name or archive[-1]['result']['identity'] != plan['identity']:
+                raise ValueError('Measurement belongs to another candidate slot or phase')
         else:
             keep(bad)
-            failure = read(bad)
-            if failure.get('status') != 'FAILED_CANDIDATE_CONSUMED_SLOT' or failure.get('candidate') != name:
-                raise ValueError('Incomplete failed-slot record')
+            failure = verified_failure(root, name, plan)
             if 'allocation' in failure:
                 for key in ('plan', 'allocation'):
-                    if file_sha256(Path(failure[key])) != failure[key+'_sha256']:
-                        raise ValueError('Failed allocation evidence changed')
                     keep(failure[key])
                 allocation = read(failure['allocation'])
                 failed_output = Path(read(failure['plan'])['output'])/'failure.json'
-                if allocation['state'] == 'COMPLETED' or file_sha256(failed_output) != failure['failure_sha256']:
-                    raise ValueError('Failed execution lacks matching terminal evidence')
                 keep(failed_output)
+                for filename in ('submission.json', 'slurm-terminal.txt'):
+                    keep(Path(failure['allocation']).parent/filename)
                 allocations[failure['allocation']] = allocation
             failed[name] = failure
+    slots = candidate_slots(root, archive, plan)
+    slots_path = root/'candidate-slots.json'
+    slots_sha = file_sha256(slots_path)
+    if (result['candidate_slots_sha256'] != slots_sha or
+            any(result[key] != value for key, value in slots['counts'].items())):
+        raise ValueError('Final search result differs from its complete candidate slots')
+    keep(slots_path)
     identity = EvaluationIdentity(**plan['identity'])
     comparison_path = root/'search/logs/iteration_001/comparison.json'
     comparison = read(comparison_path)
     stage = 'early_stop' if comparison['early_stop'] else 'ordinary'
     decisions = {}
-    for condition, mode in (('whale', 'off'), ('veto', 'paired'), ('marginal_gate', 'marginal_gate')):
+    for condition, mode in selection_modes(plan):
         saved_path = root/f'selection-{condition}.json'
         restored_path = root/f'restored-selection-{condition}.json'
         saved, restored = read(saved_path), read(restored_path)
@@ -115,6 +123,8 @@ def reconstruct(root):
         resumed = boundary(adapter, native, root/'search', archive, identity, stage='resume', resume=saved['receipt'], **kwargs)
         actual_archive = {i['candidate'].name: {'candidate': asdict(i['candidate']), 'audit': asdict(i['audit'])} for i in archive}
         if (saved['status'] != 'COMPLETE_COMPACT_SELECTION' or saved['condition'] != condition or
+                saved.get('selection_protocol','gate_v1') != plan.get('selection_protocol','gate_v1') or
+                saved['candidate_slots_sha256'] != slots_sha or saved['candidate_counts'] != slots['counts'] or
                 saved['identity'] != plan['identity'] or saved['parent_plan_sha256'] != plan['parent_plan_sha256'] or
                 fingerprint(saved['archive']) != fingerprint(actual_archive) or
                 saved['accepted_harness'] != result['selections'][condition] or
@@ -142,6 +152,8 @@ def reconstruct(root):
             'C': answer_categories(c['records'], c_truth)}
         rows.append(row)
     return {'status': 'COMPLETE_RECONSTRUCTED_SEARCH_REPORT', 'search': str(root), 'seed': plan['seed'],
+        'selection_protocol':plan.get('selection_protocol','gate_v1'),
+        'candidate_counts': slots['counts'],
         'rows': rows, 'failed_slots': failed, 'decisions': decisions,
         'equivalent_decisions': equivalent, 'evidence_sha256': evidence,
         'candidate_evaluation_gpu_hours': str(sum((Decimal(a['gpu_hours']) for a in allocations.values()), Decimal(0))),
@@ -159,7 +171,8 @@ def latex(report):
         lines.append(name+r' & \multicolumn{3}{c}{Failed; no score assigned}\\')
     lines.extend([r'\bottomrule\end{tabular}',
         r'\caption{Complete fixed-weight optimization archive. These are H/C selection measurements, not independent method results.}\end{table}'])
-    labels = {'whale': 'WHALE', 'veto': 'VETO', 'marginal_gate': 'Marginal gate'}
+    labels = {'whale': 'WHALE', 'veto': 'VETO', 'marginal_gate': 'Marginal gate',
+              'marginal_rank_floor':'Marginal ranking with competence floor'}
     lines.append('Selections: '+', '.join(labels[k]+' '+v['accepted_harness'] for k,v in report['decisions'].items())+'.')
     if report['equivalent_decisions']:
         lines.append('All three rules select the same harness; this archive supplies no evidence of an independent VETO selection benefit.')

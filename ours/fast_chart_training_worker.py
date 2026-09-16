@@ -7,6 +7,7 @@ from .native_visual_model_worker import NativeVisualModelWorker
 from .probe_updated_vllm import worker_embedding_samples
 from .native_resume_observation import publish
 from .visual_task import file_sha256
+from .local_completion import checkpoint_tensor
 
 
 class CompactChartModelWorker(NativeVisualModelWorker):
@@ -24,16 +25,14 @@ class CompactChartModelWorker(NativeVisualModelWorker):
             model_path=directory/'actor/model_world_size_1_rank_0.pt'
             state=torch.load(model_path,map_location='cpu',weights_only=True,mmap=True)
             embedding=state['model.language_model.embed_tokens.weight']
-            from safetensors import safe_open
-            with safe_open(str(Path(plan['model']['path'])/'model.safetensors'),framework='pt',device='cpu') as reader:
-                initial=reader.get_tensor('model.language_model.embed_tokens.weight')
-                changed=[]
-                for start in range(0,len(initial),128):
-                    hits=torch.nonzero(embedding[start:start+128].to(torch.bfloat16)!=initial[start:start+128],as_tuple=False)[:8-len(changed)]
-                    changed.extend({'token_id':start+int(row),'column':int(col)} for row,col in hits)
-                    if len(changed)==8:break
-                if changed:
-                    coordinates=changed;distinguishes=True
+            initial=checkpoint_tensor(Path(plan['model']['path']),'model.language_model.embed_tokens.weight')
+            changed=[]
+            for start in range(0,len(initial),128):
+                hits=torch.nonzero(embedding[start:start+128].to(torch.bfloat16)!=initial[start:start+128],as_tuple=False)[:8-len(changed)]
+                changed.extend({'token_id':start+int(row),'column':int(col)} for row,col in hits)
+                if len(changed)==8:break
+            if changed:
+                coordinates=changed;distinguishes=True
             expected=[float(embedding[p['token_id'],p['column']].to(torch.bfloat16)) for p in coordinates]
             digest=file_sha256(model_path)
         actual=worker_embedding_samples(self.model_runner.get_model(),coordinates)

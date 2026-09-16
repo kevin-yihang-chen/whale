@@ -1,5 +1,25 @@
 # Compact VETO execution and evidence map
 
+## First native cycle completed (2026-09-16 10:08 HKT)
+
+Jobs233990/234097 completed; controller2574402 exited after its bounded task.
+No allocation remains active. Reconstructed evidence is in
+`data/fast-chart-20260915-v1/first-cycle-report-v2/result.json`.
+The V trajectory is452/512 and214/256 initially;448/512 and207/256 after stage1;
+447/512 and212/256 after stage2 with h3. All three gates selected h3. This is
+not an independent gate comparison, and unexecuted branches are not imputed.
+
+Build with the existing calibration, search and case options plus
+`--cycle-report data/fast-chart-20260915-v1/first-cycle-report-v2`.
+Current local draft: `paper-build-v19`. The complete cycle reporter is
+`python -m ours.fast_chart_cycle_report --cycle data/fast-chart-20260915-v1/first-cycle-controller-v1/result.json --configuration data/fast-chart-20260915-v1/lr-calibration-v3/result.json --output <fresh-output-under-compact-root>`.
+This is read-only E4 evidence reconstruction; it performs no training or API call.
+
+Remaining full scope and exact deletion/phase questions are in
+`ours/fast_chart_resource_decisions_20260916.md`; no approval is inferred from
+elapsed time or the earlier GitHub-publication request. Current settled GPU
+cost15.938333h, no reservation. Full remaining costs count completed work once.
+
 This is the authorized2026-09-15 scope. The51-condition schedule, Chess, CLEVR,
 and2B remain historical and paused. The scientific VETO claim is unvalidated.
 

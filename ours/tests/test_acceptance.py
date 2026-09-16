@@ -27,6 +27,43 @@ def audits():
             for c, values in zip(CANDIDATES, (((1, 1), (0, 0)), ((1, 0), (0, 1)), ((1, 1), (0, 0))))}
 
 
+@pytest.mark.parametrize('mode', ['paired_rank', 'marginal_rank_floor'])
+def test_evidence_ranking_requires_competence_and_fixed_incoming(mode):
+    candidates = tuple(CandidateMetrics(n,digest(n),a,t) for n,a,t in
+                       [('h0',.6,3),('below',.59,1),('slow',.7,3),('fast',.7,2),('tie',.7,2)])
+    evidence = {c.name:AuditReceipt(IDENTITY,c.harness_sha256,'C',('a','b'),
+                    ((1,1),(1,1)) if c.name == 'below' else ((1,1),(0,0))) for c in candidates}
+    select = lambda rule: rule.select(candidates,incoming='h0',identity=IDENTITY,audits=evidence)
+    result = select(EvidenceConstrainedAcceptance(mode))
+    assert result.selected == 'fast'  # Accuracy, then turns, then original order.
+    assert result.rejected == ('below',)
+    assert select(EvidenceConstrainedAcceptance(mode,accuracy_tolerance=.01)).selected == 'below'
+    assert select(EvidenceConstrainedAcceptance(mode,accuracy_tolerance=.009)).selected == 'fast'
+
+
+def test_matched_marginal_control_differs_only_in_primary_score():
+    candidates = tuple(CandidateMetrics(n,digest(n),a,2) for n,a in [('h0',.6),('paired',.7),('single',.8)])
+    values = [((1,1),(0,0)),((1,1),(0,0)),((1,0),(0,1))]
+    evidence = {c.name:AuditReceipt(IDENTITY,c.harness_sha256,'C',('a','b'),v) for c,v in zip(candidates,values)}
+    selected = {m:EvidenceConstrainedAcceptance(m).select(candidates,incoming='h0',identity=IDENTITY,audits=evidence).selected
+                for m in ('paired_rank','marginal_rank_floor')}
+    assert selected == {'paired_rank':'paired','marginal_rank_floor':'single'}
+    for mode in selected:
+        with pytest.raises(ValueError):
+            EvidenceConstrainedAcceptance(mode).select(candidates,incoming='h0',identity=IDENTITY,audits={'h0':evidence['h0']})
+
+
+def test_rank_resume_binds_competence_tolerance():
+    kwargs = dict(original_selector=lambda:'shortcut', incoming='incoming', archive_provider=lambda:CANDIDATES,
+                  audit_provider=lambda c:audits()[c.name], identity=IDENTITY)
+    a = WHALEAcceptanceAdapter(EvidenceConstrainedAcceptance('paired_rank'))
+    winner, receipt = a.decide(stage='ordinary',**kwargs)
+    assert a.decide(stage='resume',resume_receipt=receipt,**kwargs)[0] == winner
+    changed = WHALEAcceptanceAdapter(EvidenceConstrainedAcceptance('paired_rank',accuracy_tolerance=.01))
+    with pytest.raises(ValueError): changed.decide(stage='resume',resume_receipt=receipt,**kwargs)
+    with pytest.raises(ValueError): EvidenceConstrainedAcceptance('paired',accuracy_tolerance=.01)
+
+
 def test_pair_success_requires_both_answers():
     pairs = [VisualPair("p", "source", "Which bar?", (digest("img1"), digest("img2")), ("A", "B"))]
     identity = replace(IDENTITY, audit_data_sha256=fingerprint([asdict(p) for p in pairs]))

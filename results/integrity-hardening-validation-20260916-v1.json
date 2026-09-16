@@ -1,0 +1,111 @@
+{
+  "status": "PASS_INTEGRITY_HARDENING_REGRESSION",
+  "time_utc": "2026-09-16T06:44:07.391723+00:00",
+  "prior_commit": "c131b8511ed9328aaf2f49955025d4570f7b4a6e",
+  "tests": {
+    "normal": {
+      "path": "results/integrity-hardening-tests-20260916-v1/normal.log.gz",
+      "sha256": "76347ea55ade45cb78fca3230884fca62aaf9739134b836ee8132377bb7c8ee5",
+      "tests": 51,
+      "status": "PASS",
+      "uncompressed_sha256": "d856c244724f9de91747a04da84705660fb35fce36ca6184a2d0ae68f300a805",
+      "encoding": "gzip; exact captured bytes"
+    },
+    "optimized": {
+      "path": "results/integrity-hardening-tests-20260916-v1/optimized.log.gz",
+      "sha256": "cd1a375974dad866280f29320c99fbee3ca9cc6ccdb0788d434f864dfd297f5c",
+      "tests": 38,
+      "status": "PASS",
+      "uncompressed_sha256": "c63ee8963c930f013cb129e16783323d495c747d8d33ff9994fc4b28f70b85b1",
+      "encoding": "gzip; exact captured bytes"
+    },
+    "checkpoint": {
+      "path": "results/integrity-hardening-tests-20260916-v1/checkpoint.log.gz",
+      "sha256": "9d557dd0a15a1145e8902a972fb558c6d8a44763c7099eec232d1cf5837ae077",
+      "tests": 4,
+      "status": "PASS",
+      "uncompressed_sha256": "4411b877d5771fc1e4342c11d5cada44ce93ed7b3a6de21693ca4dcc3342143b",
+      "encoding": "gzip; exact captured bytes"
+    }
+  },
+  "unique_normal_tests": 55,
+  "optimized_repeated_tests": 38,
+  "normal_modules": [
+    "ours.tests.test_research_integrity_hardening",
+    "ours.tests.test_visual_resumed_parameters",
+    "ours.tests.test_qwen35_visual_fused",
+    "ours.tests.test_fast_chart_search",
+    "ours.tests.test_visual_search_bridge",
+    "ours.tests.test_fast_chart_endpoint_integrity",
+    "ours.tests.test_fast_chart_search_report",
+    "ours.tests.test_research_execution_budget",
+    "ours.tests.test_native_visual_service",
+    "ours.tests.test_fast_chart_training",
+    "ours.tests.test_fast_chart_inference_policy",
+    "ours.tests.test_fast_chart_cycle_report"
+  ],
+  "optimized_modules": [
+    "ours.tests.test_research_integrity_hardening",
+    "ours.tests.test_visual_resumed_parameters",
+    "ours.tests.test_qwen35_visual_fused",
+    "ours.tests.test_fast_chart_search",
+    "ours.tests.test_visual_search_bridge",
+    "ours.tests.test_fast_chart_endpoint_integrity",
+    "ours.tests.test_fast_chart_search_report",
+    "ours.tests.test_research_execution_budget"
+  ],
+  "additional_pytest": "python -B -m pytest -q -p no:cacheprovider ours/tests/test_local_completion.py",
+  "runtime": "data/training-runtime-v1/bin/python -B; add -O for optimized suite",
+  "environment": {
+    "HF_HUB_OFFLINE": "1",
+    "TRANSFORMERS_OFFLINE": "1",
+    "HF_DATASETS_OFFLINE": "1",
+    "TOKENIZERS_PARALLELISM": "false",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONPATH": "data/visual-runtime-overlay-v1:ours/compat:upstream/WHALE/domains/chess_puzzles:."
+  },
+  "source_sha256": {
+    "ours/fast_chart_endpoint_evaluation.py": "5ca116fcb90e67d049035badf79a971a4fe53900f366cedf232682e7b79e065a",
+    "ours/fast_chart_search.py": "6172b1ded040316b843dfeb981643430adc7747d476e8f9f25962188e3a9481c",
+    "ours/fast_chart_search_evaluation.py": "f7f6d4687e8ee02f72e579d6ff8f7cea502deb27db6dd2928f007cb671fee7de",
+    "ours/fast_chart_search_report.py": "7b653e0d37535f95f7214006e69c5c5ad4934776a82ace6f0bbb17c1010a14f1",
+    "ours/fast_chart_training.py": "3c94109df837c56875398a9f6a33faae2c096d0962f6fa07318df79ad2153951",
+    "ours/fast_chart_training_worker.py": "9589ed7be50f67540fc7d852ddf4890278f3de1e3dffc976d1f2db134c6aa550",
+    "ours/local_completion.py": "05c124f286e96c337ba8ac334eb85df45c41e0bd6c897dba2cac379315650830",
+    "ours/native_visual_service.py": "4e4df2bf0197b4f84801b519fa3b5342d08859a3d4adc0e34395579eb3f31cf7",
+    "ours/observe_research_allocation.py": "6bbdec0a4f2998fc890969513afe7591c8cdd10d54f41ec795317c110bc36b20",
+    "ours/qwen35_visual_fused.py": "3dd060c66a2c13f5a718901d4d1a2c3d44dba2e970808f41437a8ca0e2fa2666",
+    "ours/research_budget.py": "3b7a07f38b8ba1fe4aab265544470267ff48e30e9cbfa0e34556170a7556a2eb",
+    "ours/tests/test_fast_chart_endpoint_integrity.py": "77be44ae5c4aff3b35fb940883457613cced4534936daa2f7f53c52094aa3cde",
+    "ours/tests/test_fast_chart_search.py": "9656bc002515980bd75e8944ffad9c0b0d7d158cc01556d54aa821e055712229",
+    "ours/tests/test_qwen35_visual_fused.py": "68bbf07075e62a4509b3727143334ae294e55f2649ab316fbdee386f80570524",
+    "ours/tests/test_visual_resumed_parameters.py": "84a4f8f6931d1c29e2c01b477cbebe4482aa8d9edc6d8624c19273222099e4cc",
+    "ours/verify_visual_resumed_parameters.py": "7d58c9c94bc3670f2b9ec052b11b824e8d75d909a7999f28259e146ac76b156e",
+    "ours/visual_search_bridge.py": "7e5529c48ca00b7c176c5a2e64dc6d1849a80f757063f80dbb94cc98a82870d1",
+    "ours/visual_search_evaluation.py": "fc9a55c666cbbbe61fc7e0746718f9a560e63f504e2fad5c4f568f9bbcd29604",
+    "ours/tests/test_research_integrity_hardening.py": "b3ce76c96920aa399b2acfdeb81df2244e50b95b31a7d1602d73fdf042c9834b",
+    "ours/history/integrity-hardening-20260916-v1/recheck_historical.py": "20178cc038bc7a8d1666c27c5297fd7240d4a725eae15cd9daf44b4921c381ad"
+  },
+  "historical_audit": {
+    "path": "results/integrity-hardening-historical-audit-20260916-v1.json",
+    "sha256": "1d3a10ea72fe460fa9f851480dd771aa505b2a8f16b7476b6661a5ffc141451e",
+    "checked_files": 244,
+    "answers_revalidated": 2816,
+    "decisions": {
+      "whale": "h3",
+      "veto": "h3",
+      "marginal_gate": "h3"
+    }
+  },
+  "git_diff_check": "PASS",
+  "gpu_jobs_submitted": 0,
+  "api_calls": 0,
+  "limitations": [
+    "CPU and stored-evidence verification; no fresh 4B GPU training or inference.",
+    "Native dataset construction used local multiprocess IPC outside the sandbox, offline.",
+    "Historical plans are not rewritten; v2 search reports require v2 slot manifests.",
+    "Research resource approvals and scientific evidence status are unchanged."
+  ]
+}

@@ -22,6 +22,10 @@ def forward_with_visual_evidence(
     from verl.models.transformers.dense_common import CausalLMOutputForPPO
     from verl.utils.experimental.torch_functional import FusedLinearForPPO
 
+    if labels is not None:
+        raise ValueError('Visual fused RSFT uses input_ids and an external response_mask; labels are unsupported')
+    if input_ids is None:
+        raise ValueError('Visual fused token likelihood requires input_ids')
     if not return_dict or logits_to_keep != 0:
         raise ValueError('Visual fused training requires full token positions and return_dict=True')
     if kwargs:
@@ -49,12 +53,9 @@ def forward_with_visual_evidence(
         output_attentions=output_attentions, output_hidden_states=output_hidden_states,
         return_dict=True, cache_position=cache_position,
     )
-    targets = labels if labels is not None else input_ids
-    if targets is None:
-        raise ValueError('Token likelihood requires labels or input_ids')
     log_probs, entropy = FusedLinearForPPO().forward(
         hidden_states=outputs[0], vocab_weights=self.lm_head.weight,
-        input_ids=torch.roll(targets, shifts=-1, dims=-1), temperature=temperature,
+        input_ids=torch.roll(input_ids, shifts=-1, dims=-1), temperature=temperature,
     )
     return CausalLMOutputForPPO(
         log_probs=log_probs, entropy=entropy, past_key_values=outputs.past_key_values,

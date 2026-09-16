@@ -146,10 +146,31 @@ def illustrative_case(directory):
         'images':case['images'],'claim':'Post-hoc reasoning-failure illustration, not causal visual non-use or a VETO benefit.'}
 
 
-def build(output, configuration=None, search_report=None, case=None):
+def cycle_table(directory):
+    """Only a complete, evidence-bound E4 trajectory may populate this table."""
+    from .fast_chart_cycle_report import latex
+    directory = Path(directory).resolve()
+    report_path, table_path = directory/'result.json', directory/'cycle-development.tex'
+    report, manifest = json.loads(report_path.read_text()), json.loads((directory/'manifest.json').read_text())
+    if (report['status'] != 'COMPLETE_RECONSTRUCTED_FIRST_CYCLE'
+            or manifest['report_sha256'] != file_sha256(report_path)
+            or manifest['table_sha256'] != file_sha256(table_path)
+            or manifest['source_sha256'] != file_sha256(ROOT/'ours/fast_chart_cycle_report.py')
+            or table_path.read_text() != latex(report)):
+        raise ValueError('Cycle table differs from its completed report and source')
+    for path, digest in report['evidence_sha256'].items():
+        if file_sha256(Path(path)) != digest:
+            raise ValueError('Cycle table evidence changed')
+    return table_path.read_text(), {'report':str(report_path), 'report_sha256':file_sha256(report_path),
+        'table_sha256':file_sha256(table_path), 'equivalent_decisions':report['equivalent_decisions'],
+        'claim':'Completed E4 cycle and descriptive V trajectory; no independent VETO effect.'}
+
+
+def build(output, configuration=None, search_report=None, case=None, cycle_report=None):
     lr_table = learning_rate_table(configuration) if configuration is not None else None
     selection_table = search_table(search_report) if search_report is not None else None
     case_section = illustrative_case(case) if case is not None else None
+    cycle_section = cycle_table(cycle_report) if cycle_report is not None else None
     output=Path(output).resolve()
     if output.exists() or not output.is_relative_to(OUTPUT):raise ValueError('Require a fresh manuscript build')
     storage_check(1);output.mkdir()
@@ -197,6 +218,20 @@ def build(output, configuration=None, search_report=None, case=None):
         for name in case_section[1]['images']:
             shutil.copyfile(Path(case)/name, output/name)
         index['illustrative_case'] = case_section[1]
+    if cycle_section is not None:
+        (output/'cycle-development.tex').write_text(cycle_section[0])
+        index['completed_first_cycle'] = cycle_section[1]
+        cycle = json.loads(Path(cycle_section[1]['report']).read_text())
+        initial, prefix, final = [cycle['development'][k] for k in ('initial','prefix','continued')]
+        overview = (r'\paragraph{Completed single-cycle check.} '
+            f"The seed 42 continuation accepted {cycle['training']['successful_trajectories']}/256 trajectories and completed "
+            f"{cycle['training']['optimizer_updates']} native updates. Development paired correctness changed from "
+            f"{prefix['pairs_correct']}/256 to {final['pairs_correct']}/256; the initial model scored {initial['pairs_correct']}/256. "
+            f"Single-image correctness changed from {prefix['images_correct']}/512 to {final['images_correct']}/512. "
+            'All three selection rules chose h3, and only the prospectively specified continuation was executed. '
+            'Both the weights and evaluation harness changed. This trajectory is not an independent VETO effect; '
+            'the remaining seeds, control branches and test endpoints are pending.\n')
+        (output/'cycle-overview.tex').write_text(overview)
     write_new(output/'claim-evidence-index.json',index)
     env={**os.environ,'XDG_CACHE_HOME':str(sources/'tex-cache')}
     for name in ('main','supplement'):
@@ -212,5 +247,5 @@ def build(output, configuration=None, search_report=None, case=None):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--configuration',type=Path);p.add_argument('--search-report',type=Path)
-    p.add_argument('--case',type=Path)
-    a=p.parse_args();build(a.output,a.configuration,a.search_report,a.case)
+    p.add_argument('--case',type=Path);p.add_argument('--cycle-report',type=Path)
+    a=p.parse_args();build(a.output,a.configuration,a.search_report,a.case,a.cycle_report)

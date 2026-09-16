@@ -10,7 +10,9 @@ from unittest.mock import patch
 from .acceptance import EvidenceConstrainedAcceptance
 from .adapter import WHALEAcceptanceAdapter
 from .chart_answer_protocol import decode_truth
-from .evidence import EvaluationIdentity
+from .chart_proposal_feedback import summarize, proposal_prompt
+from .chart_selection_protocol import PROTOCOLS, selection_modes
+from .evidence import EvaluationIdentity, fingerprint
 from .fast_chart_protocol import ROOT,OUTPUT
 from .fast_chart_search_evaluation import certify
 from .glm_gateway import BudgetJournal,MODEL
@@ -18,6 +20,7 @@ from .isolated_visual_harness import load_isolated_visual_harness
 from .native_search import tree_hashes
 from .native_visual_service import write_new
 from .scoped_proposer import isolated_native_proposal
+from .research_budget import failed_allocation_evidence
 from .visual_search_bridge import boundary,once,PhaseBoundary
 from .visual_task import file_sha256
 
@@ -28,7 +31,8 @@ SLOTS=('h1','h2','h3')
 def read(path):return json.loads(Path(path).read_text())
 
 
-def init(root,baseline_plan,allocation,*,parent_plan=None):
+def init(root,baseline_plan,allocation,*,parent_plan=None,selection_protocol='evidence_v2'):
+    selection_modes({'selection_protocol':selection_protocol})
     root=Path(root).resolve()
     if root.exists() or not root.is_relative_to(OUTPUT):raise ValueError('Require fresh compact search root')
     base=certify(baseline_plan,allocation)
@@ -48,18 +52,25 @@ def init(root,baseline_plan,allocation,*,parent_plan=None):
     shutil.copyfile(CONTRACT,root/'contract.md')
     write_new(root/'native-config.json',{'task_profiles':{'H':{'limit':128}},'models':[{'model':'qwen35-4b'}],'seeds':[base['plan']['seed']]})
     write_new(root/'plan.json',{'kind':'compact_native_harness_search','incoming':'h0','slots':SLOTS,
+        'selection_protocol':selection_protocol,'accuracy_tolerance':0.,
         'identity':base['result']['identity'],'seed':base['plan']['seed'],'iterations':1,'proposals_per_iter':3,
         'parent_plan':str(parent_plan) if parent_plan else None,'parent_plan_sha256':parent_sha,
         'max_api_requests':12,'max_cli_turns':12,'data_role':'mh_val','actual_data_role':'H',
         'baseline':{'plan':str(baseline_plan),'allocation':str(allocation),
             'plan_sha256':file_sha256(baseline_plan),'allocation_sha256':file_sha256(allocation)},
-        'source_sha256':{str(p):file_sha256(p) for p in (Path(__file__),CONTRACT)},
+        'source_sha256':{str(p):file_sha256(p) for p in (Path(__file__),CONTRACT,
+            ROOT/'ours/research_budget.py',ROOT/'ours/visual_search_bridge.py',ROOT/'ours/audit_native_training_batch.py',
+            ROOT/'ours/acceptance.py',ROOT/'ours/adapter.py',ROOT/'ours/chart_selection_protocol.py',
+            ROOT/'ours/chart_proposal_feedback.py',ROOT/'ours/fast_chart_search_report.py',
+            ROOT/'ours/chart_selection_v2_20260916.md')},
         'selection_pass':'First complete H/C pass; failures consume allocated slots.',
         'method_claim':'Single limited-budget alternation; no long-horizon guarantee.'})
 
 
 def load(root):
     plan=read(root/'plan.json')
+    selection_modes(plan)
+    if plan.get('accuracy_tolerance',0.)!=0.:raise ValueError('Frozen chart competence tolerance is zero')
     if plan['kind']!='compact_native_harness_search' or tuple(plan['slots'])!=SLOTS:raise ValueError('Wrong search plan')
     for name,digest in plan['source_sha256'].items():
         if file_sha256(Path(name))!=digest:raise ValueError('Frozen search code/contract changed')
@@ -75,20 +86,94 @@ def attach(root,candidate_plan,allocation):
         raise ValueError('Candidate belongs to another slot or fixed-weight phase')
     if candidate['candidate'].harness_sha256!=file_sha256(root/f'search/harnesses/{name}/harness.py'):
         raise ValueError('Evaluated candidate differs from proposed code')
+    if (root/f'failure-{name}.json').exists() or (root/'candidate-slots.json').exists():
+        raise ValueError('Cannot attach a measurement to a failed or finalized slot')
     once(root/f'evaluation-{name}.json',{'plan':str(candidate_plan),'allocation':str(allocation),
         'plan_sha256':file_sha256(candidate_plan),'allocation_sha256':file_sha256(allocation)})
 
 
-def failed_evaluation(root,candidate_plan,allocation):
-    plan=load(root);candidate=read(candidate_plan);terminal=read(allocation);name=candidate['candidate']
-    if name not in SLOTS or candidate['identity']!=plan['identity']:
+def failure_record(root,plan,candidate_plan,allocation):
+    candidate_plan,allocation=Path(candidate_plan).resolve(),Path(allocation).resolve()
+    candidate=read(candidate_plan);name=candidate['candidate']
+    if (candidate['kind']!='compact_chart_search_evaluation' or
+            name not in SLOTS or candidate['identity']!=plan['identity'] or candidate['seed']!=plan['seed']):
         raise ValueError('A failed incoming baseline must stop the phase; only allocated candidate failures can consume slots')
-    if terminal['state']=='COMPLETED' or not (Path(candidate['output'])/'failure.json').exists():
-        raise ValueError('Require explicit failed execution and preserved failure evidence')
-    once(root/f'failure-{name}.json',{'status':'FAILED_CANDIDATE_CONSUMED_SLOT','candidate':name,
+    harness=root/f'search/harnesses/{name}/harness.py'
+    digest=file_sha256(harness)
+    if (candidate['harness_sha256']!=digest or
+            file_sha256(Path(candidate['config']['data']['visual_harness_path']))!=digest):
+        raise ValueError('Failed execution belongs to different candidate code')
+    execution=failed_allocation_evidence(candidate_plan,allocation)
+    failure=Path(candidate['output'])/'failure.json'
+    if not failure.is_file() or read(failure).get('status')!='INCOMPLETE':
+        raise ValueError('Require preserved incomplete execution evidence')
+    if 'job_id' in read(failure) and read(failure)['job_id']!=execution['job_id']:
+        raise ValueError('Failure belongs to a different job')
+    return {'status':'FAILED_CANDIDATE_CONSUMED_SLOT','candidate':name,'reason':'execution_failed',
         'plan':str(candidate_plan),'plan_sha256':file_sha256(Path(candidate_plan)),
         'allocation':str(allocation),'allocation_sha256':file_sha256(Path(allocation)),
-        'failure_sha256':file_sha256(Path(candidate['output'])/'failure.json'),'scored_as_zero':False})
+        'failure_sha256':file_sha256(failure),'harness_sha256':digest,'execution':execution,'scored_as_zero':False}
+
+
+def failed_evaluation(root,candidate_plan,allocation):
+    plan=load(root);record=failure_record(root,plan,candidate_plan,allocation);name=record['candidate']
+    if (root/f'evaluation-{name}.json').exists() or (root/'candidate-slots.json').exists():
+        raise ValueError('Cannot fail an evaluated or finalized slot')
+    once(root/f'failure-{name}.json',record)
+
+
+def verified_failure(root,name,plan):
+    """Revalidate both failed execution bindings and unexecuted slot evidence."""
+    failure=read(root/f'failure-{name}.json')
+    if (failure.get('status')!='FAILED_CANDIDATE_CONSUMED_SLOT' or
+            failure.get('candidate')!=name or failure.get('scored_as_zero') is not False):
+        raise ValueError('Incomplete failed-slot record')
+    if 'allocation' in failure:
+        expected=failure_record(root,plan,failure['plan'],failure['allocation'])
+        if fingerprint(failure)!=fingerprint(expected):raise ValueError('Failed execution evidence changed')
+    else:
+        harness=root/f'search/harnesses/{name}/harness.py'
+        digest=file_sha256(harness) if harness.is_file() else None
+        if (failure.get('reason') not in ('invalid_code','not_generated','not_evaluated') or
+                failure.get('harness_sha256')!=digest or
+                (failure['reason']=='not_generated') != (digest is None)):
+            raise ValueError('Unexecuted slot evidence differs from candidate code')
+    return failure
+
+
+def candidate_slots(root,archive,plan,*,finalize=False):
+    """Close all budgeted slots before publishing any complete selection."""
+    names={x['candidate'].name:x['candidate'] for x in archive}
+    slots={}
+    for name in SLOTS:
+        good,bad=root/f'evaluation-{name}.json',root/f'failure-{name}.json'
+        harness=root/f'search/harnesses/{name}/harness.py'
+        digest=file_sha256(harness) if harness.is_file() else None
+        if not good.exists() and not bad.exists() and finalize:
+            once(bad,{'status':'FAILED_CANDIDATE_CONSUMED_SLOT','candidate':name,
+                'reason':'not_evaluated' if digest else 'not_generated',
+                'harness_sha256':digest,'scored_as_zero':False})
+        if good.exists()==bad.exists():raise ValueError('Every slot requires exactly one success or failure')
+        if good.exists():
+            if name not in names or names[name].harness_sha256!=digest:
+                raise ValueError('Successful slot differs from the certified candidate archive')
+            receipt=good;status='evaluated';attempted=True
+        else:
+            if name in names:raise ValueError('A failed slot appears in the scored archive')
+            failure=verified_failure(root,name,plan)
+            receipt=bad;status=failure['reason'];attempted='allocation' in failure
+        slots[name]={'status':status,'generated':digest is not None,'evaluation_attempted':attempted,
+            'harness_sha256':digest,'receipt_sha256':file_sha256(receipt)}
+    counts={'candidate_budget':len(SLOTS),'generated_candidates':sum(s['generated'] for s in slots.values()),
+        'evaluation_attempts':sum(s['evaluation_attempted'] for s in slots.values()),
+        'successful_evaluations':sum(s['status']=='evaluated' for s in slots.values()),
+        'failed_slots':sum(s['status']!='evaluated' for s in slots.values())}
+    value={'schema_version':2,'identity':plan['identity'],'slots':slots,'counts':counts,
+        'comparison_sha256':file_sha256(root/'search/logs/iteration_001/comparison.json')}
+    path=root/'candidate-slots.json'
+    if finalize:once(path,value)
+    elif fingerprint(read(path))!=fingerprint(value):raise ValueError('Finalized candidate slots changed')
+    return value
 
 
 def public_feedback(run,item):
@@ -104,6 +189,20 @@ def public_feedback(run,item):
         for i,row in enumerate(item['h_rows'])]})
 
 
+def task_prompt(root,plan,base):
+    contract=CONTRACT.read_text()
+    if plan.get('selection_protocol','gate_v1')=='gate_v1':
+        return 'Read h0 and its H feedback. Produce the three allocated standalone candidates h1,h2,h3 and pending_eval.json. '+contract
+    manifest_path=Path(base['plan']['partitions']['H']['manifest'])
+    result_path=Path(base['plan']['output'])/'H/result.json'
+    summary=summarize(read(manifest_path),base['h'])
+    once(root/'proposal-feedback.json',{'summary':summary,'summary_sha256':fingerprint(summary),
+        'H_manifest_sha256':file_sha256(manifest_path),'H_result_sha256':file_sha256(result_path),
+        'incoming_harness_sha256':base['candidate'].harness_sha256,
+        'shared_by_all_selectors':True,'actual_data_role':'H','private_audit_transferred':False})
+    return proposal_prompt(contract,summary)
+
+
 def advance(root):
     from meta_harness import meta_harness_chess_puzzle as native,chess_puzzle_benchmark as benchmark
     plan=load(root);run=root/'search';base=certify(plan['baseline']['plan'],plan['baseline']['allocation'])
@@ -114,7 +213,13 @@ def advance(root):
             r=read(receipt)
             if file_sha256(Path(r['plan']))!=r['plan_sha256'] or file_sha256(Path(r['allocation']))!=r['allocation_sha256']:
                 raise ValueError('Attached evaluation changed')
-            archive.append(certify(r['plan'],r['allocation']))
+            item=certify(r['plan'],r['allocation'])
+            if item['candidate'].name!=name or item['result']['identity']!=plan['identity']:
+                raise ValueError('Attached candidate belongs to another slot or phase')
+            archive.append(item)
+        if (root/f'failure-{name}.json').exists():
+            if receipt.exists():raise ValueError('Candidate has both success and failure receipts')
+            verified_failure(root,name,plan)
     pick_original,results_original=native.pick_accepted,benchmark.load_results
     initial=True
     def visible_results(path):
@@ -126,7 +231,7 @@ def advance(root):
         nonlocal initial
         if initial:
             initial=False
-            adapter=WHALEAcceptanceAdapter(EvidenceConstrainedAcceptance('paired'))
+            adapter=WHALEAcceptanceAdapter(EvidenceConstrainedAcceptance(dict(selection_modes(plan))['veto']))
             with patch.object(native,'pick_accepted',pick_original):
                 once(root/'initial-acceptance.json',boundary(adapter,native,run,[base],identity,stage='initial',frontier=frontier))
         return pick_original(frontier,run_dir)
@@ -146,9 +251,13 @@ def advance(root):
         if name not in SLOTS:raise ValueError('Unallocated candidate')
         try:load_isolated_visual_harness(run_dir/f'harnesses/{name}/harness.py').unchanged()
         except Exception as exc:
+            harness=run_dir/f'harnesses/{name}/harness.py'
             once(root/f'failure-{name}.json',{'status':'FAILED_CANDIDATE_CONSUMED_SLOT','candidate':name,
-                'error_type':type(exc).__name__,'error':str(exc)})
+                'error_type':type(exc).__name__,'error':str(exc),
+                'reason':'invalid_code' if harness.is_file() else 'not_generated',
+                'harness_sha256':file_sha256(harness) if harness.is_file() else None,'scored_as_zero':False})
     def propose_boundary(**kwargs):
+        if kwargs['task_prompt']!=task:raise ValueError('Native proposer lost the bound H feedback prompt')
         once(root/'proposal-request.json',{k:str(v) if isinstance(v,Path) else v for k,v in kwargs.items()})
         if not (root/'proposal-ready.json').exists():raise PhaseBoundary('WAITING_NETWORKED_PROPOSER')
         ready=read(root/'proposal-ready.json');session=Path(ready['session'])
@@ -162,7 +271,7 @@ def advance(root):
     args=argparse.Namespace(run_name='search',config=str(root/'native-config.json'),iterations=1,proposals_per_iter=3,
         proposer_model=MODEL,proposer_effort='low',propose_timeout=300,early_stop_success_rate=1.,fresh=False,force=False,
         start_iteration=1,early_stop_min_iters=0,early_stop_patience=2,eval_only=False,use_api_key=True,prompt_only=False)
-    task='Read h0 and its H feedback. Produce the three allocated standalone candidates h1,h2,h3 and pending_eval.json. '+CONTRACT.read_text()
+    task=task_prompt(root,plan,base)
     with ExitStack() as stack:
         for obj,key,value in ((native,'RUNS_DIR',root),(native,'BASELINE_HARNESS',run/'harnesses/h0/harness.py'),
             (native,'PROMPT_ONLY',False),(native,'SKILL_DIR',root/'contract.md'),
@@ -172,28 +281,32 @@ def advance(root):
             (benchmark,'load_results',visible_results)):
             stack.enter_context(patch.object(obj,key,value))
         stack.enter_context(patch.dict('os.environ',{'BASELINE_HARNESS_OVERRIDE':''}))
-        try:native.run_evolve(args)
+        try:
+            if not (root/'candidate-slots.json').exists():native.run_evolve(args)
         except PhaseBoundary as wait:
             print(json.dumps({'status':str(wait),'root':str(root)}),flush=True);return
+    slots=candidate_slots(root,archive,plan,finalize=True)
+    slots_sha=file_sha256(root/'candidate-slots.json')
     comparison=read(run/'logs/iteration_001/comparison.json');stage='early_stop' if comparison['early_stop'] else 'ordinary'
     selections={}
-    for condition,mode in (('whale','off'),('veto','paired'),('marginal_gate','marginal_gate')):
+    for condition,mode in selection_modes(plan):
         adapter=WHALEAcceptanceAdapter(EvidenceConstrainedAcceptance(mode))
         value=boundary(adapter,native,run,archive,identity,stage=stage,frontier=comparison['frontier'],
             rows=comparison['summary'],valid_names=list(SLOTS))
         selected=value['accepted_harness'];harness=run/f'harnesses/{selected}/harness.py'
         value.update(status='COMPLETE_COMPACT_SELECTION',condition=condition,parent_plan_sha256=plan['parent_plan_sha256'],
+            selection_protocol=plan.get('selection_protocol','gate_v1'),
+            candidate_slots_sha256=slots_sha,candidate_counts=slots['counts'],
             selected_harness=str(harness),harness_sha256=file_sha256(harness),identity=plan['identity'],
             archive={x['candidate'].name:{'candidate':asdict(x['candidate']),'audit':asdict(x['audit'])} for x in archive})
         once(root/f'selection-{condition}.json',value)
         restored=boundary(adapter,native,run,archive,identity,stage='resume',frontier=comparison['frontier'],
             rows=comparison['summary'],valid_names=list(SLOTS),resume=value['receipt'])
         once(root/f'restored-selection-{condition}.json',restored);selections[condition]=selected
-    for name in SLOTS:
-        if name not in {x['candidate'].name for x in archive} and not (root/f'failure-{name}.json').exists():
-            once(root/f'failure-{name}.json',{'status':'FAILED_CANDIDATE_CONSUMED_SLOT','candidate':name,'error':'Allocated slot missing from complete valid archive'})
     once(root/'result.json',{'status':'COMPLETE_COMPACT_SEARCH_AND_SELECTION','selections':selections,
-        'equivalent_decisions':len(set(selections.values()))==1,'candidate_attempts':3,'scientific_method_verified':False})
+        'selection_protocol':plan.get('selection_protocol','gate_v1'),
+        'schema_version':2,'candidate_slots_sha256':slots_sha,**slots['counts'],
+        'equivalent_decisions':len(set(selections.values()))==1,'scientific_method_verified':False})
 
 
 def propose(root):
@@ -201,7 +314,8 @@ def propose(root):
     plan=load(root);request=read(root/'proposal-request.json')
     if request['next_names']!=list(SLOTS) or request['iteration']!=1:raise ValueError('Unexpected proposal budget')
     if (root/'paid-proposal').exists():raise ValueError('No automatic paid retries')
-    certify(plan['baseline']['plan'],plan['baseline']['allocation'])
+    base=certify(plan['baseline']['plan'],plan['baseline']['allocation'])
+    if request['task_prompt']!=task_prompt(root,plan,base):raise ValueError('Paid proposal feedback changed')
     request['run_dir']=Path(request['run_dir']);journal=BudgetJournal(ROOT/'data/glm-budget/ledger.jsonl')
     with patch.object(native,'SKILL_DIR',root/'contract.md'),patch.object(native,'PROMPT_ONLY',False),\
          patch.object(native,'PROPOSER_SYSTEM_PROMPT',CONTRACT.read_text()):
@@ -219,9 +333,11 @@ def propose(root):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=('init','advance','propose','attach','failed-evaluation'))
     p.add_argument('--root',type=Path,required=True)
+    p.add_argument('--selection-protocol',choices=tuple(PROTOCOLS),default='evidence_v2')
     for key in ('baseline-plan','allocation','parent-plan','candidate-plan'):p.add_argument('--'+key,type=Path)
     a=p.parse_args();root=a.root.resolve()
-    if a.action=='init':init(root,a.baseline_plan.resolve(),a.allocation.resolve(),parent_plan=a.parent_plan)
+    if a.action=='init':init(root,a.baseline_plan.resolve(),a.allocation.resolve(),parent_plan=a.parent_plan,
+                           selection_protocol=a.selection_protocol)
     elif a.action=='advance':advance(root)
     elif a.action=='propose':propose(root)
     elif a.action=='attach':attach(root,a.candidate_plan,a.allocation)

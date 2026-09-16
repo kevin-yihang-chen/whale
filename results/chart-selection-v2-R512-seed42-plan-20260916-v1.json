@@ -1,0 +1,58 @@
+{
+  "kind": "compact_selection_probe_suite",
+  "output": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/selection-v2-R512-seed42-v1",
+  "cases": {
+    "h1": {
+      "plan": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/selection-v2-R512-seed42-v1/h1-plan.json",
+      "sha256": "250b21d0dfb285f6a427b48c924bb1c0e4b8882be027179a69c05413810f0d6f"
+    },
+    "h3": {
+      "plan": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/selection-v2-R512-seed42-v1/h3-plan.json",
+      "sha256": "c798ea0750e807c1cb4cdbb4a827cc36e8442121e84b3192b31b2aa105d01a30"
+    }
+  },
+  "evidence_sha256": {
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/selection-veto.json": "fe458b782928fc6d1e19ddd0fec9795de64dde8ac3cd1f576be629ba86dd47b8",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/plan.json": "fc689d4b47f587765ca6f4e1ec5d1bf4fdf878c0790095d4838424df87eb9aa1",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/fast-chart-seed42-first-search-h0-plan-20260915-v1.json": "fa9af7671b0570722f1861cbe0424c3a7cc2ba1f88a37b792e532321fd645535",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/search/harnesses/h0/harness.py": "7d526e270da7f4f94b5754a2bbac961a9814721788b7f435403f0af460ad1959",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/dataset/H/manifest.json": "1c5063034018bce56109e0ffcaeb3d734cdb03c19f9d4d9c3bfbc6e6d04ef919",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h0/H/result.json": "af18951386e79741a8ffada5912359ba15b633d377beaf1bc4c0aaa81ab2688d",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/dataset/C/manifest.json": "2a6942db98acfb648ff8ca63187b65e8f313f700711fc48b0c6e37fb5f07cfdb",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h0/C/result.json": "e212303caedcfb09a5e27ed900186072d527759f45e3195f8d685c728e7bb41b",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/evaluation-h1.json": "c678dc24590e22c584bfae7a2a2dd184b5b2b18740bc019ffc88c29f145c32ea",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/fast-chart-seed42-first-search-h1-plan-20260915-v1.json": "ebbdcd2232e722aadccf03c37885755ae08ae6f059eb53de41ac524be2037c36",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/search/harnesses/h1/harness.py": "817444ae71b719796de852638a05e5e2348d40dd51ac844d587fe0a5f2f2de6f",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h1/H/result.json": "5784a49d832a6f831e0185188f511d82f9d68ee5117bd8cbe39faae7fb3515d7",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h1/C/result.json": "8f3f4c89bbf1db33cb8c22f1646a0d1b8e5767be7cc8cdfe8d3da5e416ccda41",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/evaluation-h2.json": "b807dce16d3d92b53a25ee501b1681cbcf63fcc5682592876eb2306badc757b7",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/fast-chart-seed42-first-search-h2-plan-20260915-v1.json": "57b433fee180d316f6b9c771167a0bca8f6fd11c64f11e69f4f426c6a16ad00c",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/search/harnesses/h2/harness.py": "8b625ed8f43963fff1925755648554d04b71c82c8bdbdbb53c46eb92687570cd",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h2/H/result.json": "7b386c533ee45a141046cd8a7f66658120ac93dbcb74af2fb26a18c1752022fb",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h2/C/result.json": "138867800598f057d15c66dd763c31ecebf4f95f73cd3392660c2348aefdec05",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/evaluation-h3.json": "bc2fbdcac2dc142d65e806f04e48dbab2c131fc2b958e44cd5f8ce59f77715ec",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/fast-chart-seed42-first-search-h3-plan-20260915-v1.json": "f0875b5788e15195b3f67a51492f7ca7700aeef1a2ff5c14498f2915412ff9e5",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search/search/harnesses/h3/harness.py": "1a25f1c9334dc485e35fcfced45763e180b80b07c3374ec8ae62b54048d903e0",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h3/H/result.json": "37acd03711ebfb56f5db2877755cc117d0ad036e99c0b47d02a3cb392af51a1e",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/first-search-evaluation/h3/C/result.json": "a1b119d7f4766e2cddaeaf9105af12ea90dcca7a754d7f22c1241a8665265c98",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-06-seed42/followup/evaluation-plan.json": "f0a272f924fa8e0e6f5c31f4202e85804d8b7b2a955f70255dc9f8bbbc342dc5",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/dataset/R/manifest.json": "f7eaea96e57624f6aaab054e811e2b9f475411505194addde4ff3290c73f39dc",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/shared-inference-policy-v1.json": "1e2d112f80865996b3e99d2cf39ff5d3c29e4ddb2102d929611085b4e196b89d",
+    "/userhome/cs3/yihangc/Documents/whale-delta/ours/chart_selection_v2_20260916.md": "ad77cb5e1bcfbe1b16efd53a46749de774122f30b3ed7bc3c0195420cf13751c",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/selection-v2-R512-seed42-v1/R512-manifest.json": "c7da67ff1d5b0d409eb8f963fbc2ac1c2ddd193c65b7e7077a0cee39a99d2312",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/selection-v2-R512-seed42-v1/archive-replay.json": "b0e1396448285bbd6d738b083d96c7ef67a614dbf2eeb79f74f7c3db4cbbc097"
+  },
+  "selection_protocol": "evidence_v2",
+  "prospective_new_search": false,
+  "phase": "core",
+  "comparison": "h1 minus h3 on the same R512 sources and theta1 weights; no tuning after this pass.",
+  "continuation_gate": "Positive paired difference and source-cluster 95% interval lower bound > 0, with ordinary loss <= 0.01; otherwise stop expansion.",
+  "bounds": {
+    "gpus": 1,
+    "cpus": 12,
+    "time_limit_seconds": 7200,
+    "api_calls": 0,
+    "new_model_checkpoints": 0,
+    "images": 2048
+  }
+}

@@ -1,0 +1,1315 @@
+{
+  "status": "PROJECT_TOTALS_ONLY_METHOD_ATTRIBUTION_PENDING",
+  "created_utc": "2026-09-16T01:56:40.518102+00:00",
+  "resources": [
+    {
+      "id": "gpu:52d41c46330a4433aa9baaeedcc409af",
+      "unit": "gpu_hours",
+      "settled": "0.625",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "223942",
+      "purpose": "Chess seed42 continuation h10"
+    },
+    {
+      "id": "gpu:c2740b57a6e145c69bf81afad0f6b3a7",
+      "unit": "gpu_hours",
+      "settled": "0.6127777777777777777777777778",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "223944",
+      "purpose": "Chess seed42 continuation h11"
+    },
+    {
+      "id": "gpu:1282e2151cd94ba0b1a7d645140e0523",
+      "unit": "gpu_hours",
+      "settled": "0.6105555555555555555555555556",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "223951",
+      "purpose": "Chess seed42 continuation h12"
+    },
+    {
+      "id": "gpu:f92e352212424638a8d19af7b00130d9",
+      "unit": "gpu_hours",
+      "settled": "0.6161111111111111111111111111",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "223961",
+      "purpose": "Chess seed42 continuation h13"
+    },
+    {
+      "id": "gpu:8a4b0165e4134039b89d5de10b13cf41",
+      "unit": "gpu_hours",
+      "settled": "0.6127777777777777777777777778",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "223964",
+      "purpose": "Chess seed42 continuation h14"
+    },
+    {
+      "id": "gpu:e1140b6daf2849c999f5230790cba224",
+      "unit": "gpu_hours",
+      "settled": "0.6122222222222222222222222222",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "223966",
+      "purpose": "Chess seed42 continuation h15"
+    },
+    {
+      "id": "gpu:1bf372d6419a440890c1d437c38f9233",
+      "unit": "gpu_hours",
+      "settled": "0.04388888888888888888888888889",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "223978",
+      "purpose": "run_visual_service"
+    },
+    {
+      "id": "gpu:0f589d6ceb1445409091b80c651d9907",
+      "unit": "gpu_hours",
+      "settled": "0.08277777777777777777777777778",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "223979",
+      "purpose": "Visual zero-score diagnosis: direct answers and normalized crop coordinates"
+    },
+    {
+      "id": "gpu:fbe41996393640ad9f2ce014523e209a",
+      "unit": "gpu_hours",
+      "settled": "0.2741666666666666666666666667",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "223990",
+      "purpose": "64-pair visual development screen: direct, no-image, normalized zoom; no checkpoints or API"
+    },
+    {
+      "id": "gpu:3010a910984d4d66a2bb17479314c62c",
+      "unit": "gpu_hours",
+      "settled": "0.2191666666666666666666666667",
+      "held": "0",
+      "status": "CANCELLED",
+      "job_id": "223996",
+      "purpose": "Shared initial visual harness calibration on all 256 V pairs; prompt-only, no training or API"
+    },
+    {
+      "id": "gpu:d2860d6242c342779ca1494b727c2c89",
+      "unit": "gpu_hours",
+      "settled": "0.1088888888888888888888888889",
+      "held": "0",
+      "status": "FAILED",
+      "job_id": "224008",
+      "purpose": "One real native visual RSFT batch on W; direct-answer engineering condition; one actor and one rollout GPU"
+    },
+    {
+      "id": "gpu:356ee332632a4bee86160de8d84febeb",
+      "unit": "gpu_hours",
+      "settled": "0.2994444444444444444444444444",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "224041",
+      "purpose": "Fresh native visual RSFT retry after fixing identity loss in native reward-handle collation; previous run updated no parameters"
+    },
+    {
+      "id": "gpu:0504543f429145bc90638192bba7a23f",
+      "unit": "gpu_hours",
+      "settled": "0.1397222222222222222222222222",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "224121",
+      "purpose": "Canonical export and fixed 64-pair visual development evaluation after actual native RSFT; no additional training or search"
+    },
+    {
+      "id": "gpu:5eddcf2561934a339dc1d40096f1f65a",
+      "unit": "gpu_hours",
+      "settled": "0.1522222222222222222222222222",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "224157",
+      "purpose": "One additional full fixed 64-pair inference replicate for each initial/trained model, to assess four near-boundary answer changes; no new training or checkpoint"
+    },
+    {
+      "id": "gpu:b5e21d5baa5141dcae5bc951eb06c9db",
+      "unit": "gpu_hours",
+      "settled": "0.175",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "224196",
+      "purpose": "Fixed theta1 h0 on H128 and C64 pairs, two serialized passes to check shared E1/H measurement stability; no training, proposer, or checkpoint"
+    },
+    {
+      "id": "gpu:e338589e17d345499b23902d067f2103",
+      "unit": "gpu_hours",
+      "settled": "0.1288888888888888888888888889",
+      "held": "0",
+      "status": "CANCELLED",
+      "job_id": "224334",
+      "purpose": "One authorized real GLM visual h1: first-pass H/C and diagnostic repeats at fixed theta1, no training or API."
+    },
+    {
+      "id": "gpu:f07a777ffb8245089bf5740436b3b0d7",
+      "unit": "gpu_hours",
+      "settled": "1.0375",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "224335",
+      "purpose": "Same real GLM visual h1: complete 512-image measurement after documented throughput-based time-limit revision. No new proposal or selective rescore."
+    },
+    {
+      "id": "gpu:5033a401b7a441e7adc22ef63125cf27",
+      "unit": "gpu_hours",
+      "settled": "0.105",
+      "held": "0",
+      "status": "FAILED",
+      "job_id": "224346",
+      "purpose": "Corrected first visual RSFT batch: original theta0/h0/W, observe actual image gradients; no API or expansion"
+    },
+    {
+      "id": "gpu:a5bd70ab42b043dd8909f786415808ec",
+      "unit": "gpu_hours",
+      "settled": "0.3105555555555555555555555556",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "224347",
+      "purpose": "Corrected first visual RSFT with verified native image sequence metadata; no API or expansion"
+    },
+    {
+      "id": "gpu:ea36c60d606840c6857ead5c354b62a0",
+      "unit": "gpu_hours",
+      "settled": "0.1313888888888888888888888889",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "224358",
+      "purpose": "Verify all corrected model parameters, export one serving model and evaluate original h0 on same64 V pairs; no new training or API"
+    },
+    {
+      "id": "gpu:e74f931b24c04901b4a554dd70f40ac8",
+      "unit": "gpu_hours",
+      "settled": "0.9961111111111111111111111111",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "231666",
+      "purpose": "Shared chart h0 calibration,3x512 V images"
+    },
+    {
+      "id": "gpu:e7a2ce48732f4c0f9f40496cec0e4779",
+      "unit": "gpu_hours",
+      "settled": "0.59",
+      "held": "0",
+      "status": "FAILED",
+      "job_id": "232265",
+      "purpose": "Compact E4 stage1 seed42 lr1e-07,256 trajectories"
+    },
+    {
+      "id": "gpu:7ab3f790098a42b694a3f7caf30082ed",
+      "unit": "gpu_hours",
+      "settled": "1.27",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "232741",
+      "purpose": "Compact E4 stage1 seed42 lr1e-07,256 trajectories"
+    },
+    {
+      "id": "gpu:f4fb3db85c2f4f68a3727ce61b54ce6a",
+      "unit": "gpu_hours",
+      "settled": "0.4180555555555555555555555556",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233025",
+      "purpose": "Full native parameter comparison, canonical serving export and512-image V calibration"
+    },
+    {
+      "id": "gpu:00a419f4a87044d0b06ed5328683de25",
+      "unit": "gpu_hours",
+      "settled": "1.257777777777777777777777778",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233172",
+      "purpose": "Compact E4 stage1 seed42 lr1e-06,256 trajectories"
+    },
+    {
+      "id": "gpu:aa295e7f9aed47cb8f55676f4ab03153",
+      "unit": "gpu_hours",
+      "settled": "0.3319444444444444444444444444",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233258",
+      "purpose": "Full native parameter comparison, canonical serving export and512-image V calibration"
+    },
+    {
+      "id": "gpu:ab511a072a7545289d32283f3223770c",
+      "unit": "gpu_hours",
+      "settled": "1.02",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233361",
+      "purpose": "Compact E4 stage1 seed42 lr1e-05,256 trajectories"
+    },
+    {
+      "id": "gpu:f08d44dd01d14989a849f5df91691ae5",
+      "unit": "gpu_hours",
+      "settled": "0.2880555555555555555555555556",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233399",
+      "purpose": "Full native parameter comparison, canonical serving export and512-image V calibration"
+    },
+    {
+      "id": "gpu:0872144f0e4546e4b9ea7d6e66b77865",
+      "unit": "gpu_hours",
+      "settled": "0.5080555555555555555555555556",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233485",
+      "purpose": "Shared V inference concurrency calibration,batch16/32,complete512 images each"
+    },
+    {
+      "id": "gpu:8d919215bce446a6adff2d5ac948e8f8",
+      "unit": "gpu_hours",
+      "settled": "0.1994444444444444444444444444",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233540",
+      "purpose": "One fixed chart candidate h0,H128+C64pairs"
+    },
+    {
+      "id": "gpu:2a5ce3297ae343cda28e963f29d47aeb",
+      "unit": "gpu_hours",
+      "settled": "0.1919444444444444444444444444",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233589",
+      "purpose": "One fixed chart candidate h1,H128+C64pairs"
+    },
+    {
+      "id": "gpu:52b908d1c9364794be9429618d780021",
+      "unit": "gpu_hours",
+      "settled": "0.1813888888888888888888888889",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233705",
+      "purpose": "One fixed chart candidate h2,H128+C64pairs"
+    },
+    {
+      "id": "gpu:b6b23ed316374b47b0f326580e8c49ee",
+      "unit": "gpu_hours",
+      "settled": "0.1152777777777777777777777778",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233759",
+      "purpose": "One fixed chart candidate h3,H128+C64pairs"
+    },
+    {
+      "id": "gpu:0de6e863eb7a4bb98c806add64a3cdbf",
+      "unit": "gpu_hours",
+      "settled": "1.391111111111111111111111111",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "233990",
+      "purpose": "Compact E4 stage2 seed42 lr1e-06,256 trajectories"
+    },
+    {
+      "id": "gpu:8cbd06a775dc4d27978deb6be44a1ae8",
+      "unit": "gpu_hours",
+      "settled": "0.2811111111111111111111111111",
+      "held": "0",
+      "status": "COMPLETED",
+      "job_id": "234097",
+      "purpose": "Full native parameter comparison, canonical serving export and512-image V calibration"
+    },
+    {
+      "id": "api:initial-probe-0",
+      "unit": "cny",
+      "settled": "0.000121",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:5ca9001b55b54a2d9337b5e7974c0b3b",
+      "unit": "cny",
+      "settled": "0.000941",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:88f613568b3641be82355b2c99aeae08",
+      "unit": "cny",
+      "settled": "0.000956",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:b4705213946f4096bdc0f0af02e01a5e",
+      "unit": "cny",
+      "settled": "0.000956",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:ca5825f2ab9a41d3a374de2d979e026c",
+      "unit": "cny",
+      "settled": "0.000956",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:a91a6d539f5b455092b9247ca11ab200",
+      "unit": "cny",
+      "settled": "0.000956",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:4dd09cdf80db4cffac0a413d04f58b53",
+      "unit": "cny",
+      "settled": "0.001762",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:2c9ce64f2a8b43d1b12c96bae9be1e54",
+      "unit": "cny",
+      "settled": "0.001619",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:93adeba2cba44821b14465c1267212e3",
+      "unit": "cny",
+      "settled": "0.003097",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:bf535fa8e0894511a29e2c08dee5992f",
+      "unit": "cny",
+      "settled": "0.003182",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:618b06bccc1d47fda1e2f8531067e94f",
+      "unit": "cny",
+      "settled": "0.005716",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:4ddfcbd16f364735b6c167d6483d3134",
+      "unit": "cny",
+      "settled": "0.00788",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:0aef8cb5948f4053ba066c42400e2a9a",
+      "unit": "cny",
+      "settled": "0.006002",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:605ac92b181f49c4abbe8dd8fe808d3e",
+      "unit": "cny",
+      "settled": "0.006257",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:a3f8169bbc33405ab483cdfcff9892d8",
+      "unit": "cny",
+      "settled": "0.006856",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:4859e0cb43af42b8bc0f3500fce71a53",
+      "unit": "cny",
+      "settled": "0.003297",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:65b40879ab284624a27aecd609d62e1d",
+      "unit": "cny",
+      "settled": "0.003571",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:f7a3048ec8bf48de910595dd51a6d616",
+      "unit": "cny",
+      "settled": "0.005063",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:a593ccf030f14011a0aa6781e360e7ef",
+      "unit": "cny",
+      "settled": "0.005742",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:29caf598109b4eda935503e0cec677c4",
+      "unit": "cny",
+      "settled": "0.008627",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:ec9a25b578b045a3a2995e43e616950a",
+      "unit": "cny",
+      "settled": "0.006405",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:206638d04c77484ca566f7afafc5a790",
+      "unit": "cny",
+      "settled": "0.007114",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:0a59e7dbacb24688966b2f23e8dd4647",
+      "unit": "cny",
+      "settled": "0.003415",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:38b87be971fa4d62a25a2987ef59f86a",
+      "unit": "cny",
+      "settled": "0.003582",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:24ad5a5439404322a98d25e9377e2508",
+      "unit": "cny",
+      "settled": "0.016094",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:aa75290444014655a6a1ed55ca20231e",
+      "unit": "cny",
+      "settled": "0.008633",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:222c510220594953b8d00b24797cceaf",
+      "unit": "cny",
+      "settled": "0.009965",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:5964b42ae7c54f9387b0bff2ac6aa390",
+      "unit": "cny",
+      "settled": "0.00985",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:5f93f1f7c82c49a8b934d153da2bff85",
+      "unit": "cny",
+      "settled": "0.003443",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:3fb06d69fe2a49b3bf7d957d1adb0303",
+      "unit": "cny",
+      "settled": "0.003772",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:ff192c0bbc6b426f9b35e6784a262ae8",
+      "unit": "cny",
+      "settled": "0.00481",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:c5d353a3c5934e57861285427ab0f430",
+      "unit": "cny",
+      "settled": "0.005325",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:b6bfb7d0f2c3414e8f97b348c9d71a99",
+      "unit": "cny",
+      "settled": "0.010751",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:8921151c7fa94079aebcdfb7f0156c78",
+      "unit": "cny",
+      "settled": "0.013803",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:8d6c7becf3c8497a9a56550be506f3d4",
+      "unit": "cny",
+      "settled": "0.010214",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:fd0178b8bcf34567850ff5bea7944389",
+      "unit": "cny",
+      "settled": "0.010112",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:6f2c54ad2c0f4203b85923156b448d99",
+      "unit": "cny",
+      "settled": "0.003415",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:eae3d170e122453e8a8b2eeab890f5ce",
+      "unit": "cny",
+      "settled": "0.004232",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:ea1e9ae1995f41059503e044a1ca0743",
+      "unit": "cny",
+      "settled": "0.005779",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:4359b2bcb4fd491e994c41f9f9ba7797",
+      "unit": "cny",
+      "settled": "0.008439",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:b29766f42c724cdd8e56cd231cec8fad",
+      "unit": "cny",
+      "settled": "0.02201",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:ef8e0d8b739043cd82709195e359ed5d",
+      "unit": "cny",
+      "settled": "0.013926",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:c4efa8d5d84540c6acf9e987b529ab83",
+      "unit": "cny",
+      "settled": "0.013866",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:8cb6df2ca1c44c849dc0b445dd2b5a68",
+      "unit": "cny",
+      "settled": "0.003667",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:1b6293b6dbbb4d3d986171b60a7f56d0",
+      "unit": "cny",
+      "settled": "0.005061",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:1125c51fdfc14477918db263b0d55ef8",
+      "unit": "cny",
+      "settled": "0.006096",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:1f02f1d6d3b2425992dbf94cf6c67edf",
+      "unit": "cny",
+      "settled": "0.00613",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:7de68130dcec4aae8be5995b6ac58142",
+      "unit": "cny",
+      "settled": "0.010434",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:205430e39e474fa8bc6ba7ded856e94b",
+      "unit": "cny",
+      "settled": "0.011571",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:de1e49a8d69f4c2baa4bdb6b277767e9",
+      "unit": "cny",
+      "settled": "0.015591",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:9b49a6e9e3c045ee80f87b985677f841",
+      "unit": "cny",
+      "settled": "0.012663",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:0e964f28fec04d8090e2b03dc9cbfbe8",
+      "unit": "cny",
+      "settled": "0.012812",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:8ee1d94de41846d5bd3025911027ead9",
+      "unit": "cny",
+      "settled": "0.003415",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:e61d4c0fd5544e7a8fb7b4fe7a678d5c",
+      "unit": "cny",
+      "settled": "0.005225",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:82e586441f6847fdba7f7c2ab2db2a8f",
+      "unit": "cny",
+      "settled": "0.006683",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:387ecd98d4a54016ac801121b1536337",
+      "unit": "cny",
+      "settled": "0.006725",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:4368bc5b1d99456fa039bb0e5b4ce956",
+      "unit": "cny",
+      "settled": "0.012597",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:92e607545faf4132a859f2fbad5abab9",
+      "unit": "cny",
+      "settled": "0.010143",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:95b4f8d5fcd64c35aa675303f0d4829e",
+      "unit": "cny",
+      "settled": "0.013739",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:86eb4f26a2b34baba860495cf35b56a3",
+      "unit": "cny",
+      "settled": "0.01317",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:23c9f62ace664603ab3b7ae5873d1376",
+      "unit": "cny",
+      "settled": "0.014801",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:3d76ef5cd837479383410c3a30616bf5",
+      "unit": "cny",
+      "settled": "0.016964",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:587ef363040a4757a52567793b8af563",
+      "unit": "cny",
+      "settled": "0.014528",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:142c0cb757634458ac72111f11baffcd",
+      "unit": "cny",
+      "settled": "0.003126",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:4744fb6032b24d3a8bbbeaad82161472",
+      "unit": "cny",
+      "settled": "0.00322",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:6d1e2a5d765c4073aed73279c748ab53",
+      "unit": "cny",
+      "settled": "0.005885",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:c7834d152a8c4405800e3dda85a7bf95",
+      "unit": "cny",
+      "settled": "0.005423",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:3a3075064e774b25953204be22f93b82",
+      "unit": "cny",
+      "settled": "0.009986",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:7cc51e57bd064aa283a7fef324f29b1a",
+      "unit": "cny",
+      "settled": "0.009058",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:3e71cf3ef9de401b8bda24b21afcd510",
+      "unit": "cny",
+      "settled": "0.008627",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:47d89e22bfa24215ab83bda1c3e5ef6f",
+      "unit": "cny",
+      "settled": "0.008957",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:aeb1951e8cb84aebae88c331ca9b53ca",
+      "unit": "cny",
+      "settled": "0.003126",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:d4258d8eefd048848ae6008d85d9d9fd",
+      "unit": "cny",
+      "settled": "0.003356",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:fe8ecc4f8bdf440c9b7b0a50dd284698",
+      "unit": "cny",
+      "settled": "0.004144",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:25f9ec9a5a1e41849c644afb65259e26",
+      "unit": "cny",
+      "settled": "0.004422",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:98cae0524f034ab287e6c06c514510f1",
+      "unit": "cny",
+      "settled": "0.004589",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:37009f862c824d918ca91bbff7cfd363",
+      "unit": "cny",
+      "settled": "0.00674",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:d8e3e8f8dd664593b0c64edc5dd3a582",
+      "unit": "cny",
+      "settled": "0.008197",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:1170eacf92534faf9abdaac665126fcd",
+      "unit": "cny",
+      "settled": "0.009482",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:7e7f3d85d8044bd8b9ca8b0e1134fd44",
+      "unit": "cny",
+      "settled": "0.0098",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:dee5df4facbc4287b9dbfa4a3bf6e802",
+      "unit": "cny",
+      "settled": "0.009952",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:27951191d2bd4c3fb01da491b4680261",
+      "unit": "cny",
+      "settled": "0.010074",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:8320d4628cc84d94a3b3d3321c545fec",
+      "unit": "cny",
+      "settled": "0.010353",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:d4c43388f5794684a82a00a733d03f3e",
+      "unit": "cny",
+      "settled": "0.003126",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:00d439a4aa2445c4bd5f6623512c0253",
+      "unit": "cny",
+      "settled": "0.003743",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:54c20202d7c349cea7ecbd8f94132400",
+      "unit": "cny",
+      "settled": "0.005074",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:62b7d4b6016a4ed4b9e50aa136bd95ff",
+      "unit": "cny",
+      "settled": "0.02058",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:a83f083682ee4b18bf73ec7496a9cca0",
+      "unit": "cny",
+      "settled": "0.01458",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:7e7f9ff39d054467a5101d8b9b7e57d5",
+      "unit": "cny",
+      "settled": "0.014809",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:b9596549918e4bcab368089c212b4ec2",
+      "unit": "cny",
+      "settled": "0.016081",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:aacc4e530fb84bd2aa5624b789323d5f",
+      "unit": "cny",
+      "settled": "0.014621",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:6e2085ab241846c6bc54553ba7f57a96",
+      "unit": "cny",
+      "settled": "0.014914",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:135628cea0214e0ab2e6600a70c83a36",
+      "unit": "cny",
+      "settled": "0.003426",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:20a02c25ca97466fa8eae6ee3a10d97b",
+      "unit": "cny",
+      "settled": "0.003787",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:916c01cbaa5a43ac9a3a84bea3809dfb",
+      "unit": "cny",
+      "settled": "0.004775",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:edfdb66033f24a99ac5b3b26670e3ff5",
+      "unit": "cny",
+      "settled": "0.003722",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:66a05336672749a4b80ad9bfb2f0561d",
+      "unit": "cny",
+      "settled": "0.004864",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:1bce69d415a84c7bb4f1ce2e44d9a8b2",
+      "unit": "cny",
+      "settled": "0.005932",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:4d0e9a8189434a1ba6041baa84eb4472",
+      "unit": "cny",
+      "settled": "0.00944",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:31bd51e4a744405681bd66c8cac5efb2",
+      "unit": "cny",
+      "settled": "0.011626",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:d0599d37f0114ef8b671b9e82c02f9ac",
+      "unit": "cny",
+      "settled": "0.01225",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:b14db4763135453f8e50ee9fa56b4929",
+      "unit": "cny",
+      "settled": "0.013053",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:82881e654e394253b5383fd366f447ae",
+      "unit": "cny",
+      "settled": "0.012355",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:09547b7b6f244f8fa079e0427064e4f1",
+      "unit": "cny",
+      "settled": "0.012241",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:2d5b09e7d7ed44649efae4c48c642e0d",
+      "unit": "cny",
+      "settled": "0.003126",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:28fb6dbb7a244872bda7e7442eab595a",
+      "unit": "cny",
+      "settled": "0.004662",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:692977a8d30f468faa0b931aefddbcf9",
+      "unit": "cny",
+      "settled": "0.006486",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:1edc476c347e4b8bb91726f15ba57dc6",
+      "unit": "cny",
+      "settled": "0.009918",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:9029c830b3594825895f8d62c1ad64a2",
+      "unit": "cny",
+      "settled": "0.013608",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:b12cb01b52d6486abb3f5c56b252b586",
+      "unit": "cny",
+      "settled": "0.014639",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:a7741bd7bdeb4d01b497f8f17ef58cc9",
+      "unit": "cny",
+      "settled": "0.016243",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:06aeaeb336aa49959426dcda9440f1c9",
+      "unit": "cny",
+      "settled": "0.014332",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:6aadc3f0dca24e15bbf8f4eaad7650f7",
+      "unit": "cny",
+      "settled": "0.01469",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:be11f131716c4b6583bf14dfb37d323f",
+      "unit": "cny",
+      "settled": "0.00171",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:b71684edc7614081845ad48fdd2bb02d",
+      "unit": "cny",
+      "settled": "0.015864",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:c27270e7728b4c3d952b6243b2feb4a6",
+      "unit": "cny",
+      "settled": "0.017038",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:31b042a46a1242399e5c56e69464d0b8",
+      "unit": "cny",
+      "settled": "0.016338",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:b39fcf76621e481d86f2cdd525a488e5",
+      "unit": "cny",
+      "settled": "0.016856",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:fce284891f2145d18bde5044de85501e",
+      "unit": "cny",
+      "settled": "0.017039",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:992fc6795b1a4562aa887c3cce6b52aa",
+      "unit": "cny",
+      "settled": "0.002339",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:f05239b338d04cda99367d82f4b18516",
+      "unit": "cny",
+      "settled": "0.00335",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:6656ae06d5824c31928d42bcd030054b",
+      "unit": "cny",
+      "settled": "0.004675",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:4f3c825c927f424b997eee9049d3d76d",
+      "unit": "cny",
+      "settled": "0.006965",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:820e9782b3e04464bcbd1da797951116",
+      "unit": "cny",
+      "settled": "0.006002",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:06ff25818ca24b3db53de29fb133727e",
+      "unit": "cny",
+      "settled": "0.005469",
+      "held": "0",
+      "status": "SETTLED_CONSERVATIVE_USAGE"
+    },
+    {
+      "id": "api:4f2f46baddc34962b2b6176ec67f0be5",
+      "unit": "cny",
+      "settled": "0",
+      "held": "1.06496",
+      "status": "UNRESOLVED_PROVIDER_CALL"
+    },
+    {
+      "id": "api:763090c211214c6aa6523c99145a8d30",
+      "unit": "cny",
+      "settled": "0",
+      "held": "1.06496",
+      "status": "UNRESOLVED_PROVIDER_CALL"
+    },
+    {
+      "id": "api:2031f5cf5739406bb9e8043709c9d2e7",
+      "unit": "cny",
+      "settled": "0",
+      "held": "1.06496",
+      "status": "UNRESOLVED_PROVIDER_CALL"
+    },
+    {
+      "id": "api:32aa7a1989ee4d97bd89ab27aaf19a7c",
+      "unit": "cny",
+      "settled": "0",
+      "held": "1.06496",
+      "status": "UNRESOLVED_PROVIDER_CALL"
+    },
+    {
+      "id": "api:83775738f078438296e914d97d62b47e",
+      "unit": "cny",
+      "settled": "0",
+      "held": "1.06496",
+      "status": "UNRESOLVED_PROVIDER_CALL"
+    },
+    {
+      "id": "api:bb14dd3f218b4aa2b5beeceeef9851f5",
+      "unit": "cny",
+      "settled": "0",
+      "held": "1.06496",
+      "status": "UNRESOLVED_PROVIDER_CALL"
+    }
+  ],
+  "totals": {
+    "gpu_hours": {
+      "settled": {
+        "exact_fraction": "1593833333333333333333333333357/100000000000000000000000000000",
+        "display_value": 15.938333333333333
+      },
+      "unsettled_reserved": {
+        "exact_fraction": "0",
+        "display_value": 0.0
+      },
+      "settled_plus_reserved_upper_bound": {
+        "exact_fraction": "1593833333333333333333333333357/100000000000000000000000000000",
+        "display_value": 15.938333333333333
+      }
+    },
+    "cny": {
+      "settled": {
+        "exact_fraction": "64337/62500",
+        "display_value": 1.029392
+      },
+      "unsettled_reserved": {
+        "exact_fraction": "19968/3125",
+        "display_value": 6.38976
+      },
+      "settled_plus_reserved_upper_bound": {
+        "exact_fraction": "463697/62500",
+        "display_value": 7.419152
+      }
+    }
+  },
+  "evidence_sha256": {
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/veto-execution-budget-20260910/ledger.jsonl": "fc6562bd99445cfadc647d7dd2005c0c620ec00ebc5da81db82b7346cc9f2cc3",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/controlled-whale-seed42-20260910/evaluations/h10/slurm-terminal.txt": "9dcf137b1d3c4dbd46c433ccf398a7560ab1264eaaa5862e7998290baf1ba71d",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/controlled-whale-seed42-20260910/evaluations/h11/slurm-terminal.txt": "9607e598e7f8b1a393e8bb71aebdcb2d67be92bbd373bd8db72c61988b52a985",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/controlled-whale-seed42-20260910/evaluations/h12/slurm-terminal.txt": "30cca720b45eb565ec8a4c170a2e35d2eabb27243870c184ba9be239da1d2b28",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/controlled-whale-seed42-20260910/evaluations/h13/slurm-terminal.txt": "a3db3216ee6641fa089905f9aa3c09ca7592ac89128c5e1c265cb1e50bce9d62",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/controlled-whale-seed42-20260910/evaluations/h14/slurm-terminal.txt": "ba44dff3ca5c24181daf8cbcfd94128fb13684659dbd5d53c45dd5913a738b6f",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/controlled-whale-seed42-20260910/evaluations/h15/slurm-terminal.txt": "f0cd997f7c6c40458c90580260b76569bbe1df0f62909a5d8f537f57c11ad146",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/veto-visual-priority-cpu12-20260910-v1/slurm-terminal.txt": "c98378e52d5f6e6f770ebd69d8de819f291419885701ac1e39e65bfc776c0575",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/visual-coordinate-diagnostic-20260910-v1/slurm-terminal.txt": "89d5d7dc9b988db1ad9fd0297ed60426f6b3b19f4606fe805928df55d4852aea",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/visual-development-screen-20260910-v1/slurm-terminal.txt": "0eb780f8451a0f1be856ff5c1de899f568e4b07d071caef4176d19505ba1b97c",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/visual-initial-harness-calibration-allocation-20260910-v1/slurm-terminal.txt": "061a72f22f7be06007aaddb84b633bbc6b7885bf8f62dab2bb12a5d6354959d3",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/native-visual-rsft-20260910-v3/slurm-terminal.txt": "d499e0c3954940a6c86cdf65ca2163e7070bdec7e3b1652504d97fb86dbc1fc8",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/native-visual-rsft-20260910-v4/slurm-terminal.txt": "fba904e9ed2b74dc0b0d6066f41f5549e4b02eaccd89584ef7d3ecc697b636f5",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/native-visual-followup-20260910-v1/slurm-terminal.txt": "e3dd6a4c939738fd91cc1032e6469d1ba4ac3005f7cf58c2741ea7d4b92be7a5",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/visual-followup-repeatability-20260910-v1/slurm-terminal.txt": "250a3d8da88696c7f8667b18d8dc6ef7dc3e599d2ac8eb0e46ba532e7ff62c92",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/visual-search-theta1-h0-allocation-20260910-v2/slurm-terminal.txt": "0f4162fd24973c6d24084b8e1f1592fb36ca19edc51b21d774df5d1035715c04",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/visual-search-theta1-h1-allocation-20260910-v1/slurm-terminal.txt": "1b5ced3645e22ca04ad89b95beb736d953817d9ad8dc4311e8a69f8b36ecffeb",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/visual-search-theta1-h1-allocation-20260910-v2/slurm-terminal.txt": "42a02ec9af569a94c83e3a0f5bf4738021a5ef47262e68e083069c66ca6006de",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/visual-pixel-rsft-20260910-v2/slurm-terminal.txt": "bdda6f9ab26cc4a35f9bb2f8659606163cb9dba406c2d317bdd0afd0f8b87c2e",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/visual-pixel-rsft-20260910-v3/slurm-terminal.txt": "2f0beb25d5b8b5d7a21ad5ad1234f2e7b21ef2dd41e9fbfe40bbb9e92e307386",
+    "/userhome/cs3/yihangc/Documents/whale-delta/results/visual-pixel-followup-allocation-20260910-v1/slurm-terminal.txt": "adb4b73c5a80a9415d554d503b98622c7244db6ff64ebca69e2de2fe4ff2eb8a",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-h0-calibration-plan-20260915-v2/slurm-terminal.txt": "2d05c180b69713c7fa9795f4f9ffcec1242cf383183a47e3d468c284004b403b",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/lr-1e-07-seed42-training-plan/slurm-terminal.txt": "324f5c372220c9a5c76716d1f4c9376df099949ebc99a1229e104a2cd3485202",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/lr-calibration-v3-lr-1e-07-seed42-training-plan/slurm-terminal.txt": "510a3ce3fe5ad23a80191891a2940e2f033c9b677c7732cac3ad6267ca5e141b",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/lr-calibration-v3-lr-1e-07-seed42-followup-plan/slurm-terminal.txt": "814bb50f109f43c8a716acb990e7f2d9a5821178f5442db1f5d5e49e3777ee5d",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/lr-calibration-v3-lr-1e-06-seed42-training-plan/slurm-terminal.txt": "5c8a8390ce5a41c7511d01248cfc7a33b7930044a2df4c9a38000fd97bef69f3",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/lr-calibration-v3-lr-1e-06-seed42-followup-plan/slurm-terminal.txt": "035b63d5db08f01d51db1fca647d9645591017832cea72832133cb6d607ea105",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/lr-calibration-v3-lr-1e-05-seed42-training-plan/slurm-terminal.txt": "3afc242a8b88112bb2d0baedce5fb21a2f9f1b12c1322a05a10631e670843614",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/lr-calibration-v3-lr-1e-05-seed42-followup-plan/slurm-terminal.txt": "ea2dbf43ea615280f5b4ccb79b56da085d0a45bf062cbfa5908f322aa3571bad",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-throughput-plan-20260915-v2/slurm-terminal.txt": "6d8ab2175d42c66e122ec6e5af1878164481c4c7d8e1b559f88b3fd4bfccfe04",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-first-search-h0-plan-20260915-v1/slurm-terminal.txt": "cbc15183707ff3e3461a62bda0a463e234bc742df5d5516b36eec40052f22fc2",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-first-search-h1-plan-20260915-v1/slurm-terminal.txt": "472c8affb3526642ba329b5d97278cd332b436852e13be68c60ff511bda82b75",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-first-search-h2-plan-20260915-v1/slurm-terminal.txt": "c67feab3fbd89e69ebc780e4ee15474aab3733075dbd15cb893d982912061dcf",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-first-search-h3-plan-20260915-v1/slurm-terminal.txt": "90ccb235c25698a4c4ed3d625d9bc5d4d88300a860e6530ad50f573649b36262",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-veto-stage2-plan-20260915-v1/slurm-terminal.txt": "efcea45e84887dae9ed5aa458124338fcf2c76e1265dc47d186a4106b0a6f9f8",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/allocations/fast-chart-seed42-veto-stage2-followup-plan-20260915-v1/slurm-terminal.txt": "d5120e3226ccbc3c11de9953e6f83bf95f4e73d1f7a5b7eb44a359a4af6466c9",
+    "/userhome/cs3/yihangc/Documents/whale-delta/data/glm-budget/ledger.jsonl": "6c1352a71b88c12accf1bb835a31707e58e3d0134f94eaab5d4bdff1c23a54a2"
+  },
+  "actual_api_provider_bill_cny": null,
+  "contains_unsettled_resources": true,
+  "scope": "Vision GPU ledger including prior work; global project API ledger including prior work.",
+  "limits": [
+    "Reserved amounts are bounds, not actual charges or invoice values.",
+    "A resource may represent shared computation or a failure; neither may be silently omitted.",
+    "Method costs require an explicit complete beneficiary manifest. No score is inferred from cost."
+  ]
+}

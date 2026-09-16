@@ -1,0 +1,31 @@
+{
+  "snapshot_at": "2026-09-16T16:04:13+08:00",
+  "source_head": "41fe6c6d069e4b6f86bcc8374c517a950c144ac5",
+  "source_commits": [
+    "f799cdc",
+    "18428ef",
+    "8709ad4",
+    "dcc59f3",
+    "c131b85",
+    "5802afb",
+    "aec5302",
+    "41fe6c6"
+  ],
+  "scope": "Updated implementation, integrity hardening, completed seed42 visual cycle, VETO v2 protocol, and the negative independent R512 selection diagnostic.",
+  "published_result": "results/chart-selection-v2-R512-seed42-result-20260916-v1.json",
+  "scientific_status": "VETO v2 continuation gate failed; no method benefit is claimed.",
+  "validation": {
+    "selection_and_integrity_tests": "62 passed",
+    "optimized_mode_selection_tests": "49 passed",
+    "training_runtime_endpoint_tests": "4 passed",
+    "credential_scan": "No actual credential found; only environment-variable and fixture references matched",
+    "large_new_files_over_10_mb": 0
+  },
+  "excluded": [
+    "model weights and checkpoints",
+    "downloaded or derived datasets and images",
+    "raw per-sample trajectories and inference caches",
+    "credentials and local network configuration",
+    "scheduler logs and local allocation directories"
+  ]
+}

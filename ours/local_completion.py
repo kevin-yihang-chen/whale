@@ -81,6 +81,33 @@ def checkpoint_manifest(path: Path) -> dict:
     return {"path": str(path), **identity, "weights_sha256": fingerprint(identity)}
 
 
+def checkpoint_tensor(path: Path, name: str):
+    """Read one uniquely named tensor from a single-file or sharded checkpoint.
+
+    Inspect every shard header so a duplicate cannot be hidden by the index.
+    Only the requested tensor is materialized; checkpoint identity is verified
+    separately by checkpoint_manifest at the training/evaluation boundary.
+    """
+    from safetensors import safe_open
+    path = Path(path)
+    shards = sorted(path.glob('*.safetensors'))
+    matches = []
+    for shard in shards:
+        with safe_open(str(shard), framework='pt', device='cpu') as reader:
+            if name in reader.keys():
+                matches.append(shard)
+    if len(matches) != 1:
+        raise ValueError(f'Expected exactly one checkpoint tensor {name}; found {len(matches)}')
+    index_path = path / 'model.safetensors.index.json'
+    if index_path.exists():
+        mapping = json.loads(index_path.read_text())['weight_map']
+        if (set(mapping.values()) != {p.name for p in shards} or
+                mapping.get(name) != matches[0].name):
+            raise ValueError('Checkpoint tensor location disagrees with the HF shard index')
+    with safe_open(str(matches[0]), framework='pt', device='cpu') as reader:
+        return reader.get_tensor(name)
+
+
 class LLMClient:
     """Implement only the interface actually consumed by the pinned Chess runner.
 

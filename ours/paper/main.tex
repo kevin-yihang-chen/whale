@@ -20,7 +20,7 @@ whose empirical paired correctness does not decrease. The weight update reuses
 WHALE's native rejection-sampling fine-tuning. Our prospective study uses a
 shared scoring protocol, matched candidate archives and independently seeded
 training branches. \textbf{Study status: experiments are incomplete; this draft
-does not claim a measured improvement.}
+does not claim an independent method benefit.}
 \end{abstract}
 
 \section{Introduction}
@@ -110,6 +110,7 @@ development accuracy only. The final checkpoint is determined by the frozen
 budget. Test data are excluded from all model and harness selection.
 
 \section{Results}
+\IfFileExists{cycle-overview.tex}{\input{cycle-overview.tex}}{}
 \begin{table}[t]\centering\small
 \begin{tabular}{lcc}\toprule
 Condition & Single image & Both images\\\midrule

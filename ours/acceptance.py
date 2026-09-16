@@ -58,14 +58,22 @@ class EvidenceConstrainedAcceptance(TaskAccuracyAcceptance):
     improvement. Missing or stale audits are errors, not low-scoring candidates.
     """
 
-    MODES = {"off", "paired", "marginal_gate", "marginal_rank", "soft_pair"}
+    RANK_MODES = {"paired_rank", "marginal_rank_floor"}
+    MODES = {"off", "paired", "marginal_gate", "marginal_rank", "soft_pair"} | RANK_MODES
 
-    def __init__(self, mode: str = "paired", *, epsilon: float = 0., pair_weight: float = 1.):
+    def __init__(self, mode: str = "paired", *, epsilon: float = 0., pair_weight: float = 1.,
+                 accuracy_tolerance: float = 0.):
         if mode not in self.MODES:
             raise ValueError(f"Unknown acceptance mode: {mode}")
         finite_metric(epsilon, probability=True)
         finite_metric(pair_weight)
+        finite_metric(accuracy_tolerance, probability=True)
+        if mode not in self.RANK_MODES and accuracy_tolerance != 0:
+            raise ValueError("Accuracy tolerance is only defined for competence-floor ranking")
+        if mode in self.RANK_MODES and epsilon != 0:
+            raise ValueError("Evidence ranking uses accuracy_tolerance, not a paired epsilon")
         self.mode, self.epsilon, self.pair_weight = mode, epsilon, pair_weight
+        self.accuracy_tolerance = accuracy_tolerance
 
     def select(self, candidates: Sequence[CandidateMetrics], *, incoming: str,
                identity: EvaluationIdentity | None = None,
@@ -86,13 +94,22 @@ class EvidenceConstrainedAcceptance(TaskAccuracyAcceptance):
                 raise ValueError("Acceptance requires the same optimization audit C for every candidate")
         def evidence(name: str) -> Fraction:
             receipt = audits[name]
-            if self.mode == "marginal_gate":
+            if self.mode in {"marginal_gate", "marginal_rank_floor"}:
                 return Fraction(sum(a + b for a, b in receipt.correctness), 2 * len(receipt.correctness))
             return Fraction(sum(a * b for a, b in receipt.correctness), len(receipt.correctness))
         constrained = self.mode in {"paired", "marginal_gate"}
         eligible = [c for c in candidates if not constrained or c.name == incoming or
                     evidence(c.name) - evidence(incoming) >= -Fraction(str(self.epsilon))]
-        def rank(c: CandidateMetrics) -> tuple[float, float]:
+        if self.mode in self.RANK_MODES:
+            # E2-v2 is an empirical competence floor, not a statistical guarantee.
+            baseline = next(c for c in candidates if c.name == incoming)
+            eligible = [c for c in candidates if c.name == incoming or
+                        Fraction(str(c.accuracy)) - Fraction(str(baseline.accuracy)) >=
+                        -Fraction(str(self.accuracy_tolerance))]
+        def rank(c: CandidateMetrics) -> tuple:
+            if self.mode in self.RANK_MODES:
+                # E3-v2: matched control changes only paired versus marginal score.
+                return -evidence(c.name), -c.accuracy, c.mean_turns
             if self.mode == "marginal_rank":
                 score = audits[c.name].marginal_accuracy
             elif self.mode == "soft_pair":

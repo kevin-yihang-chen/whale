@@ -19,14 +19,18 @@ class NativeResumeComparisonTests(unittest.TestCase):
         before = {'weight': torch.tensor([1., 2.]), 'alias': torch.tensor([1., 2.])}
         corruptions = [
             {'weight': before['weight']},
+            {**before, 'unexpected': torch.tensor([1.])},
             {**before, 'alias': torch.tensor([1., 3.])},
             {k: torch.tensor([1., 2., 3.]) for k in before},
             {k: v.bfloat16() for k, v in before.items()},
             {k: torch.tensor([float('nan'), 2.]) for k in before},
         ]
         for after in corruptions:
-            with self.subTest(after=after), self.assertRaises((AssertionError, ValueError)):
+            with self.subTest(after=after), self.assertRaises(ValueError):
                 compare_states(before, after, {'alias': 'weight'}, 1)
+        for count in (0, 2, True):
+            with self.subTest(count=count), self.assertRaises(ValueError):
+                compare_states(before, before, {'alias': 'weight'}, count)
 
 
 if __name__ == '__main__':

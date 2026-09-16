@@ -34,6 +34,17 @@ def fixture():
 
 
 class VisualFusedTest(unittest.TestCase):
+    def test_unsupported_labels_or_missing_ids_fail_before_backbone(self):
+        model, inputs = fixture()
+        labels = inputs['input_ids'].clone()
+        labels[:, :2] = -100
+        with patch.object(model.model, 'forward', side_effect=AssertionError('Backbone must not run')):
+            for supplied in (labels, inputs['input_ids']):
+                with self.subTest(labels=supplied.tolist()), self.assertRaisesRegex(ValueError, 'labels are unsupported'):
+                    forward_with_visual_evidence(model, **inputs, labels=supplied)
+            with self.assertRaisesRegex(ValueError, 'requires input_ids'):
+                forward_with_visual_evidence(model, **(inputs | {'input_ids': None}))
+
     def test_original_drops_pixels_and_vision_gradient(self):
         model, inputs = fixture()
         seen = []

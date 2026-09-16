@@ -37,10 +37,14 @@ class WHALEAcceptanceAdapter:
         if self.acceptance.mode == "off":
             return original_selector(), {"mode": "off", "stage": stage, "audit_calls": 0}
         archive = tuple(archive_provider())
-        binding = fingerprint({"identity": asdict(identity), "incoming": incoming,
+        settings = {"identity": asdict(identity), "incoming": incoming,
                                "archive": [asdict(c) for c in archive],
                                "mode": self.acceptance.mode, "epsilon": self.acceptance.epsilon,
-                               "pair_weight": self.acceptance.pair_weight})
+                               "pair_weight": self.acceptance.pair_weight}
+        if self.acceptance.mode in self.acceptance.RANK_MODES:
+            settings.update(selector_protocol="competence_floor_lexicographic_v2",
+                            accuracy_tolerance=self.acceptance.accuracy_tolerance)
+        binding = fingerprint(settings)
         if stage == "resume" and (resume_receipt is None or resume_receipt.get("binding") != binding):
             raise ValueError("Resume requires a matching decision receipt; bare accepted_harness.txt is insufficient")
         audits = {c.name: audit_provider(c) for c in archive}

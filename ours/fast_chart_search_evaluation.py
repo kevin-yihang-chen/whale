@@ -70,7 +70,11 @@ def prepare(path,output,reference,harness,*,seed,name,phase):
     plan['decode_sha256']=original.decode_identity(cfg,plan['model']['assets'])
     plan['identity']=asdict(EvaluationIdentity(plan['model']['weights_sha256'],parts['H']['manifest_sha256'],
         c['audit_data_sha256'],plan['decode_sha256'],verifier_identity(PROTOCOL),phase))
-    for name_ in (*original.EXTRA,*bridge.SOURCES,'ours/fast_chart_search_evaluation.py','ours/run_fast_chart_search_evaluation.sh',str(harness)):
+    # Freeze the executable closure for this new plan; the completed reference
+    # retains its original plan hash and run-source archive.
+    sources=set(plan['source_sha256']) | set(original.native.SOURCES) | set(original.EXTRA) | set(bridge.SOURCES)
+    sources.update(('ours/fast_chart_search_evaluation.py','ours/run_fast_chart_search_evaluation.sh',str(harness)))
+    for name_ in sorted(sources):
         plan['source_sha256'][name_]=file_sha256(original.ROOT/name_)
     plan['bounds']={'gpus':1,'cpus':12,'time_limit_seconds':3600,'images':256,'maximum_generation_calls':768,
         'maximum_generated_assistant_tokens':256*1024,'api_calls':0,'new_model_checkpoints':0}

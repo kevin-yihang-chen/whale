@@ -8,17 +8,20 @@ import argparse
 import json
 from pathlib import Path
 
+from .audit_native_training_batch import require
+
 from .verify_native_transition import summary, tensor_delta, verify_aliases
 from .visual_task import file_sha256
 
 
 def compare_states(before, after, aliases, tensor_count):
     import torch
-    assert set(before) == set(after)
+    require(type(tensor_count) is int and tensor_count > 0, 'Expected a positive active tensor count')
+    require(set(before) == set(after), 'Validation failed: set(before) == set(after)')
     names = sorted(set(before) - set(aliases))
-    assert len(names) == tensor_count and set(aliases.values()) <= set(names)
+    require(len(names) == tensor_count and set(aliases.values()) <= set(names), 'Validation failed: len(names) == tensor_count and set(aliases.values()) <= set(names)')
     for state in (before, after):
-        assert all(type(t) is torch.Tensor and t.dtype == torch.float32 for t in state.values())
+        require(all((type(t) is torch.Tensor and t.dtype == torch.float32 for t in state.values())), 'Validation failed: all((type(t) is torch.Tensor and t.dtype == torch.float32 for t in state.values()))')
         verify_aliases(state, aliases, state.__getitem__)
     return summary([{'name': name, **tensor_delta(before[name], after[name])} for name in names])
 
@@ -28,35 +31,35 @@ def verify(plan_path, batch_audit_path, allocation_path, output):
     from .research_budget import terminal_allocation
     read = lambda p: json.loads(Path(p).read_text())
     plan, audit, allocation = map(read, (plan_path, batch_audit_path, allocation_path))
-    assert plan['kind'] == 'native_visual_rsft_resume' and plan['role'] == 'W'
-    assert audit['status'] == 'AUDITED_NATIVE_VISUAL_RSFT_RESUMED_BATCH'
-    assert audit['plan_sha256'] == file_sha256(plan_path)
-    assert audit['audit_source_sha256'] == file_sha256(Path(__file__).with_name('audit_native_visual_resume.py'))
+    require(plan['kind'] == 'native_visual_rsft_resume' and plan['role'] == 'W', "Validation failed: plan['kind'] == 'native_visual_rsft_resume' and plan['role'] == 'W'")
+    require(audit['status'] == 'AUDITED_NATIVE_VISUAL_RSFT_RESUMED_BATCH', "Validation failed: audit['status'] == 'AUDITED_NATIVE_VISUAL_RSFT_RESUMED_BATCH'")
+    require(audit['plan_sha256'] == file_sha256(plan_path), "Validation failed: audit['plan_sha256'] == file_sha256(plan_path)")
+    require(audit['audit_source_sha256'] == file_sha256(Path(__file__).with_name('audit_native_visual_resume.py')), "Validation failed: audit['audit_source_sha256'] == file_sha256(Path(__file__).with_name('audit_native_visual_resume.py'))")
     for name, digest in audit['source_sha256'].items():
-        assert file_sha256(Path(name)) == digest
+        require(file_sha256(Path(name)) == digest, 'Validation failed: file_sha256(Path(name)) == digest')
     terminal_path = allocation_path.parent / 'slurm-terminal.txt'
-    assert file_sha256(terminal_path) == allocation['terminal_sha256']
+    require(file_sha256(terminal_path) == allocation['terminal_sha256'], "Validation failed: file_sha256(terminal_path) == allocation['terminal_sha256']")
     terminal = terminal_allocation(terminal_path.read_text(), allocation['job_id'])
-    assert terminal and terminal['state'] == allocation['state'] == 'COMPLETED'
-    assert terminal['seconds'] == allocation['seconds']
+    require(terminal and terminal['state'] == allocation['state'] == 'COMPLETED', "Validation failed: terminal and terminal['state'] == allocation['state'] == 'COMPLETED'")
+    require(terminal['seconds'] == allocation['seconds'], "Validation failed: terminal['seconds'] == allocation['seconds']")
     root = Path(plan['output'])
     execution = read(root / 'execution-result.json')
-    assert execution['status'] == 'NATIVE_VISUAL_RSFT_RESUME_RETURNED'
-    assert execution['plan_sha256'] == file_sha256(plan_path)
-    assert execution['job_id'] == allocation['job_id'] == audit['job_id']
+    require(execution['status'] == 'NATIVE_VISUAL_RSFT_RESUME_RETURNED', "Validation failed: execution['status'] == 'NATIVE_VISUAL_RSFT_RESUME_RETURNED'")
+    require(execution['plan_sha256'] == file_sha256(plan_path), "Validation failed: execution['plan_sha256'] == file_sha256(plan_path)")
+    require(execution['job_id'] == allocation['job_id'] == audit['job_id'], "Validation failed: execution['job_id'] == allocation['job_id'] == audit['job_id']")
     previous = Path(plan['resume_checkpoint']['directory'])
     for name, digest in plan['resume_checkpoint']['artifact_sha256'].items():
-        assert file_sha256(previous / name) == digest
+        require(file_sha256(previous / name) == digest, 'Validation failed: file_sha256(previous / name) == digest')
     current = root / 'checkpoints/global_step_2'
-    assert Path(execution['native_checkpoint']) == current / 'actor'
-    assert (current / 'data.pt').is_file()
-    assert (current / 'actor/extra_state_world_size_1_rank_0.pt').is_file()
-    assert not list(current.rglob('optim_world_size*'))
+    require(Path(execution['native_checkpoint']) == current / 'actor', "Validation failed: Path(execution['native_checkpoint']) == current / 'actor'")
+    require((current / 'data.pt').is_file(), "Validation failed: (current / 'data.pt').is_file()")
+    require((current / 'actor/extra_state_world_size_1_rank_0.pt').is_file(), "Validation failed: (current / 'actor/extra_state_world_size_1_rank_0.pt').is_file()")
+    require(not list(current.rglob('optim_world_size*')), "Validation failed: not list(current.rglob('optim_world_size*'))")
     paths = [p / 'actor/model_world_size_1_rank_0.pt' for p in (previous, current)]
     for directory in (previous, current):
-        assert read(directory / 'actor/fsdp_config.json')['world_size'] == 1
+        require(read(directory / 'actor/fsdp_config.json')['world_size'] == 1, "Validation failed: read(directory / 'actor/fsdp_config.json')['world_size'] == 1")
     followup_path = Path(plan['handoff']['followup_plan'])
-    assert file_sha256(followup_path) == plan['handoff']['followup_plan_sha256']
+    require(file_sha256(followup_path) == plan['handoff']['followup_plan_sha256'], "Validation failed: file_sha256(followup_path) == plan['handoff']['followup_plan_sha256']")
     followup = read(followup_path)
     states = [torch.load(p, map_location='cpu', mmap=True, weights_only=True) for p in paths]
     result = compare_states(*states, followup['aliases'], followup['active_tensors'])

@@ -42,3 +42,12 @@ credentials.json
 !/results/fast-chart-lr-1e-06-development-review-20260915-v1.json
 !/results/fast-chart-first-cycle-bounded-admission-20260915-v1.json
 !/results/fast-chart-complete-calibration-forecast-before-throughput-20260915-v1.json
+!/results/chart-selection-v2-R512-seed42-plan-20260916-v1.json
+!/results/chart-selection-v2-R512-seed42-result-20260916-v1.json
+!/results/chart-selection-v2-archive-replay-20260916-v1.json
+!/results/fast-chart-completed-cycle-resource-review-20260916-v1.json
+!/results/fast-chart-matrix-status-20260916-v1.json
+!/results/fast-chart-resource-decisions-20260916-v1.json
+!/results/fast-chart-settled-cost-snapshot-20260916-v1.json
+!/results/integrity-hardening-historical-audit-20260916-v1.json
+!/results/integrity-hardening-validation-20260916-v1.json

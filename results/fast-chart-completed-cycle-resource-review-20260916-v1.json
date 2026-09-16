@@ -1,0 +1,95 @@
+{
+  "status": "COMPLETE_FIRST_CYCLE_FORECAST_REQUIRES_RESOURCE_DECISIONS",
+  "created_utc": "2026-09-16T02:01:07.058573+00:00",
+  "base_forecast": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/setup-hc-controller-v1/measured-expansion-forecast.json",
+  "base_forecast_sha256": "40f1d3443582492858211ddb05eea6d95675733f342aca3f10d6d1b20667b537",
+  "completed_cycle": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/first-cycle-controller-v1/result.json",
+  "completed_cycle_sha256": "b604bb9db7d4a7cd94c1c601da65a3ca2d50561d00b5f427376b7be4be464e6e",
+  "actual_completed_stage": {
+    "training_gpu_hours": 1.3911111111111112,
+    "followup_gpu_hours": 0.2811111111111111,
+    "native_gib": 19.159573078155518,
+    "export_gib": 9.650614738464355,
+    "evidence_gib": 1.1301898956298828,
+    "V_evaluation_gib": 0.6368651390075684
+  },
+  "remaining_counts": {
+    "additional_common_prefixes": 2,
+    "additional_trained_second_stages": 14,
+    "remaining_HC_evaluations": 20,
+    "harness_only_V_evaluations": 3,
+    "final_T_evaluations": 24,
+    "external_evaluations": 18,
+    "independent_R_evaluations": 6
+  },
+  "remaining_phase_proxy_gpu_hours": {
+    "core": 28.354907566918648,
+    "ablation": 10.855,
+    "evaluation": 23.517413468706266
+  },
+  "remaining_retry_allowance_gpu_hours": 3.73,
+  "total_proxy_gpu_hours_including_completed_work_and_retry": 82.39565436895825,
+  "evaluation_phase_gap_gpu_hours": 3.517413468706266,
+  "budget": {
+    "charged_gpu_hours": {
+      "setup": "14.66833333333333333333333333",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "1.27"
+    },
+    "reserved_gpu_hours": {
+      "setup": "0",
+      "core": "0",
+      "ablation": "0",
+      "evaluation": "0",
+      "retry": "0"
+    },
+    "total_cap": 100,
+    "remaining_unreserved": "84.06166666666666666666666667"
+  },
+  "storage": {
+    "new_root_allocated_gib": 123.31154298782349,
+    "requested_gib": 0,
+    "filesystem_free_gib": 537.9931640625,
+    "cap_gib": 400,
+    "minimum_free_margin_gib": 40,
+    "hardlinks_counted_once_within_new_root": true,
+    "deletion_authorized": false
+  },
+  "keep_all_projected_gib": 700.781928062439,
+  "rolling_peak_preserving_current_final_native_gib": 449.94610261917114,
+  "unselected_calibration_candidates": [
+    {
+      "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-07-seed42/training/checkpoints/global_step_4",
+      "gib": 18.144901752471924
+    },
+    {
+      "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-07-seed42/followup/hf-canonical",
+      "gib": 9.650614738464355
+    },
+    {
+      "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-05-seed42/training/checkpoints/global_step_4",
+      "gib": 19.295063495635986
+    },
+    {
+      "path": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/lr-calibration-v3/lr-1e-05-seed42/followup/hf-canonical",
+      "gib": 9.650614738464355
+    }
+  ],
+  "unselected_calibration_reclaim_gib": 56.74119472503662,
+  "rolling_peak_after_calibration_cleanup_preserving_current_final_native_gib": 393.2049078941345,
+  "rolling_peak_after_previously_proposed_all_final_native_and_calibration_cleanup_gib": 374.045334815979,
+  "current_completed_native_checkpoint": "/userhome/cs3/yihangc/Documents/whale-delta/data/fast-chart-20260915-v1/formal-v1/seed42/veto/training/checkpoints/global_step_8",
+  "current_completed_native_checkpoint_gib": 19.159573078155518,
+  "formal_expansion_admitted": false,
+  "deletion_authorized": false,
+  "scientific_method_verified": false,
+  "limitations": [
+    "Every completed allocation is included only in actual ledger totals, not future counts.",
+    "Training uses the largest observed allocation, now including the longer second stage; generation may grow further.",
+    "The rolling scenario requires separately authorized removal of future verified final native checkpoints, not just56.74GiB calibration cleanup.",
+    "All raw evidence, serving exports and common fork checkpoints remain in the proposed retained footprint.",
+    "No budget phases changed, no new GPU job submitted and no files deleted."
+  ]
+}
