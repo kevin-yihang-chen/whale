@@ -30,17 +30,20 @@ All conditions start from the same audited BF16 initialization. Native RSFT
 stores trainable parameters in FP32 and exports BF16 serving weights. Source,
 derived initialization, native checkpoint and serving identities are recorded
 separately, with the serving export checked against the native BF16 cast.
-\section{Meaning of the Paired Criterion}
-The fractions $q_0,q_1,q_2$ of pairs with zero, one and two correct answers
-satisfy $M_C=q_1/2+q_2$ and $P_C=q_2$, giving $P_C=2M_C-1+q_0$.
-For an analytical example, an incoming correctness pattern
-$\{(1,1),(0,0)\}$ and a candidate pattern $\{(1,0),(0,1)\}$ both have
-$M_C=1/2$, but paired correctness falls from $1/2$ to zero. The zero-tolerance
-marginal gate permits this candidate, whereas the paired gate rejects it.
-These are constructed correctness patterns, not experimental model scores.
-The example establishes a possible distinction only. Actual selection differences,
-subsequent training outcomes and comparisons to augmentation remain empirical
-requirements; a nonzero both-incorrect fraction is insufficient evidence.
+\section{Counterfactual Safety Audit}
+Let $M_C$ be marginal competence and $F_C$ the fraction of pairs with exactly
+one correct side. Then $P_C=M_C-F_C/2$ exactly. VETO-v3 uses jointly resampled
+source-paired deltas against the incoming harness. Three candidate slots, two
+metrics and both tails share the frozen nominal error allocation. Candidates
+are \textbf{PASS}, \textbf{FAIL}, or \textbf{UNCERTAIN}; the latter two are excluded
+and the incoming harness remains eligible. This empirical percentile-bootstrap
+rule has no finite-population or post-training guarantee.
+
+The earlier C64 point gate and paired-ranking V2 are retained as historical
+diagnostics. V2 chose h1 over h3 by one C64 pair, but h1 was lower on the
+independent R512 diagnostic and its paired interval included zero. R512 is thus
+method-development information and cannot validate V3. Sequential repeated
+looks are excluded until a valid repeated-look error allocation is frozen.
 \section{Configuration Calibration}
 \IfFileExists{calibration.tex}{\input{calibration.tex}}{Complete calibration results are pending.}
 \IfFileExists{learning-rate-calibration.tex}{\input{learning-rate-calibration.tex}}{Complete three-rate calibration results are pending; no partial winner is selected.}
@@ -53,6 +56,19 @@ harness and attempted an absent iteration report, without reading the supplied
 H feedback. The three candidates are therefore generic strategy mutations,
 not demonstrated feedback-conditioned improvements. They were retained and
 evaluated without replacement. This limitation applies to the current archive.
+The prospective V3 search received observable H-pair outcomes and used
+three fixed mechanism slots: visual recheck, reasoning decomposition and response
+control.
+At the fixed seed42 post-stage-one weights, h0--h3 score 108,106,63,107 of128
+on H; 203,186,93,205 of256 on paired C; and 439,414,240,442 of512 marginally
+on C. The audit classifies h1 and h2 as \textbf{FAIL} and h3 as
+\textbf{UNCERTAIN}. For h3, the multiplicity-adjusted competence-difference
+interval is $[-0.39,1.76]$ percentage points and the fragility-difference
+interval is $[-2.73,1.95]$ points, so its favorable point estimates do not pass
+the frozen audit. WHALE, VETO, and the matched point-estimate gate all select
+h0. The preregistered distinct-selection condition therefore fails, and no V3
+post-RSFT continuation is run. This complete optimization archive supplies a
+negative diagnostic rather than an independent method benefit.
 \section{Illustrative Failure and Interpretation}
 \IfFileExists{illustrative-case.tex}{\input{illustrative-case.tex}}{A source-grounded illustrative case is pending; no synthetic trajectory is substituted.}
 \section{Required Evidence}

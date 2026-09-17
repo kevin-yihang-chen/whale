@@ -27,4 +27,4 @@ export PYTHONPATH="$PWD/data/visual-runtime-overlay-v1:$PWD/ours/compat:$PWD/ups
 export TRITON_CACHE_DIR="$PWD/data/runtime-cache/triton"
 export VLLM_CACHE_ROOT="$PWD/data/runtime-cache/vllm"
 export FLASHINFER_WORKSPACE_BASE="$PWD/data/runtime-cache/flashinfer"
-exec data/training-runtime-v1/bin/python -m ours.fast_chart_evaluation run-suite --plan "$1"
+exec data/training-runtime-v1/bin/python -m ours.fast_chart_evaluation run-plan --plan "$1"

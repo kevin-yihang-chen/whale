@@ -49,8 +49,10 @@ def prepare(path, *, manifest_path, harness, model, output, seed=42, batch_size=
     if path.exists() or output.exists() or not output.is_relative_to(OUTPUT):
         raise ValueError('Require fresh output under the compact experiment root')
     manifest, pairs, _ = pair_inputs(manifest_path)
-    if manifest.get('answer_protocol') != PROTOCOL or manifest.get('partition') not in {'C', 'V'}:
-        raise ValueError('This preparer only opens compact optimization/development pairs')
+    if (manifest.get('answer_protocol') != PROTOCOL or
+            manifest.get('partition') not in {'C', 'C-v3', 'V', 'H-pair'} or
+            (manifest.get('partition') == 'H-pair') != (manifest.get('role') == 'H')):
+        raise ValueError('This preparer only opens registered compact chart pairs')
     if seed not in (42,43,44) or batch_size not in (1,2,4,8):
         raise ValueError('Unregistered seed or evaluation concurrency')
     cfg = native.configuration(model, manifest_path, output)
@@ -81,7 +83,7 @@ def prepare(path, *, manifest_path, harness, model, output, seed=42, batch_size=
         'bounds': {'images': 2*len(pairs), 'maximum_generation_calls': 6*len(pairs),
             'maximum_generated_assistant_tokens': 2*len(pairs)*1024, 'gpus': 1, 'cpus': 12,
             'time_limit_seconds': 5400, 'new_model_checkpoints': 0, 'api_calls': 0},
-        'limitations': ['Optimization/development result, not independent test performance.',
+        'limitations': ['Proposal/optimization/development result, not independent test performance.',
             'Greedy batched inference is not claimed to be bitwise repeatable.',
             'One predeclared complete pass; no selection of a better repeated score.']}
     storage_check(12)
@@ -207,22 +209,36 @@ def run_suite(path):
         'results': results, 'scientific_method_verified': False})
 
 
+def run_plan(path):
+    """Dispatch the two plan kinds admitted by the shared evaluation wrapper."""
+    kind = read(path).get('kind')
+    if kind == 'compact_initial_harness_calibration':
+        return run_suite(path)
+    if kind == 'compact_chart_pair_evaluation':
+        return asyncio.run(evaluate(check(path), path.resolve()))
+    raise ValueError('Changed or unsupported evaluation plan kind')
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('phase', choices=('prepare-calibration','prepare','check','run','run-suite'))
+    parser.add_argument('phase', choices=('prepare-calibration','prepare','check','run','run-suite','run-plan'))
     parser.add_argument('--plan', type=Path, required=True)
     parser.add_argument('--output', type=Path)
     parser.add_argument('--manifest', type=Path)
     parser.add_argument('--harness', type=Path)
     parser.add_argument('--model', type=Path)
+    parser.add_argument('--weight-phase', default='calibration')
     args = parser.parse_args()
     if args.phase == 'prepare-calibration':
         prepare_calibration(args.plan.resolve(), args.output, args.manifest)
     elif args.phase == 'prepare':
-        prepare(args.plan, manifest_path=args.manifest, harness=args.harness, model=args.model, output=args.output)
+        prepare(args.plan, manifest_path=args.manifest, harness=args.harness, model=args.model,
+                output=args.output, phase=args.weight_phase)
     elif args.phase == 'check':
         print(json.dumps({'status': 'PASS_PREFLIGHT', 'bounds': check(args.plan)['bounds']}))
     elif args.phase == 'run':
         asyncio.run(evaluate(check(args.plan), args.plan.resolve()))
-    else:
+    elif args.phase == 'run-suite':
         run_suite(args.plan.resolve())
+    else:
+        run_plan(args.plan.resolve())

@@ -75,22 +75,30 @@ def learning_rate_table(configuration):
 
 def search_table(directory):
     """Import only a complete, reconstructed selection archive and its hashes."""
-    from .fast_chart_search_report import latex
     directory = Path(directory).resolve()
     report_path, manifest_path = directory/'result.json', directory/'manifest.json'
     report, manifest = [json.loads(p.read_text()) for p in (report_path, manifest_path)]
+    protocol = report.get('selection_protocol', 'gate_v1')
+    if protocol == 'safety_v3':
+        from .fast_chart_search_report_v3 import latex
+        decision_names = {'whale', 'veto', 'point_gate'}
+        report_source = ROOT/'ours/fast_chart_search_report_v3.py'
+    else:
+        from .fast_chart_search_report import latex
+        decision_names = {'whale', 'veto', 'marginal_gate'}
+        report_source = ROOT/'ours/fast_chart_search_report.py'
     table_path = directory/'candidate-selection.tex'
     names = [r['candidate'] for r in report['rows']]
     failed = set(report['failed_slots'])
     if (len(names) != len(set(names)) or 'h0' not in names or set(names) & failed or
             set(names) | failed != {'h0','h1','h2','h3'} or
-            set(report['decisions']) != {'whale','veto','marginal_gate'} or
+            set(report['decisions']) != decision_names or
             any(v['accepted_harness'] not in names for v in report['decisions'].values())):
         raise ValueError('Search table does not cover all allocated slots and valid decisions')
     if (report['status'] != 'COMPLETE_RECONSTRUCTED_SEARCH_REPORT' or
             manifest['report_sha256'] != file_sha256(report_path) or
             manifest['table_sha256'] != file_sha256(table_path) or
-            manifest['source_sha256'] != file_sha256(ROOT/'ours/fast_chart_search_report.py') or
+            manifest['source_sha256'] != file_sha256(report_source) or
             table_path.read_text() != latex(report)):
         raise ValueError('Search table differs from its complete reconstructed evidence')
     for path, digest in report['evidence_sha256'].items():

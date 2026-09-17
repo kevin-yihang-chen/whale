@@ -328,10 +328,14 @@ explicit authorization. B-group data and old project files stay protected.
 
 `python -m ours.fast_chart_paper --output <fresh compact build directory>`
 compiles the manuscript and supplement with the local Tectonic tool/cache.
-The latest complete build is `paper-build-v14`, including all three real LR rows,
-with its source/evidence index,
-actual h0 calibration table, E1 limitations, primary citations and precision setup.
-The LR table remains pending until all three rates finish.
+The latest complete local build is `paper-build-v28`. It includes all three real
+LR rows and the complete seed42 V3 optimization archive. Its evidence index binds
+the h0--h3 report, the versioned V3 report source and the equivalent h0 decisions
+for WHALE, VETO and the point gate. The manuscript explicitly records the failed
+distinct-selection gate and contains no fabricated continuation result. Main and
+supplement PDFs contain3 and2 pages, respectively. `paper-build-v27` is an
+incomplete local build attempt from an environment without matplotlib and is not
+a manuscript artifact.
 The official author-kit checkout currently says2026; it is a provisional
 drafting layout, not certification of the2027 submission format.
 `fast_chart_figures` requires complete real records before drawing stage and

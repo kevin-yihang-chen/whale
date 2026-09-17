@@ -50,6 +50,17 @@ class VisualSearchBridgeTest(unittest.TestCase):
                     bridge.boundary(adapter, native, self.run, archive, self.identity, stage='resume',
                         frontier=self.frontier, rows=self.rows, valid_names=['h1'], resume=changed)
 
+    def test_partition_cardinality_uses_frozen_manifest_scale(self):
+        for pairs in (64, 256):
+            with self.subTest(pairs=pairs):
+                plan = {'partitions': {'H': {'examples': 128}, 'C': {'examples': 2 * pairs}}}
+                self.assertEqual(bridge.partition_example_count(plan, 'H', 128), 128)
+                self.assertEqual(bridge.partition_example_count(plan, 'C', 2 * pairs, pair_count=pairs), 2 * pairs)
+                with self.assertRaises(ValueError):
+                    bridge.partition_example_count(plan, 'C', 2 * pairs - 1, pair_count=pairs)
+                with self.assertRaises(ValueError):
+                    bridge.partition_example_count(plan, 'C', 2 * pairs, pair_count=pairs + 1)
+
     def test_off_keeps_native_early_stop_and_never_reads_c(self):
         adapter = WHALEAcceptanceAdapter(EvidenceConstrainedAcceptance('off'))
         frontier = {'_best': {'harness': 'h0'}}

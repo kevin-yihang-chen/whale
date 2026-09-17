@@ -34,6 +34,17 @@ def read(path):
     return json.loads(Path(path).read_text())
 
 
+def partition_image_count(plan, role):
+    """Return the frozen, manifest-backed image count for one evaluation role."""
+    partition = plan['partitions'][role]
+    manifest = read(partition['manifest'])
+    actual = len(manifest['image_files'])
+    declared = partition.get('examples', actual)
+    require(type(declared) is int and declared > 0 and declared == actual,
+            f'Changed {role} partition image count')
+    return declared
+
+
 def decode_identity(config, model_assets):
     fixed = deepcopy(config)
     fixed['data'].pop('visual_harness_path')
@@ -207,7 +218,8 @@ async def run(plan, path):
     os.environ.update(VETO_NATIVE_EVALUATION_PLAN=str(path), VETO_NATIVE_EVALUATION_OUTPUT=str(output))
     native.write_new(output / 'start.json', {'job_id': os.environ['SLURM_JOB_ID'], 'plan_sha256': file_sha256(path)})
     try:
-        datasets = {role: native.dataset_for({**plan, 'bounds': {**plan['bounds'], 'images': 128}},
+        datasets = {role: native.dataset_for({**plan, 'bounds': {
+                **plan['bounds'], 'images': partition_image_count(plan, role)}},
             Path(plan['partitions'][role]['parquet'])) for role in (('H', 'C') if plan['with_audit'] else ('H',))}
         env = {k: v for k, v in os.environ.items() if k.startswith(('VETO_', 'HF_', 'TRANSFORMERS_', 'VERL_', 'VLLM_')) or
             k in ('PYTHONPATH', 'OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'TOKENIZERS_PARALLELISM', 'NO_PROXY', 'no_proxy')}
@@ -229,20 +241,21 @@ async def run(plan, path):
                 output / 'H-repeat', plan['batch_size'])
             calls += again_h['policy_calls']
             tokens += again_h['generated_tokens']
-            def differences(a, b):
+            def differences(a, b, expected_count):
                 left = {r['sample_id']: r for r in a['records']}
                 right = {r['sample_id']: r for r in b['records']}
-                require(set(left) == set(right) and len(left) == 128, 'Validation failed: set(left) == set(right) and len(left) == 128')
+                require(set(left) == set(right) and len(left) == expected_count,
+                        'Repeatability record count differs from the frozen partition')
                 return {field: sum(left[k][field] != right[k][field] for k in left)
                         for field in ('committed_answer', 'raw_answer', 'native_turns')}
-            repeated = {'H': differences(h, again_h)}
+            repeated = {'H': differences(h, again_h, partition_image_count(plan, 'H'))}
             if plan['with_audit']:
                 again_paired, again_c = await evaluate_pairs(manager, datasets['C'],
                     manifest_path=Path(plan['partitions']['C']['manifest']), identity=EvaluationIdentity(**plan['identity']),
                     output=output / 'C-repeat', batch_size=plan['batch_size'])
                 calls += again_c['policy_calls']
                 tokens += again_c['generated_tokens']
-                repeated['C'] = differences(c, again_c)
+                repeated['C'] = differences(c, again_c, partition_image_count(plan, 'C'))
             native.write_new(output / 'repeatability.json', {'comparisons': repeated,
                 'selection_uses_first_pass': True, 'limitation': 'Same-engine repetition only; no population determinism guarantee.'})
         observed = native.audit_requests(plan, output, {'policy_calls': calls, 'generated_tokens': tokens})

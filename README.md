@@ -8,13 +8,13 @@
 
 当前执行[2026-09-15精简协议](ours/fast_chart_protocol_20260915.md)：图表领域、Qwen3.5-4B、种子42/43/44、一次完整训练—搜索—续训交替。18个逻辑条件共享同一种子的共同前缀和候选测量，分支进行真实续训。原51组矩阵、Chess、CLEVR和2B扩展暂停。
 
-真实视觉训练—搜索—续训闭环已经完成，固定结构化读图提示与学习率1e-6。seed42原三种规则均选择h3；第二阶段开发结果为单图447/512、两图同时正确212/256，仍低于共同初始模型。后续VETO v2在旧候选档案上改选h1，但独立R512评测中h1的配对正确率79.10%，低于h3的81.25%；预登记继续条件失败，已停止扩大该版本。正式多种子结果与封存测试尚未完成。
+真实视觉训练—搜索—续训闭环已完成，固定结构化h0与LR=1e-6。seed42原三种规则均选择h3；第二阶段开发分数为单图447/512、两图同时正确212/256，尚无VETO独立收益证据。VETO v2选择h1后在独立R512上低于h3。VETO v3进一步采用不确定性感知安全审计；新的H128/C256档案将h1、h2判为FAIL、h3判为UNCERTAIN，WHALE、VETO及匹配点估计门最终都选择h0。由于没有不同选择，V3按预注册规则停止，没有执行后续RSFT或扩大到其他种子。见[V3完整诊断](results/veto-v3-seed42-complete-diagnostic-20260917-v1.json)与[当前状态](PROJECT_STATUS.md)。
 
-本仓库更新至2026-09-16的代码与实验进展。[上传说明与实测结果](reports/README.md)提供当前结果表、证据摘要及尚未完成的项目；[PROJECT_STATUS.md](PROJECT_STATUS.md)保留带时间戳的完整工作记录。原始轨迹、下载数据、模型和凭据保留在本地，不随本快照分发。历史文档中的`data/`和未收录的`results/`路径是本地证据引用，不是本仓库下载入口。
+公开快照位于[GitHub whale](https://github.com/kevin-yihang-chen/whale)，独立发布目录是`Documents/whale`。本工作区保留完整本地历史及实验数据；公开快照只包含审阅后的代码、文档、聚合结果和论文稿，不包含模型、数据、原始轨迹或凭据。
 
 ## 方法与实验
 
-唯一方法模块是可关闭的选择规则：E1计算两图同时正确率；E2-v2先要求候选的普通H准确率不低于incoming；E3-v2再按配对正确率、普通准确率和turn数排序，并始终保留incoming。匹配的简单对照只把首要排序项换成同一C数据的单图正确率；E4继续复用原生RSFT成功轨迹训练。当前seed42独立诊断未支持v2收益，因此该定义是已测试但未验证的方法假设。
+唯一方法模块是可关闭的接受门。V3的E1把配对正确率分解为边际能力与单侧脆弱性；E2使用多重比较调整后的配对区间，将候选判为PASS、FAIL或UNCERTAIN；E3只在PASS候选和始终保留的incoming中沿用WHALE普通H准确率、turn数排序。E4仍复用原生RSFT成功轨迹训练。本次V3未产生不同选择，因此没有执行E4分叉；该机制仍是已测试但未验证的方法假设。
 
 | 条件 | 用途 | 种子数 |
 |---|---|---:|
@@ -39,12 +39,13 @@
 - [方法正文源码](ours/paper/main.tex)与[补充材料](ours/paper/supplement.tex)
 - [审稿证据核对清单](ours/paper/reviewer_checklist.md)
 - [实现及公式对应](ours/README.md)
-- [VETO v2选择协议与停止条件](ours/chart_selection_v2_20260916.md)
-- [R512负向诊断摘要](results/chart-selection-v2-R512-seed42-result-20260916-v1.json)
+- [VETO v3协议](ours/veto_v3_protocol_20260916.md)
+- [VETO v3完整负向诊断](results/veto-v3-seed42-complete-diagnostic-20260917-v1.json)
+- [下一版受控路线建议](ours/veto_v4_route_adjustment_20260917.md)
 
 正文与补充材料已可编译；未知结果保持明确占位。当前构建命令与证据索引见runbook，编译成功不表示论文实验证据已齐全。
 
-总预算100GPU小时，包含已有视觉支出；新增存储上限400GiB；项目GLM API累计上限45元。每次提交前核查预算，失败和加载成本也计入。任何清理先提供具体路径、引用和保留清单并获得明确授权；旧B组数据不获清理授权。作业配置状态邮件通知。本次GitHub快照上传已获授权。
+总预算100GPU小时，包含已有视觉支出；新增存储上限400GiB；项目GLM API累计上限45元。每次提交前核查预算，失败和加载成本也计入。任何清理先提供具体路径、引用和保留清单并获得明确授权；旧B组数据不获清理授权。作业配置状态邮件通知。公开仓库只同步经过审阅的提交。
 
 ## 研究历史
 
@@ -70,4 +71,4 @@ git clone --recurse-submodules https://github.com/kevin-yihang-chen/whale.git
 cd whale
 ```
 
-`upstream/WHALE`是固定commit的submodule。实验工作区保留原有本地Git历史与`initial-review`标签；其中含早期原始轨迹，因此上传快照从独立的`main`历史开始，未修改或删除原历史。[来源清单](reports/source-snapshot.json)记录原HEAD、各文件来源和SHA256。训练环境、数据下载、离线运行和模型交接要求见[runbook](ours/fast_chart_runbook.md)；历史作业计划绑定本地路径和校验值，迁移环境后需重新生成并通过预检，不能直接当作便携启动配置。
+`upstream/WHALE`是固定commit的submodule。实验工作区保留更完整的本地历史、原始证据和运行产物；公开仓库只包含审阅后的代码、文档、聚合结果和论文草稿。环境、凭据、缓存、下载数据、原始轨迹与checkpoint不纳入版本库。

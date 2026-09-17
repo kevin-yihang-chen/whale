@@ -7,11 +7,10 @@ from pathlib import Path
 import shutil
 from unittest.mock import patch
 
-from .acceptance import EvidenceConstrainedAcceptance
 from .adapter import WHALEAcceptanceAdapter
 from .chart_answer_protocol import decode_truth
 from .chart_proposal_feedback import summarize, proposal_prompt
-from .chart_selection_protocol import PROTOCOLS, selection_modes
+from .chart_selection_protocol import PROTOCOLS, acceptance_for, selection_modes
 from .evidence import EvaluationIdentity, fingerprint
 from .fast_chart_protocol import ROOT,OUTPUT
 from .fast_chart_search_evaluation import certify
@@ -25,18 +24,38 @@ from .visual_search_bridge import boundary,once,PhaseBoundary
 from .visual_task import file_sha256
 
 CONTRACT=ROOT/'ours/fast_chart_search_contract.md'
+CONTRACT_V3=ROOT/'ours/fast_chart_search_contract_v3.md'
 SLOTS=('h1','h2','h3')
 
 
 def read(path):return json.loads(Path(path).read_text())
 
 
-def init(root,baseline_plan,allocation,*,parent_plan=None,selection_protocol='evidence_v2'):
+def init(root,baseline_plan,allocation,*,parent_plan=None,selection_protocol='evidence_v2',pair_feedback=None):
     selection_modes({'selection_protocol':selection_protocol})
     root=Path(root).resolve()
     if root.exists() or not root.is_relative_to(OUTPUT):raise ValueError('Require fresh compact search root')
     base=certify(baseline_plan,allocation)
     if base['candidate'].name!='h0':raise ValueError('Baseline must be incoming h0')
+    pair_feedback_record = None
+    if selection_protocol == 'safety_v3':
+        if pair_feedback is None:
+            raise ValueError('V3 requires frozen source-disjoint H-pair proposal feedback')
+        pair_feedback=Path(pair_feedback).resolve(); pair_feedback_record=read(pair_feedback)
+        if (pair_feedback_record.get('status')!='COMPLETE_H_PAIR_FEEDBACK' or
+                pair_feedback_record.get('summary_sha256')!=fingerprint(pair_feedback_record.get('summary')) or
+                pair_feedback_record.get('harness_sha256')!=base['candidate'].harness_sha256 or
+                pair_feedback_record.get('weights_sha256')!=base['result']['identity']['weights_sha256'] or
+                pair_feedback_record.get('private_audit_transferred') is not False):
+            raise ValueError('V3 H-pair proposal feedback differs from the incoming fixed-weight phase')
+        for key in ('manifest','result'):
+            if file_sha256(Path(pair_feedback_record[key]))!=pair_feedback_record[key+'_sha256']:
+                raise ValueError('V3 H-pair feedback evidence changed')
+        if (len(base['audit'].pair_ids)!=256 or base['audit'].role!='C' or
+                base['plan']['partitions']['C'].get('source_tables')!=256):
+            raise ValueError('V3 baseline must use the frozen fresh C256 audit')
+    elif pair_feedback is not None:
+        raise ValueError('Historical protocols do not accept V3 pair feedback')
     parent_sha=None
     if parent_plan:
         parent_plan=Path(parent_plan).resolve();parent=read(parent_plan)
@@ -47,22 +66,30 @@ def init(root,baseline_plan,allocation,*,parent_plan=None,selection_protocol='ev
         if transition['exported']!=base['plan']['model'] or transition['native_checkpoint']['directory']!=str(Path(parent['output'])/'checkpoints/global_step_4'):
             raise ValueError('Search weights are not this first-stage export')
         parent_sha=file_sha256(parent_plan)
+    contract = CONTRACT_V3 if selection_protocol == 'safety_v3' else CONTRACT
     root.mkdir();run=root/'search';(run/'harnesses/h0').mkdir(parents=True);(run/'logs/claude_sessions').mkdir(parents=True)
     shutil.copyfile(base['plan']['config']['data']['visual_harness_path'],run/'harnesses/h0/harness.py')
-    shutil.copyfile(CONTRACT,root/'contract.md')
+    shutil.copyfile(contract,root/'contract.md')
     write_new(root/'native-config.json',{'task_profiles':{'H':{'limit':128}},'models':[{'model':'qwen35-4b'}],'seeds':[base['plan']['seed']]})
     write_new(root/'plan.json',{'kind':'compact_native_harness_search','incoming':'h0','slots':SLOTS,
         'selection_protocol':selection_protocol,'accuracy_tolerance':0.,
+        'safety_audit':({'audit_pairs':256, 'competence_epsilon':.01,
+            'fragility_epsilon':0., 'familywise_alpha':.05, 'candidate_budget':3}
+            if selection_protocol == 'safety_v3' else None),
         'identity':base['result']['identity'],'seed':base['plan']['seed'],'iterations':1,'proposals_per_iter':3,
         'parent_plan':str(parent_plan) if parent_plan else None,'parent_plan_sha256':parent_sha,
+        'pair_feedback':str(pair_feedback) if pair_feedback else None,
+        'pair_feedback_sha256':file_sha256(pair_feedback) if pair_feedback else None,
         'max_api_requests':12,'max_cli_turns':12,'data_role':'mh_val','actual_data_role':'H',
         'baseline':{'plan':str(baseline_plan),'allocation':str(allocation),
             'plan_sha256':file_sha256(baseline_plan),'allocation_sha256':file_sha256(allocation)},
-        'source_sha256':{str(p):file_sha256(p) for p in (Path(__file__),CONTRACT,
+        'source_sha256':{str(p):file_sha256(p) for p in (Path(__file__),contract,
             ROOT/'ours/research_budget.py',ROOT/'ours/visual_search_bridge.py',ROOT/'ours/audit_native_training_batch.py',
             ROOT/'ours/acceptance.py',ROOT/'ours/adapter.py',ROOT/'ours/chart_selection_protocol.py',
             ROOT/'ours/chart_proposal_feedback.py',ROOT/'ours/fast_chart_search_report.py',
-            ROOT/'ours/chart_selection_v2_20260916.md')},
+            ROOT/'ours/counterfactual_safety.py',
+            ROOT/('ours/veto_v3_protocol_20260916.md' if selection_protocol == 'safety_v3'
+                  else 'ours/chart_selection_v2_20260916.md'))},
         'selection_pass':'First complete H/C pass; failures consume allocated slots.',
         'method_claim':'Single limited-budget alternation; no long-horizon guarantee.'})
 
@@ -190,7 +217,7 @@ def public_feedback(run,item):
 
 
 def task_prompt(root,plan,base):
-    contract=CONTRACT.read_text()
+    contract=(CONTRACT_V3 if plan.get('selection_protocol')=='safety_v3' else CONTRACT).read_text()
     if plan.get('selection_protocol','gate_v1')=='gate_v1':
         return 'Read h0 and its H feedback. Produce the three allocated standalone candidates h1,h2,h3 and pending_eval.json. '+contract
     manifest_path=Path(base['plan']['partitions']['H']['manifest'])
@@ -200,7 +227,39 @@ def task_prompt(root,plan,base):
         'H_manifest_sha256':file_sha256(manifest_path),'H_result_sha256':file_sha256(result_path),
         'incoming_harness_sha256':base['candidate'].harness_sha256,
         'shared_by_all_selectors':True,'actual_data_role':'H','private_audit_transferred':False})
-    return proposal_prompt(contract,summary)
+    paired_summary=None
+    if plan.get('selection_protocol')=='safety_v3':
+        path=Path(plan['pair_feedback'])
+        if file_sha256(path)!=plan['pair_feedback_sha256']:
+            raise ValueError('Frozen V3 pair feedback changed')
+        receipt=read(path)
+        if (receipt['summary_sha256']!=fingerprint(receipt['summary']) or
+                receipt['harness_sha256']!=base['candidate'].harness_sha256 or
+                receipt['weights_sha256']!=base['result']['identity']['weights_sha256']):
+            raise ValueError('V3 pair feedback identity differs from incoming h0')
+        paired_summary=receipt['summary']
+    return proposal_prompt(contract,summary,paired_summary)
+
+
+def validate_v3_candidate_metadata(root,plan):
+    if plan.get('selection_protocol')!='safety_v3':return
+    expected={'h1':'visual_recheck','h2':'reasoning_decomposition','h3':'response_control'}
+    payload=read(root/'search/pending_eval.json')
+    entries=payload.get('candidates') if isinstance(payload,dict) else None
+    if not isinstance(entries,list) or len(entries)!=3:
+        raise ValueError('V3 requires all three prespecified mechanism slots')
+    by_name={entry.get('name'):entry for entry in entries if isinstance(entry,dict)}
+    if set(by_name)!=set(expected):raise ValueError('V3 candidate names differ from allocated slots')
+    required={'name','parent','mechanism','hypothesis','change','predicted_failure_addressed','expected_cost'}
+    for name,mechanism in expected.items():
+        entry=by_name[name];cost=entry.get('expected_cost')
+        if (not required.issubset(entry) or entry['parent']!='h0' or entry['mechanism']!=mechanism or
+                not all(isinstance(entry[key],str) and entry[key].strip() for key in
+                        ('hypothesis','change','predicted_failure_addressed')) or
+                not isinstance(cost,dict) or set(cost)!={'extra_policy_calls','extra_tool_calls'} or
+                any(type(value) is not int or value<0 for value in cost.values()) or
+                cost['extra_tool_calls']!=0):
+            raise ValueError('V3 candidate metadata violates the orthogonal mechanism contract')
 
 
 def advance(root):
@@ -231,7 +290,7 @@ def advance(root):
         nonlocal initial
         if initial:
             initial=False
-            adapter=WHALEAcceptanceAdapter(EvidenceConstrainedAcceptance(dict(selection_modes(plan))['veto']))
+            adapter=WHALEAcceptanceAdapter(acceptance_for(plan,dict(selection_modes(plan))['veto']))
             with patch.object(native,'pick_accepted',pick_original):
                 once(root/'initial-acceptance.json',boundary(adapter,native,run,[base],identity,stage='initial',frontier=frontier))
         return pick_original(frontier,run_dir)
@@ -241,9 +300,15 @@ def advance(root):
             if (root/f'failure-{name}.json').exists():result.append((name,False));continue
             item=next((a for a in archive if a['candidate'].name==name),None)
             if item is None:
-                once(root/f'evaluation-request-{name}.json',{'candidate':name,'harness':str(path),
+                request={'candidate':name,'harness':str(path),
                     'harness_sha256':file_sha256(path),'identity':plan['identity'],
-                    'reference':base['plan']['reference_plan'],'seed':plan['seed']})
+                    'reference':base['plan']['reference_plan'],'seed':plan['seed']}
+                if plan.get('selection_protocol') == 'safety_v3':
+                    if any(key not in base['plan'] for key in ('materialization','materialization_sha256')):
+                        raise ValueError('V3 candidate evaluation requires the fixed C256 materialization')
+                    request.update(audit_materialization=base['plan']['materialization'],
+                                   audit_materialization_sha256=base['plan']['materialization_sha256'])
+                once(root/f'evaluation-request-{name}.json',request)
                 raise PhaseBoundary(f'WAITING_EVALUATION_{name}')
             public_feedback(run,item);result.append((name,True))
         return result
@@ -266,6 +331,7 @@ def advance(root):
         for name,digest in ready.get('imported_sha256',{}).items():
             if file_sha256(run/name)!=digest:raise ValueError('Proposed candidate or metadata changed after import')
         meta=read(session/'meta.json')
+        validate_v3_candidate_metadata(root,plan)
         return native.claude_wrapper.parse_stream_events((session/'events.jsonl').read_text(),kwargs['task_prompt'],
             MODEL,meta['duration_seconds'],meta['exit_code'],cwd=meta['cwd'])
     args=argparse.Namespace(run_name='search',config=str(root/'native-config.json'),iterations=1,proposals_per_iter=3,
@@ -290,7 +356,7 @@ def advance(root):
     comparison=read(run/'logs/iteration_001/comparison.json');stage='early_stop' if comparison['early_stop'] else 'ordinary'
     selections={}
     for condition,mode in selection_modes(plan):
-        adapter=WHALEAcceptanceAdapter(EvidenceConstrainedAcceptance(mode))
+        adapter=WHALEAcceptanceAdapter(acceptance_for(plan,mode))
         value=boundary(adapter,native,run,archive,identity,stage=stage,frontier=comparison['frontier'],
             rows=comparison['summary'],valid_names=list(SLOTS))
         selected=value['accepted_harness'];harness=run/f'harnesses/{selected}/harness.py'
@@ -317,10 +383,12 @@ def propose(root):
     base=certify(plan['baseline']['plan'],plan['baseline']['allocation'])
     if request['task_prompt']!=task_prompt(root,plan,base):raise ValueError('Paid proposal feedback changed')
     request['run_dir']=Path(request['run_dir']);journal=BudgetJournal(ROOT/'data/glm-budget/ledger.jsonl')
+    contract=CONTRACT_V3 if plan.get('selection_protocol')=='safety_v3' else CONTRACT
     with patch.object(native,'SKILL_DIR',root/'contract.md'),patch.object(native,'PROMPT_ONLY',False),\
-         patch.object(native,'PROPOSER_SYSTEM_PROMPT',CONTRACT.read_text()):
+         patch.object(native,'PROPOSER_SYSTEM_PROMPT',contract.read_text()):
         result=isolated_native_proposal(native,plan,root/'paid-proposal',journal,**request)
     if result.exit_code!=0:raise RuntimeError('Paid proposal failed; retain fees/artifacts and do not retry automatically')
+    validate_v3_candidate_metadata(root,plan)
     sessions=list((root/'search/logs/claude_sessions').iterdir())
     if len(sessions)!=1:raise ValueError('Unexpected proposer sessions')
     write_new(root/'proposal-ready.json',{'request_sha256':file_sha256(root/'proposal-request.json'),
@@ -334,10 +402,10 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=('init','advance','propose','attach','failed-evaluation'))
     p.add_argument('--root',type=Path,required=True)
     p.add_argument('--selection-protocol',choices=tuple(PROTOCOLS),default='evidence_v2')
-    for key in ('baseline-plan','allocation','parent-plan','candidate-plan'):p.add_argument('--'+key,type=Path)
+    for key in ('baseline-plan','allocation','parent-plan','candidate-plan','pair-feedback'):p.add_argument('--'+key,type=Path)
     a=p.parse_args();root=a.root.resolve()
     if a.action=='init':init(root,a.baseline_plan.resolve(),a.allocation.resolve(),parent_plan=a.parent_plan,
-                           selection_protocol=a.selection_protocol)
+                           selection_protocol=a.selection_protocol,pair_feedback=a.pair_feedback)
     elif a.action=='advance':advance(root)
     elif a.action=='propose':propose(root)
     elif a.action=='attach':attach(root,a.candidate_plan,a.allocation)

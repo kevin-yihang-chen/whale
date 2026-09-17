@@ -24,6 +24,15 @@ def submit(path, phase, kind='evaluation'):
         wrapper = ROOT / 'ours/run_fast_chart_evaluation.sh'
         expected, extra, working = (1,12,5400), [], 12
         purpose = 'Shared chart h0 calibration,3x512 V images'
+    elif kind == 'evaluation' and plan['kind'] == 'compact_chart_pair_evaluation':
+        from .fast_chart_evaluation import check
+        check(path)
+        wrapper = ROOT / 'ours/run_fast_chart_evaluation.sh'
+        expected, extra, working = (1,12,plan['bounds']['time_limit_seconds']), [], 12
+        if expected[2] != 5400:
+            raise ValueError('Unregistered paired evaluation allocation')
+        purpose = (f"Fixed {plan['phase']} {plan['partition']} paired evaluation,"
+                   f"{plan['bounds']['images']} images; no new weights or API")
     elif kind == 'selection-probe' and plan['kind'] == 'compact_selection_probe_suite':
         from .chart_selection_diagnostic import check
         check(path)
@@ -53,8 +62,12 @@ def submit(path, phase, kind='evaluation'):
         from .fast_chart_search_evaluation import check
         check(path)
         wrapper=ROOT/'ours/run_fast_chart_search_evaluation.sh'
-        expected,extra,working=(1,12,3600),[],12
-        purpose=f"One fixed chart candidate {plan['candidate']},H128+C64pairs"
+        expected,extra,working=(1,12,plan['bounds']['time_limit_seconds']),[],12
+        if expected[2] not in (3600,5400):
+            raise ValueError('Unregistered search evaluation allocation')
+        audit_pairs=(plan['bounds']['images']-128)//2
+        purpose=(f"One fixed chart candidate {plan['candidate']},"
+                 f"H128+C{audit_pairs} pairs; no new weights or API")
     elif kind == 'endpoint' and plan['kind']=='compact_registered_endpoint_evaluation':
         from .fast_chart_endpoint_evaluation import check
         check(path)

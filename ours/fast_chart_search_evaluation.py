@@ -45,7 +45,7 @@ def timed_measurements():
     finally:original.evaluate_h,original.evaluate_pairs=h_original,c_original
 
 
-def prepare(path,output,reference,harness,*,seed,name,phase):
+def prepare(path,output,reference,harness,*,seed,name,phase,audit_materialization=None):
     path,output,reference,harness=map(lambda p:Path(p).resolve(),(path,output,reference,harness))
     if path.exists() or output.exists() or not output.is_relative_to(OUTPUT):raise ValueError('Require fresh search evaluation paths')
     if seed not in (42,43,44) or name not in ('h0','h1','h2','h3'):raise ValueError('Unregistered seed/candidate slot')
@@ -54,12 +54,25 @@ def prepare(path,output,reference,harness,*,seed,name,phase):
     result=read(Path(ref['output'])/'result.json')
     if result['status']!='COMPLETE_COMPACT_CHART_PAIR_EVALUATION' or result['plan_sha256']!=file_sha256(reference):
         raise ValueError('Reference weights have not completed real visual evaluation')
-    plan=deepcopy(ref);parts=read(OUTPUT/'native-data/result.json')['partitions']
+    plan=deepcopy(ref)
+    shared_materialization=OUTPUT/'native-data/result.json'
+    shared=read(shared_materialization)
+    if shared.get('status')!='COMPLETED_SHARED_CHART_MATERIALIZATION':
+        raise ValueError('Incomplete shared H materialization')
+    materialization=(Path(audit_materialization).resolve() if audit_materialization else shared_materialization)
+    audit=read(materialization)
+    if audit_materialization and audit.get('status')!='COMPLETED_VETO_V3_PAIR_MATERIALIZATION':
+        raise ValueError('V3 requires the frozen fresh-pair materialization')
+    parts={'H':shared['partitions']['H'], 'C':audit['partitions']['C']}
+    h_manifest=read(parts['H']['manifest'])
+    c_manifest=read(parts['C']['manifest'])
+    if set(h_manifest['source_tables']) & set(c_manifest['source_tables']):
+        raise ValueError('Ordinary H and selection C sources overlap')
     plan.update(kind='compact_chart_search_evaluation',output=str(output),candidate=name,phase=phase,role='H+C',
         partitions={r:parts[r] for r in ('H','C')},with_audit=True,repeatability_check=False,batch_size=8,
         reference_plan=str(reference),reference_plan_sha256=file_sha256(reference),
-        materialization=str(OUTPUT/'native-data/result.json'),materialization_sha256=file_sha256(OUTPUT/'native-data/result.json'))
-    c,_,_=pair_inputs(parts['C']['manifest'])
+        materialization=str(materialization),materialization_sha256=file_sha256(materialization))
+    c,pairs,_=pair_inputs(parts['C']['manifest'])
     plan.update(manifest=parts['C']['manifest'],manifest_sha256=parts['C']['manifest_sha256'],audit_data_sha256=c['audit_data_sha256'])
     cfg=plan['config'];cfg['data']['visual_harness_path']=str(harness);cfg['data']['cache_dir']=str(output/'dataset-cache')
     cfg['actor_rollout_ref']['rollout']['engine_kwargs']['vllm']['seed']=seed
@@ -74,10 +87,14 @@ def prepare(path,output,reference,harness,*,seed,name,phase):
     # retains its original plan hash and run-source archive.
     sources=set(plan['source_sha256']) | set(original.native.SOURCES) | set(original.EXTRA) | set(bridge.SOURCES)
     sources.update(('ours/fast_chart_search_evaluation.py','ours/run_fast_chart_search_evaluation.sh',str(harness)))
+    if audit_materialization:
+        sources.add('ours/veto_v3_data.py')
     for name_ in sorted(sources):
         plan['source_sha256'][name_]=file_sha256(original.ROOT/name_)
-    plan['bounds']={'gpus':1,'cpus':12,'time_limit_seconds':3600,'images':256,'maximum_generation_calls':768,
-        'maximum_generated_assistant_tokens':256*1024,'api_calls':0,'new_model_checkpoints':0}
+    images=128+2*len(pairs)
+    plan['bounds']={'gpus':1,'cpus':12,'time_limit_seconds':5400 if len(pairs)>64 else 3600,
+        'images':images,'maximum_generation_calls':3*images,
+        'maximum_generated_assistant_tokens':images*1024,'api_calls':0,'new_model_checkpoints':0}
     plan['limitations']=['H and C are optimization data; first complete measurement only.',
         'Shared host parser and verifier; no candidate scoring modifications.',
         'Batched greedy inference is not assumed bitwise deterministic.']
@@ -107,10 +124,12 @@ def certify(plan_path,allocation_path):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('action',choices=('prepare','check','run'))
-    for key in ('plan','output','reference','harness'):p.add_argument('--'+key,type=Path,required=key=='plan')
+    for key in ('plan','output','reference','harness','audit-materialization'):
+        p.add_argument('--'+key,type=Path,required=key=='plan')
     p.add_argument('--seed',type=int,choices=(42,43,44));p.add_argument('--name');p.add_argument('--phase')
     a=p.parse_args()
-    if a.action=='prepare':prepare(a.plan,a.output,a.reference,a.harness,seed=a.seed,name=a.name,phase=a.phase)
+    if a.action=='prepare':prepare(a.plan,a.output,a.reference,a.harness,seed=a.seed,name=a.name,
+                                   phase=a.phase,audit_materialization=a.audit_materialization)
     elif a.action=='check':check(a.plan)
     else:
         plan=check(a.plan)

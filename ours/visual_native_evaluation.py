@@ -27,7 +27,9 @@ def verifier_identity(protocol=None):
 def pair_inputs(manifest_path):
     path = Path(manifest_path).resolve()
     manifest = json.loads(path.read_text())
-    if manifest.get('role') not in {'engineering', 'C', 'V', 'T'}:
+    role, partition = manifest.get('role'), manifest.get('partition')
+    if (role not in {'engineering', 'C', 'V', 'T', 'H'} or
+            (role == 'H') != (partition == 'H-pair')):
         raise ValueError('Paired evaluation requires an explicit audit data role')
     pairs = tuple(VisualPair(**row) for row in manifest['pairs'])
     if not pairs or len({p.pair_id for p in pairs}) != len(pairs):

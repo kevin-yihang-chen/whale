@@ -1,0 +1,59 @@
+{
+  "status": "PUBLISHED_VETO_V3_NEGATIVE_DIAGNOSTIC",
+  "snapshot_at": "2026-09-17T10:11:56+08:00",
+  "source_repository_head": "1c1b6a3f72099e2923f5ec9d21af5e227c9b4bcf",
+  "source_commits_since_previous_public_snapshot": [
+    "7367918",
+    "38bb772",
+    "f72adb4",
+    "9f5ae60",
+    "a2ac0d0",
+    "1c1b6a3"
+  ],
+  "scope": {
+    "implementation": "VETO v3 uncertainty-aware paired-evidence audit and supporting recovery/reporting paths",
+    "experiment": "seed42 fixed-weight audit on H128 and fresh C256",
+    "manuscript": "incomplete draft v28"
+  },
+  "scientific_outcome": {
+    "distinct_selection_gate_passed": false,
+    "whale_selection": "h0",
+    "veto_selection": "h0",
+    "matched_point_gate_selection": "h0",
+    "post_selection_rsft_executed": false,
+    "method_benefit_claimed": false,
+    "decision": "Stop VETO v3 expansion and require a new source-isolated pilot before any V4 claim."
+  },
+  "published_aggregate_result": "results/veto-v3-seed42-complete-diagnostic-20260917-v1.json",
+  "published_manuscript_artifacts": {
+    "main_pdf": {
+      "path": "reports/draft-v28/main.pdf",
+      "pages": 3,
+      "sha256": "efd30e81e58f7fedc4ca2cc6afc7a56ddb3483e7a91f7debce3268f133261592"
+    },
+    "supplement_pdf": {
+      "path": "reports/draft-v28/supplement.pdf",
+      "pages": 2,
+      "sha256": "02ad2881e0a6ec6669c10194235885990eae7ba80ec5f1b5a23915d8e084da51"
+    }
+  },
+  "validation": {
+    "portable_v3_tests_passed": 32,
+    "native_bridge_tests_passed": 5,
+    "generic_python_native_bridge_first_attempt": "IMPORT_DEPENDENCY_FAILURE_DISCLOSED",
+    "credential_pattern_findings": 0,
+    "files_larger_than_10_mib": 0,
+    "json_artifacts_parsed": true,
+    "pdf_hashes_match_build_record": true,
+    "full_test_suite_pass_claimed": false
+  },
+  "excluded_from_publication": [
+    "models and checkpoints",
+    "raw datasets and images",
+    "raw trajectories and inference caches",
+    "credentials and local network configuration",
+    "raw proposer sessions and scheduler logs",
+    "local allocation records",
+    "plan JSON files containing machine-local paths"
+  ]
+}

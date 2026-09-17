@@ -51,6 +51,19 @@ def once(path, value):
         write_new(path, value)
 
 
+def partition_example_count(plan, role, reconstructed_count, *, pair_count=None):
+    """Bind certification cardinality to the frozen partition, not a legacy constant."""
+    declared = plan['partitions'][role]['examples']
+    require(type(declared) is int and declared > 0,
+        f'Validation failed: {role} must declare a positive integer example count')
+    require(reconstructed_count == declared,
+        f'Validation failed: reconstructed {role} examples differ from the frozen partition')
+    if pair_count is not None:
+        require(declared == 2 * pair_count,
+            f'Validation failed: frozen {role} partition must contain exactly two images per pair')
+    return declared
+
+
 def certify(plan_path, allocation_path, *, with_audit=True):
     """Recompute H/E1 from complete actual records and bind their native evidence."""
     plan, allocation = read(plan_path), read(allocation_path)
@@ -76,11 +89,14 @@ def certify(plan_path, allocation_path, *, with_audit=True):
     _, h_rows = single_rows(plan['partitions']['H']['manifest'])
     expected = {r['visual_sample_id']: r for r in h_rows}
     actual = {r['sample_id']: r for r in h['records']}
-    require(len(h['records']) == len(actual) == len(expected) == 128 and set(actual) == set(expected), "Validation failed: len(h['records']) == len(actual) == len(expected) == 128 and set(actual) == set(expected)")
+    expected_h_examples = partition_example_count(plan, 'H', len(expected))
+    require(len(h['records']) == len(actual) == len(expected) == expected_h_examples and set(actual) == set(expected),
+        "Validation failed: complete H records must match the frozen partition size and sample identities")
     for key, row in actual.items():
         require(row['correct'] == int(binary_answer_verifier(row['committed_answer'], expected[key]['reward_model']['ground_truth'])), "Validation failed: row['correct'] == int(binary_answer_verifier(row['committed_answer'], expected[key]['reward_model']['ground_truth']))")
     candidate = CandidateMetrics(plan['candidate'], plan['harness_sha256'],
-        sum(r['correct'] for r in actual.values()) / 128, sum(r['native_turns'] for r in actual.values()) / 128)
+        sum(r['correct'] for r in actual.values()) / expected_h_examples,
+        sum(r['native_turns'] for r in actual.values()) / expected_h_examples)
     require(asdict(candidate) == result['candidate'] and candidate.accuracy == h['accuracy'], "Validation failed: asdict(candidate) == result['candidate'] and candidate.accuracy == h['accuracy']")
     for name, digest in h['batch_artifact_sha256'].items():
         require(file_sha256(root / 'H' / name) == digest, "Validation failed: file_sha256(root / 'H' / name) == digest")
@@ -90,7 +106,9 @@ def certify(plan_path, allocation_path, *, with_audit=True):
         manifest, pairs, c_rows = pair_inputs(plan['partitions']['C']['manifest'])
         require(manifest['role'] == 'C', "Validation failed: manifest['role'] == 'C'")
         c_actual = {r['sample_id']: r for r in c['records']}
-        require(len(c['records']) == len(c_actual) == len(c_rows) == 128, "Validation failed: len(c['records']) == len(c_actual) == len(c_rows) == 128")
+        expected_c_examples = partition_example_count(plan, 'C', len(c_rows), pair_count=len(pairs))
+        require(len(c['records']) == len(c_actual) == len(c_rows) == expected_c_examples,
+            "Validation failed: complete C records must match the frozen partition size")
         require(set(c_actual) == {r['visual_sample_id'] for r in c_rows}, "Validation failed: set(c_actual) == {r['visual_sample_id'] for r in c_rows}")
         predictions = [PairPrediction(p.pair_id, tuple(c_actual[fingerprint({'pair_id': p.pair_id, 'side': side})]['committed_answer']
             for side in (0, 1))) for p in pairs]

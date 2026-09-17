@@ -1,0 +1,16 @@
+{
+  "status": "COMPILED_MANUSCRIPT_SCAFFOLD",
+  "pdfs": {
+    "main.pdf": "efd30e81e58f7fedc4ca2cc6afc7a56ddb3483e7a91f7debce3268f133261592",
+    "supplement.pdf": "02ad2881e0a6ec6669c10194235885990eae7ba80ec5f1b5a23915d8e084da51"
+  },
+  "author_kit": "cvpr-org/author-kit@291758547e923160eb4d37079b7b9f0dfce82355",
+  "template_limitation": "Official repository currently labels this kit2026. Provisional drafting layout; not a verified CVPR2027 submission package.",
+  "figure_status": {
+    "method": "CREATED",
+    "stage_results": "PENDING_REAL_BRANCH_RESULTS",
+    "performance_cost": "PENDING_REAL_BRANCH_RESULTS"
+  },
+  "scientific_method_verified": false,
+  "claim_evidence_index_sha256": "84f20e0aa66207a404a1f3f0d31743414587ac36b45c22ab21a021589037faa0"
+}

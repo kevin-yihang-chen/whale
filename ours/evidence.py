@@ -91,7 +91,7 @@ class AuditReceipt:
             raise ValueError("Expected an EvaluationIdentity")
         object.__setattr__(self, "pair_ids", tuple(self.pair_ids))
         object.__setattr__(self, "correctness", tuple(tuple(row) for row in self.correctness))
-        if self.role not in {"C", "V", "T", "engineering"}:
+        if self.role not in {"H", "C", "V", "T", "engineering"}:
             raise ValueError("Unknown audit data role")
         if any(not isinstance(value, str) or not value for value in self.pair_ids):
             raise ValueError("Pair IDs must be nonempty strings")
